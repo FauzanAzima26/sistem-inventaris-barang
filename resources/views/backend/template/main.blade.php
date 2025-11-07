@@ -17,9 +17,15 @@
         @include('backend.template.sidebar')
         <!--  Sidebar End -->
         <!--  Main wrapper -->
-        <main>
+        <div class="body-wrapper">
+            <!--  Header Start -->
+            <header class="app-header">
+                @include('backend.template.navbar')
+            </header>
+            <!--  Header End -->
             @yield('content')
-        </main>
+        </div>
+
     </div>
     <script src="../assets_frontend/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets_frontend/libs/jquery/dist/jquery.min.js"></script>
@@ -28,6 +34,14 @@
     <script src="../assets_frontend/libs/apexcharts/dist/apexcharts.min.js"></script>
     <script src="../assets_frontend/libs/simplebar/dist/simplebar.js"></script>
     <script src="../assets_frontend/js/dashboard.js"></script>
+
+    <!-- Tambahkan ini di paling bawah layout (main.blade.php) sebelum </body> -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+
+    @stack('scripts')
+
 </body>
 
 </html>
