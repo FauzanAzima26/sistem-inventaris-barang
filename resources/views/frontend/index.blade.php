@@ -59,13 +59,6 @@
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
 
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="m-0">
-                @csrf
-                <button type="submit" class="btn btn-danger text-white px-3 py-1 rounded">
-                    Logout
-                </button>
-            </form>
-
         </div>
     </header>
 
@@ -85,7 +78,7 @@
                         </p>
 
                         <div class="d-flex gap-3 mt-3" data-aos="fade-up" data-aos-delay="200">
-                            <a href="#data-barang" class="btn btn-primary btn-lg">
+                            <a href="#menu" class="btn btn-primary btn-lg">
                                 <i class="bi bi-box-seam me-2"></i> Lihat Data Barang
                             </a>
                             <a href="#laporan" class="btn btn-outline-primary btn-lg">
