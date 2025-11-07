@@ -1,378 +1,229 @@
-<!-- Menu Section -->
+<!-- Data Inventaris Section -->
 <section id="menu" class="menu section">
 
     <!-- Section Title -->
     <div class="container section-title" data-aos="fade-up">
-        <h2>Our Menu</h2>
-        <p><span>Check Our</span> <span class="description-title">Yummy Menu</span></p>
+        <h2>Data Inventaris</h2>
+        <p><span>Kelola dan Pantau</span> <span class="description-title">Data Barang & Transaksi</span></p>
     </div><!-- End Section Title -->
 
     <div class="container">
 
+        <!-- Tabs -->
         <ul class="nav nav-tabs d-flex justify-content-center" data-aos="fade-up" data-aos-delay="100">
 
             <li class="nav-item">
-                <a class="nav-link active show" data-bs-toggle="tab" data-bs-target="#menu-starters">
-                    <h4>Barang</h4>
+                <a class="nav-link active show" data-bs-toggle="tab" data-bs-target="#menu-barang">
+                    <h4>Data Barang</h4>
                 </a>
-            </li><!-- End tab nav item -->
-
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" data-bs-target="#menu-breakfast">
-                    <h4>Kategori</h4>
-                </a><!-- End tab nav item -->
-
             </li>
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" data-bs-target="#menu-lunch">
-                    <h4>Aktifitas Barang</h4>
-                </a>
-            </li><!-- End tab nav item -->
 
             <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" data-bs-target="#menu-dinner">
+                <a class="nav-link" data-bs-toggle="tab" data-bs-target="#menu-kategori">
+                    <h4>Kategori</h4>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" data-bs-target="#menu-transaksi">
+                    <h4>Barang Masuk & Keluar</h4>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" data-bs-target="#menu-laporan">
                     <h4>Laporan</h4>
                 </a>
-            </li><!-- End tab nav item -->
+            </li>
 
         </ul>
+        <!-- End Tabs -->
 
         <div class="tab-content" data-aos="fade-up" data-aos-delay="200">
 
-            <div class="tab-pane fade active show" id="menu-starters">
-
+            <!-- =======================
+          DATA BARANG
+      ======================= -->
+            <div class="tab-pane fade active show" id="menu-barang">
                 <div class="tab-header text-center">
-                    <h3>Barang</h3>
+                    <h3>Data Barang</h3>
+                    <p>Daftar barang beserta detail nama, kode, kategori, dan stok.</p>
                 </div>
 
-                <div class="row gy-5">
-
-                    <div class="col-lg-4 menu-item">
-                        <a href="assets/img/menu/menu-item-1.png" class="glightbox"><img
-                                src="assets/img/menu/menu-item-1.png" class="menu-img img-fluid" alt=""></a>
-                        <h4>Magnam Tiste</h4>
-                        <p class="ingredients">
-                            Lorem, deren, trataro, filede, nerada
-                        </p>
-                        <p class="price">
-                            $5.95
-                        </p>
-                    </div><!-- Menu Item -->
-
-                    <div class="col-lg-4 menu-item">
-                        <a href="assets/img/menu/menu-item-2.png" class="glightbox"><img
-                                src="assets/img/menu/menu-item-2.png" class="menu-img img-fluid" alt=""></a>
-                        <h4>Aut Luia</h4>
-                        <p class="ingredients">
-                            Lorem, deren, trataro, filede, nerada
-                        </p>
-                        <p class="price">
-                            $14.95
-                        </p>
-                    </div><!-- Menu Item -->
-
-                    <div class="col-lg-4 menu-item">
-                        <a href="assets/img/menu/menu-item-3.png" class="glightbox"><img
-                                src="assets/img/menu/menu-item-3.png" class="menu-img img-fluid" alt=""></a>
-                        <h4>Est Eligendi</h4>
-                        <p class="ingredients">
-                            Lorem, deren, trataro, filede, nerada
-                        </p>
-                        <p class="price">
-                            $8.95
-                        </p>
-                    </div><!-- Menu Item -->
-
-                    <div class="col-lg-4 menu-item">
-                        <a href="assets/img/menu/menu-item-4.png" class="glightbox"><img
-                                src="assets/img/menu/menu-item-4.png" class="menu-img img-fluid" alt=""></a>
-                        <h4>Eos Luibusdam</h4>
-                        <p class="ingredients">
-                            Lorem, deren, trataro, filede, nerada
-                        </p>
-                        <p class="price">
-                            $12.95
-                        </p>
-                    </div><!-- Menu Item -->
-
-                    <div class="col-lg-4 menu-item">
-                        <a href="assets/img/menu/menu-item-5.png" class="glightbox"><img
-                                src="assets/img/menu/menu-item-5.png" class="menu-img img-fluid" alt=""></a>
-                        <h4>Eos Luibusdam</h4>
-                        <p class="ingredients">
-                            Lorem, deren, trataro, filede, nerada
-                        </p>
-                        <p class="price">
-                            $12.95
-                        </p>
-                    </div><!-- Menu Item -->
-
-                    <div class="col-lg-4 menu-item">
-                        <a href="assets/img/menu/menu-item-6.png" class="glightbox"><img
-                                src="assets/img/menu/menu-item-6.png" class="menu-img img-fluid" alt=""></a>
-                        <h4>Laboriosam Direva</h4>
-                        <p class="ingredients">
-                            Lorem, deren, trataro, filede, nerada
-                        </p>
-                        <p class="price">
-                            $9.95
-                        </p>
-                    </div><!-- Menu Item -->
-
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered align-middle">
+                        <thead class="table-light text-center">
+                            <tr>
+                                <th>No</th>
+                                <th>Kode Barang</th>
+                                <th>Nama Barang</th>
+                                <th>Kategori</th>
+                                <th>Stok</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            <tr>
+                                <td>1</td>
+                                <td>BRG-001</td>
+                                <td>Laptop Lenovo Thinkpad</td>
+                                <td>Elektronik</td>
+                                <td>12</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>BRG-002</td>
+                                <td>Kursi Kantor</td>
+                                <td>Furnitur</td>
+                                <td>25</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>BRG-003</td>
+                                <td>Printer Canon</td>
+                                <td>Elektronik</td>
+                                <td>8</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-            </div><!-- End Starter Menu Content -->
+            </div><!-- End Data Barang -->
 
-            <div class="tab-pane fade" id="menu-breakfast">
-
+            <!-- =======================
+          KATEGORI
+      ======================= -->
+            <div class="tab-pane fade" id="menu-kategori">
                 <div class="tab-header text-center">
-                    <h3>Kategori</h3>
+                    <h3>Kategori Barang</h3>
+                    <p>Pengelompokan barang berdasarkan jenis atau fungsi.</p>
                 </div>
 
-                <div class="row gy-5">
+                <div class="row gy-4">
+                    <div class="col-lg-3 col-md-6 text-center">
+                        <div class="card shadow-sm p-3 border-0">
+                            <h5 class="fw-bold">Elektronik</h5>
+                            <p>Perangkat elektronik seperti laptop, printer, dan proyektor.</p>
+                        </div>
+                    </div>
 
-                    <div class="col-lg-4 menu-item">
-                        <a href="assets/img/menu/menu-item-1.png" class="glightbox"><img
-                                src="assets/img/menu/menu-item-1.png" class="menu-img img-fluid" alt=""></a>
-                        <h4>Magnam Tiste</h4>
-                        <p class="ingredients">
-                            Lorem, deren, trataro, filede, nerada
-                        </p>
-                        <p class="price">
-                            $5.95
-                        </p>
-                    </div><!-- Menu Item -->
+                    <div class="col-lg-3 col-md-6 text-center">
+                        <div class="card shadow-sm p-3 border-0">
+                            <h5 class="fw-bold">Furnitur</h5>
+                            <p>Perabot kantor seperti meja, kursi, dan lemari.</p>
+                        </div>
+                    </div>
 
-                    <div class="col-lg-4 menu-item">
-                        <a href="assets/img/menu/menu-item-2.png" class="glightbox"><img
-                                src="assets/img/menu/menu-item-2.png" class="menu-img img-fluid" alt=""></a>
-                        <h4>Aut Luia</h4>
-                        <p class="ingredients">
-                            Lorem, deren, trataro, filede, nerada
-                        </p>
-                        <p class="price">
-                            $14.95
-                        </p>
-                    </div><!-- Menu Item -->
+                    <div class="col-lg-3 col-md-6 text-center">
+                        <div class="card shadow-sm p-3 border-0">
+                            <h5 class="fw-bold">ATK</h5>
+                            <p>Alat tulis dan keperluan administrasi kantor.</p>
+                        </div>
+                    </div>
 
-                    <div class="col-lg-4 menu-item">
-                        <a href="assets/img/menu/menu-item-3.png" class="glightbox"><img
-                                src="assets/img/menu/menu-item-3.png" class="menu-img img-fluid" alt=""></a>
-                        <h4>Est Eligendi</h4>
-                        <p class="ingredients">
-                            Lorem, deren, trataro, filede, nerada
-                        </p>
-                        <p class="price">
-                            $8.95
-                        </p>
-                    </div><!-- Menu Item -->
-
-                    <div class="col-lg-4 menu-item">
-                        <a href="assets/img/menu/menu-item-4.png" class="glightbox"><img
-                                src="assets/img/menu/menu-item-4.png" class="menu-img img-fluid" alt=""></a>
-                        <h4>Eos Luibusdam</h4>
-                        <p class="ingredients">
-                            Lorem, deren, trataro, filede, nerada
-                        </p>
-                        <p class="price">
-                            $12.95
-                        </p>
-                    </div><!-- Menu Item -->
-
-                    <div class="col-lg-4 menu-item">
-                        <a href="assets/img/menu/menu-item-5.png" class="glightbox"><img
-                                src="assets/img/menu/menu-item-5.png" class="menu-img img-fluid" alt=""></a>
-                        <h4>Eos Luibusdam</h4>
-                        <p class="ingredients">
-                            Lorem, deren, trataro, filede, nerada
-                        </p>
-                        <p class="price">
-                            $12.95
-                        </p>
-                    </div><!-- Menu Item -->
-
-                    <div class="col-lg-4 menu-item">
-                        <a href="assets/img/menu/menu-item-6.png" class="glightbox"><img
-                                src="assets/img/menu/menu-item-6.png" class="menu-img img-fluid" alt=""></a>
-                        <h4>Laboriosam Direva</h4>
-                        <p class="ingredients">
-                            Lorem, deren, trataro, filede, nerada
-                        </p>
-                        <p class="price">
-                            $9.95
-                        </p>
-                    </div><!-- Menu Item -->
-
+                    <div class="col-lg-3 col-md-6 text-center">
+                        <div class="card shadow-sm p-3 border-0">
+                            <h5 class="fw-bold">Lainnya</h5>
+                            <p>Barang umum yang tidak termasuk kategori utama.</p>
+                        </div>
+                    </div>
                 </div>
-            </div><!-- End Breakfast Menu Content -->
+            </div><!-- End Kategori -->
 
-            <div class="tab-pane fade" id="menu-lunch">
-
+            <!-- =======================
+          BARANG MASUK & KELUAR
+      ======================= -->
+            <div class="tab-pane fade" id="menu-transaksi">
                 <div class="tab-header text-center">
-                    <h3>Aktifitas Barang</h3>
+                    <h3>Barang Masuk & Keluar</h3>
+                    <p>Aktivitas pemasukan dan pengeluaran barang secara real-time.</p>
                 </div>
 
-                <div class="row gy-5">
-
-                    <div class="col-lg-4 menu-item">
-                        <a href="assets/img/menu/menu-item-1.png" class="glightbox"><img
-                                src="assets/img/menu/menu-item-1.png" class="menu-img img-fluid" alt=""></a>
-                        <h4>Magnam Tiste</h4>
-                        <p class="ingredients">
-                            Lorem, deren, trataro, filede, nerada
-                        </p>
-                        <p class="price">
-                            $5.95
-                        </p>
-                    </div><!-- Menu Item -->
-
-                    <div class="col-lg-4 menu-item">
-                        <a href="assets/img/menu/menu-item-2.png" class="glightbox"><img
-                                src="assets/img/menu/menu-item-2.png" class="menu-img img-fluid" alt=""></a>
-                        <h4>Aut Luia</h4>
-                        <p class="ingredients">
-                            Lorem, deren, trataro, filede, nerada
-                        </p>
-                        <p class="price">
-                            $14.95
-                        </p>
-                    </div><!-- Menu Item -->
-
-                    <div class="col-lg-4 menu-item">
-                        <a href="assets/img/menu/menu-item-3.png" class="glightbox"><img
-                                src="assets/img/menu/menu-item-3.png" class="menu-img img-fluid" alt=""></a>
-                        <h4>Est Eligendi</h4>
-                        <p class="ingredients">
-                            Lorem, deren, trataro, filede, nerada
-                        </p>
-                        <p class="price">
-                            $8.95
-                        </p>
-                    </div><!-- Menu Item -->
-
-                    <div class="col-lg-4 menu-item">
-                        <a href="assets/img/menu/menu-item-4.png" class="glightbox"><img
-                                src="assets/img/menu/menu-item-4.png" class="menu-img img-fluid" alt=""></a>
-                        <h4>Eos Luibusdam</h4>
-                        <p class="ingredients">
-                            Lorem, deren, trataro, filede, nerada
-                        </p>
-                        <p class="price">
-                            $12.95
-                        </p>
-                    </div><!-- Menu Item -->
-
-                    <div class="col-lg-4 menu-item">
-                        <a href="assets/img/menu/menu-item-5.png" class="glightbox"><img
-                                src="assets/img/menu/menu-item-5.png" class="menu-img img-fluid" alt=""></a>
-                        <h4>Eos Luibusdam</h4>
-                        <p class="ingredients">
-                            Lorem, deren, trataro, filede, nerada
-                        </p>
-                        <p class="price">
-                            $12.95
-                        </p>
-                    </div><!-- Menu Item -->
-
-                    <div class="col-lg-4 menu-item">
-                        <a href="assets/img/menu/menu-item-6.png" class="glightbox"><img
-                                src="assets/img/menu/menu-item-6.png" class="menu-img img-fluid" alt=""></a>
-                        <h4>Laboriosam Direva</h4>
-                        <p class="ingredients">
-                            Lorem, deren, trataro, filede, nerada
-                        </p>
-                        <p class="price">
-                            $9.95
-                        </p>
-                    </div><!-- Menu Item -->
-
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered align-middle">
+                        <thead class="table-light text-center">
+                            <tr>
+                                <th>No</th>
+                                <th>Kode Transaksi</th>
+                                <th>Tanggal</th>
+                                <th>Jenis Transaksi</th>
+                                <th>Nama Barang</th>
+                                <th>Jumlah</th>
+                                <th>Petugas</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            <tr>
+                                <td>1</td>
+                                <td>TRX-20251108-001</td>
+                                <td>08-11-2025</td>
+                                <td><span class="badge bg-success">Masuk</span></td>
+                                <td>Laptop Lenovo Thinkpad</td>
+                                <td>5</td>
+                                <td>Admin Gudang</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>TRX-20251108-002</td>
+                                <td>08-11-2025</td>
+                                <td><span class="badge bg-danger">Keluar</span></td>
+                                <td>Kursi Kantor</td>
+                                <td>3</td>
+                                <td>Staff Gudang</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-            </div><!-- End Lunch Menu Content -->
+            </div><!-- End Barang Masuk & Keluar -->
 
-            <div class="tab-pane fade" id="menu-dinner">
-
+            <!-- =======================
+          LAPORAN
+      ======================= -->
+            <div class="tab-pane fade" id="menu-laporan">
                 <div class="tab-header text-center">
                     <h3>Laporan</h3>
+                    <p>Tampilan ringkas data stok dan transaksi yang dapat diunduh atau dicetak.</p>
                 </div>
 
-                <div class="row gy-5">
-
-                    <div class="col-lg-4 menu-item">
-                        <a href="assets/img/menu/menu-item-1.png" class="glightbox"><img
-                                src="assets/img/menu/menu-item-1.png" class="menu-img img-fluid" alt=""></a>
-                        <h4>Magnam Tiste</h4>
-                        <p class="ingredients">
-                            Lorem, deren, trataro, filede, nerada
-                        </p>
-                        <p class="price">
-                            $5.95
-                        </p>
-                    </div><!-- Menu Item -->
-
-                    <div class="col-lg-4 menu-item">
-                        <a href="assets/img/menu/menu-item-2.png" class="glightbox"><img
-                                src="assets/img/menu/menu-item-2.png" class="menu-img img-fluid" alt=""></a>
-                        <h4>Aut Luia</h4>
-                        <p class="ingredients">
-                            Lorem, deren, trataro, filede, nerada
-                        </p>
-                        <p class="price">
-                            $14.95
-                        </p>
-                    </div><!-- Menu Item -->
-
-                    <div class="col-lg-4 menu-item">
-                        <a href="assets/img/menu/menu-item-3.png" class="glightbox"><img
-                                src="assets/img/menu/menu-item-3.png" class="menu-img img-fluid" alt=""></a>
-                        <h4>Est Eligendi</h4>
-                        <p class="ingredients">
-                            Lorem, deren, trataro, filede, nerada
-                        </p>
-                        <p class="price">
-                            $8.95
-                        </p>
-                    </div><!-- Menu Item -->
-
-                    <div class="col-lg-4 menu-item">
-                        <a href="assets/img/menu/menu-item-4.png" class="glightbox"><img
-                                src="assets/img/menu/menu-item-4.png" class="menu-img img-fluid" alt=""></a>
-                        <h4>Eos Luibusdam</h4>
-                        <p class="ingredients">
-                            Lorem, deren, trataro, filede, nerada
-                        </p>
-                        <p class="price">
-                            $12.95
-                        </p>
-                    </div><!-- Menu Item -->
-
-                    <div class="col-lg-4 menu-item">
-                        <a href="assets/img/menu/menu-item-5.png" class="glightbox"><img
-                                src="assets/img/menu/menu-item-5.png" class="menu-img img-fluid" alt=""></a>
-                        <h4>Eos Luibusdam</h4>
-                        <p class="ingredients">
-                            Lorem, deren, trataro, filede, nerada
-                        </p>
-                        <p class="price">
-                            $12.95
-                        </p>
-                    </div><!-- Menu Item -->
-
-                    <div class="col-lg-4 menu-item">
-                        <a href="assets/img/menu/menu-item-6.png" class="glightbox"><img
-                                src="assets/img/menu/menu-item-6.png" class="menu-img img-fluid" alt=""></a>
-                        <h4>Laboriosam Direva</h4>
-                        <p class="ingredients">
-                            Lorem, deren, trataro, filede, nerada
-                        </p>
-                        <p class="price">
-                            $9.95
-                        </p>
-                    </div><!-- Menu Item -->
-
+                <div class="text-center mt-4">
+                    <button class="btn btn-primary me-2">
+                        <i class="bi bi-file-earmark-pdf"></i> Unduh PDF
+                    </button>
+                    <button class="btn btn-success">
+                        <i class="bi bi-file-earmark-excel"></i> Unduh Excel
+                    </button>
                 </div>
-            </div><!-- End Dinner Menu Content -->
+
+                <div class="table-responsive mt-4">
+                    <table class="table table-striped table-bordered align-middle">
+                        <thead class="table-light text-center">
+                            <tr>
+                                <th>No</th>
+                                <th>Kode Barang</th>
+                                <th>Nama Barang</th>
+                                <th>Kategori</th>
+                                <th>Stok Akhir</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            <tr>
+                                <td>1</td>
+                                <td>BRG-001</td>
+                                <td>Laptop Lenovo Thinkpad</td>
+                                <td>Elektronik</td>
+                                <td>12</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>BRG-002</td>
+                                <td>Kursi Kantor</td>
+                                <td>Furnitur</td>
+                                <td>22</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div><!-- End Laporan -->
 
         </div>
 
     </div>
-
-</section><!-- /Menu Section -->
+</section><!-- /Data Inventaris Section -->
