@@ -29,7 +29,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="./ui-alerts.html" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('kategori.index') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-category"></i>
                         </span>
@@ -37,33 +37,33 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="./ui-card.html" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('transaksi.index') }}" aria-expanded="false">
                         <span>
-                            <i class="ti ti-cards"></i>
+                            <i class="ti ti-file-description"></i>
                         </span>
                         <span class="hide-menu">Manajemen Transaksi</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="./ui-forms.html" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('user.index') }}" aria-expanded="false">
                         <span>
-                            <i class="ti ti-file-description"></i>
+                            <i class="ti ti-user"></i>
                         </span>
                         <span class="hide-menu">Manajemen Pengguna</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="./ui-typography.html" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('laporan.index') }}" aria-expanded="false">
                         <span>
-                            <i class="ti ti-typography"></i>
+                            <i class="ti ti-files"></i>
                         </span>
                         <span class="hide-menu">Laporan</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="./ui-typography.html" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('pengaturan.index') }}" aria-expanded="false">
                         <span>
-                            <i class="ti ti-typography"></i>
+                            <i class="ti ti-settings"></i>
                         </span>
                         <span class="hide-menu">Pengaturan Sistem</span>
                     </a>
