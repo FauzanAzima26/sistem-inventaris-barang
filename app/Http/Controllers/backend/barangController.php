@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\backend;
 
+use Illuminate\Support\Facades\Storage;
 use App\Models\Barang;
+use App\Models\Categories;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Categories;
 
 class barangController extends Controller
 {
@@ -39,27 +40,24 @@ class barangController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'kode_barang'  => 'required|unique:barangs,kode_barang|max:50',
             'nama'         => 'required|string|max:255',
             'deskripsi'    => 'required|string',
             'kategori_id'  => 'required|exists:categories,id',
             'jumlah_barang' => 'required|integer|min:0',
             'harga'        => 'required|numeric|min:0',
             'satuan'       => 'required|string|max:20',
-            'image'        => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image'        => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
+        $filename = 'default.jpg';  // Default jika tidak ada file
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('images'), $filename);
-        } else {
-            $filename = 'default.jpg';
+            $file->storeAs('images', $filename, 'public');  // Gunakan Storage, bukan public_path
         }
 
         $barang = Barang::create([
             'uuid'         => Str::uuid(),
-            'kode_barang'  => $validated['kode_barang'],
             'nama'         => $validated['nama'],
             'deskripsi'    => $validated['deskripsi'],
             'kategori_id'  => $validated['kategori_id'],
@@ -77,7 +75,11 @@ class barangController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $barang = Barang::find($id);
+        if (!$barang) {
+            return response()->json(['error' => 'Barang tidak ditemukan'], 404);
+        }
+        return response()->json(['data' => [$barang]]);
     }
 
     /**
@@ -93,7 +95,37 @@ class barangController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $barang = Barang::findOrFail($id);
+
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'deskripsi' => 'nullable|string',
+            'kategori_id' => 'required|exists:categories,id',
+            'jumlah_barang' => 'required|integer',
+            'harga' => 'required|numeric',
+            'satuan' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',  // Opsional: nullable berarti boleh kosong/tidak dikirim
+        ]);
+
+        // Update field lain
+        $barang->fill($request->except('image'));
+
+        // Hanya update image jika ada file baru
+        if ($request->hasFile('image')) {
+            // Hapus gambar lama jika ada (konsisten dengan Storage)
+            if ($barang->image && $barang->image !== 'default.jpg' && Storage::disk('public')->exists('images/' . $barang->image)) {
+                Storage::disk('public')->delete('images/' . $barang->image);
+            }
+            $file = $request->file('image');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('images', $filename, 'public');
+            $barang->image = $filename;
+        }
+        // Jika tidak ada file baru, $barang->image tetap seperti lama
+
+        $barang->save();
+
+        return response()->json(['message' => 'Barang berhasil diupdate']);
     }
 
     /**

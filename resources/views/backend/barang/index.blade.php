@@ -17,7 +17,6 @@
                                 <thead>
                                     <tr>
                                         <th style="text-align:center">No</th>
-                                        <th style="text-align:center">Kode</th>
                                         <th style="text-align:center">Produk</th>
                                         <th style="text-align:center">Kategori</th>
                                         <th style="text-align:center">Harga Satuan</th>

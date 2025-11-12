@@ -11,10 +11,6 @@
                 <div class="modal-body">
                     <input type="hidden" name="id" id="barangId">
                     <div class="mb-3">
-                        <label>Kode Barang</label>
-                        <input type="text" name="kode_barang" id="kode_barang" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
                         <label>Nama</label>
                         <input type="text" name="nama" id="nama" class="form-control" required>
                     </div>
@@ -45,7 +41,7 @@
                     </div>
                     <div class="mb-3">
                         <label>Satuan</label>
-                        <input type="file" name="image" id="image" class="form-control" required>
+                        <input type="file" name="image" id="image" class="form-control">
                     </div>
                 </div>
                 <div class="modal-footer">
