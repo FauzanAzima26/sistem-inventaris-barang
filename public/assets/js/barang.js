@@ -93,7 +93,10 @@ $(document).ready(function () {
                         `<img id="imagePreview" src="/storage/images/${data.image}" class="img-thumbnail mt-2" width="100">`
                     );
                 } else {
-                    $("#imagePreview").attr("src", "/storage/images/" + data.image);
+                    $("#imagePreview").attr(
+                        "src",
+                        "/storage/images/" + data.image
+                    );
                 }
             }
 
@@ -135,5 +138,28 @@ $(document).ready(function () {
                 }
             },
         });
+    });
+
+    $(document).on("click", ".deleteBtn", function (e) {
+        e.preventDefault();
+        var id = $(this).data("id");
+
+        if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
+            $.ajax({
+                url: "/barang/" + id,
+                type: "POST",
+                data: {
+                    _method: "DELETE",
+                    _token: $('meta[name="csrf-token"]').attr("content"),
+                },
+                success: function (res) {
+                    table.ajax.reload();
+                    alert(res.message || "Data berhasil dihapus");
+                },
+                error: function (xhr) {
+                    alert("Terjadi kesalahan: " + xhr.responseText);
+                },
+            });
+        }
     });
 });

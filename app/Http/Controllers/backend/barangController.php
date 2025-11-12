@@ -133,6 +133,14 @@ class barangController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $barang = Barang::find($id);
+        if (!$barang) {
+            return response()->json(['error' => 'Barang tidak ditemukan'], 404);
+        }
+
+        // Soft delete
+        $barang->delete();
+
+        return response()->json(['success' => true, 'message' => 'Barang berhasil dihapus']);
     }
 }
