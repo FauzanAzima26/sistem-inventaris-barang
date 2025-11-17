@@ -44,15 +44,15 @@ $(document).ready(function () {
                     return `
                         <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
                             <div style="display: flex; justify-content: center; gap: 4px;">
-                                <a href="#" class="btn btn-primary btn-sm editBtn" data-id="${row.id}">
+                                <a class="btn btn-primary btn-sm editBtn" data-id="${row.id}">
                                     <i class="ti ti-pencil"></i>
                                 </a>
-                                <a href="#" class="btn btn-danger btn-sm deleteBtn" data-id="${row.id}">
+                                <a class="btn btn-danger btn-sm deleteBtn" data-id="${row.id}">
                                     <i class="ti ti-trash"></i>
                                 </a>
                             </div>
                             <div style="display: flex; justify-content: center;">
-                                <a href="#" class="btn btn-warning btn-sm viewBtn" data-id="${row.id}">
+                                <a class="btn btn-warning btn-sm viewBtn" data-id="${row.id}">
                                     <i class="ti ti-eye"></i>
                                 </a>
                             </div>

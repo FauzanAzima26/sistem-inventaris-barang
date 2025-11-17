@@ -8,7 +8,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3">
                             <h5 class="card-title fw-semibold">Data Barang</h5>
-                            <a href="#" class="btn btn-success btn-sm" id="addBarang"><i class="ti ti-plus me-2"></i>Add
+                            <a class="btn btn-success btn-sm" id="addBarang"><i class="ti ti-plus me-2"></i>Add
                                 data</a>
                         </div>
                         <div class="table-responsif">
