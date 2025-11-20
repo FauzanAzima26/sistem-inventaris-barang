@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\backend;
 
-use App\Http\Controllers\Controller;
+use App\Models\Categories;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class kategoriController extends Controller
 {
@@ -13,6 +15,12 @@ class kategoriController extends Controller
     public function index()
     {
         return view('backend.kategori.index');
+    }
+
+    public function getData()
+    {
+        $kategori = Categories::all();
+        return response()->json(['data' => $kategori]);
     }
 
     /**
@@ -28,7 +36,18 @@ class kategoriController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'nama'         => 'required|string|max:255',
+            'deskripsi'    => 'required|string',
+        ]);
+
+        $kategori = Categories::create([
+            'uuid'         => Str::uuid(),
+            'nama'         => $validated['nama'],
+            'deskripsi'    => $validated['deskripsi'],
+        ]);
+
+        return response()->json(['success' => true, 'data' => $kategori]);
     }
 
     /**
@@ -36,7 +55,11 @@ class kategoriController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $kategori = Categories::where('uuid', $id)->first();
+        if (!$kategori) {
+            return response()->json(['error' => 'kategori tidak ditemukan'], 404);
+        }
+        return response()->json(['data' => [$kategori]]);
     }
 
     /**
@@ -52,7 +75,17 @@ class kategoriController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $kategori = Categories::where('uuid', $id)->firstOrFail();
+
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'deskripsi' => 'nullable|string',
+        ]);
+
+        $kategori->fill($request->all());
+        $kategori->save();
+
+        return response()->json(['message' => 'Kategori berhasil diupdate']);
     }
 
     /**
@@ -60,6 +93,14 @@ class kategoriController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $kategori = Categories::where('uuid', $id)->first();
+        if (!$kategori) {
+            return response()->json(['error' => 'Kategori tidak ditemukan'], 404);
+        }
+
+        // Soft delete
+        $kategori->delete();
+
+        return response()->json(['success' => true, 'message' => 'Kategori berhasil dihapus']);
     }
 }

@@ -27,7 +27,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{--  --}}
+                                    {{-- ajax --}}
                                 </tbody>
                             </table>
                         </div>

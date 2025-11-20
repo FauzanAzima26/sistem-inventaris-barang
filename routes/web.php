@@ -20,6 +20,7 @@ Route::resource('barang', BarangController::class)->names('barang');
 Route::get('/api/barang', [BarangController::class, 'getData'])->name('barang.getData');
 
 Route::resource('kategori', kategoriController::class)->names('kategori');
+Route::get('/api/kategori', [kategoriController::class, 'getData'])->name('kategori.getData');
 
 Route::resource('transaksi', transaksiController::class)->names('transaksi');
 
