@@ -14,8 +14,8 @@ $(document).ready(function () {
                 render: (data, type, row, meta) => meta.row + 1,
                 className: "text-center",
             },
-            { data: "nama", className: "text-center" },
             { data: "kode_barang", className: "text-center" },
+            { data: "nama", className: "text-center" },
             {
                 data: "kategori",
                 render: (data, type, row) =>

@@ -20,61 +20,113 @@
                         <span class="hide-menu">Dashboard</span>
                     </a>
                 </li>
-                <li class="sidebar-item {{ request()->routeIs('barang.*') ? 'active' : '' }}">
-                    <a class="sidebar-link" href="{{ route('barang.index') }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-package"></i>
+
+                <!-- MASTER DATA -->
+                <li
+                    class="sidebar-item has-sub {{ request()->routeIs('barang.*') || request()->routeIs('kategori.*') || request()->routeIs('inventori.*') ? 'active' : '' }}">
+
+                    <a class="sidebar-link d-flex align-items-center justify-content-between" href="#"
+                        data-toggle="collapse" data-target="#menuMasterData"
+                        aria-expanded="{{ request()->routeIs('barang.*') || request()->routeIs('kategori.*') || request()->routeIs('inventori.*') ? 'true' : 'false' }}">
+
+                        <span class="d-flex align-items-center">
+                            <i class="ti ti-box"></i>
+                            <span class="hide-menu ms-2">Master Data</span>
                         </span>
-                        <span class="hide-menu">Manajemen Barang</span>
+
+                        <i class="ti ti-chevron-down transition-fast"></i>
                     </a>
+
+                    <ul id="menuMasterData"
+                        class="sidebar-dropdown ps-4 {{ request()->routeIs('barang.*') || request()->routeIs('kategori.*') || request()->routeIs('inventori.*') ? 'show' : '' }}">
+
+                        <li class="sidebar-item {{ request()->routeIs('barang.*') ? 'active' : '' }}">
+                            <a class="sidebar-link d-flex align-items-center" href="{{ route('barang.index') }}">
+                                <i class="ti ti-package"></i>
+                                <span class="ms-2">Manajemen Barang</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item {{ request()->routeIs('kategori.*') ? 'active' : '' }}">
+                            <a class="sidebar-link d-flex align-items-center" href="{{ route('kategori.index') }}">
+                                <i class="ti ti-category"></i>
+                                <span class="ms-2">Manajemen Kategori</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item {{ request()->routeIs('inventori.*') ? 'active' : '' }}">
+                            <a class="sidebar-link d-flex align-items-center" href="#">
+                                <i class="ti ti-database"></i>
+                                <span class="ms-2">Inventori</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('kategori.index') }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-category"></i>
+
+                <!-- TRANSAKSI -->
+                <li class="sidebar-item has-sub">
+
+                    <a class="sidebar-link d-flex align-items-center justify-content-between" href="#"
+                        data-toggle="collapse" data-target="#menuTransaksi" aria-expanded="false">
+
+                        <span class="d-flex align-items-center">
+                            <i class="ti ti-refresh"></i>
+                            <span class="hide-menu ms-2">Transaksi</span>
                         </span>
-                        <span class="hide-menu">Manajemen Kategori</span>
+
+                        <i class="ti ti-chevron-down transition-fast"></i>
                     </a>
+
+                    <ul id="menuTransaksi" class="collapse sidebar-dropdown ps-4">
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link d-flex align-items-center" href="#">
+                                <i class="ti ti-arrow-down"></i>
+                                <span class="ms-2">Transaksi Masuk</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link d-flex align-items-center" href="#">
+                                <i class="ti ti-arrow-up"></i>
+                                <span class="ms-2">Transaksi Keluar</span>
+                            </a>
+                        </li>
+
+                    </ul>
                 </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('transaksi.index') }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-package-import"></i>
+
+                <!-- LAPORAN -->
+                <li class="sidebar-item has-sub">
+
+                    <a class="sidebar-link d-flex align-items-center justify-content-between" href="#"
+                        data-toggle="collapse" data-target="#menuLaporan" aria-expanded="false">
+
+                        <span class="d-flex align-items-center">
+                            <i class="ti ti-report"></i>
+                            <span class="hide-menu ms-2">Laporan</span>
                         </span>
-                        <span class="hide-menu">Barang masuk</span>
+
+                        <i class="ti ti-chevron-down transition-fast"></i>
                     </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('transaksi.index') }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-package-export"></i>
-                        </span>
-                        <span class="hide-menu">Barang keluar</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('user.index') }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-user"></i>
-                        </span>
-                        <span class="hide-menu">Manajemen Pengguna</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('laporan.index') }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-files"></i>
-                        </span>
-                        <span class="hide-menu">Laporan</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('pengaturan.index') }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-settings"></i>
-                        </span>
-                        <span class="hide-menu">Pengaturan Sistem</span>
-                    </a>
+
+                    <ul id="menuLaporan" class="collapse sidebar-dropdown ps-4">
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link d-flex align-items-center" href="#">
+                                <i class="ti ti-file-text"></i>
+                                <span class="ms-2">Laporan Transaksi</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link d-flex align-items-center" href="#">
+                                <i class="ti ti-stack"></i>
+                                <span class="ms-2">Laporan Stok</span>
+                            </a>
+                        </li>
+
+                    </ul>
                 </li>
             </ul>
         </nav>

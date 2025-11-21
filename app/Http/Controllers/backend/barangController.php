@@ -97,16 +97,16 @@ class barangController extends Controller
         $barang = Barang::findOrFail($id);
 
         if ($request->kode_barang === "" || $request->kode_barang === null) {
-    $request->merge(['kode_barang' => null]);
-}
+            $request->merge(['kode_barang' => null]);
+        }
 
         $request->validate([
             'nama' => 'required|string|max:255',
             'kode_barang' => [
-            'nullable',
-            'string',
-            Rule::unique('barangs', 'kode_barang')->ignore($id),
-        ],
+                'nullable',
+                'string',
+                Rule::unique('barangs', 'kode_barang')->ignore($id),
+            ],
             'kategori_id' => 'required|exists:categories,id',
             'harga_beli' => 'required|numeric',
             'satuan' => 'required|string',
