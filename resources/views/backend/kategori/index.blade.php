@@ -19,7 +19,6 @@
                                 <tr>
                                     <th style="text-align:center; width:5%">No</th>
                                     <th style="text-align:center; width:20%">Kategori</th>
-                                    <th style="text-align:center; width:35%">Deskripsi</th>
                                     <th style="text-align:center; width:15%">Aksi</th>
                                 </tr>
                             </thead>

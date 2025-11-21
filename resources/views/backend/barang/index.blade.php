@@ -8,7 +8,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3">
                             <h5 class="card-title fw-semibold">Data Barang</h5>
-                            <a class="btn btn-success btn-sm" id="addBarang"><i class="ti ti-plus me-2"></i>Add
+                            <a class="btn btn-success btn-sm" id="addBarang"><i class="ti ti-plus me-2"></i>Tambah
                                 data</a>
                         </div>
                         <div class="table-responsif">
@@ -17,11 +17,11 @@
                                 <thead>
                                     <tr>
                                         <th style="text-align:center">No</th>
+                                        <th style="text-align:center">Kode barang</th>
                                         <th style="text-align:center">Produk</th>
                                         <th style="text-align:center">Kategori</th>
-                                        <th style="text-align:center">Harga Satuan</th>
-                                        <th style="text-align:center">Jumlah</th>
                                         <th style="text-align:center">Satuan</th>
+                                        <th style="text-align:center">Harga beli</th>
                                         <th style="text-align:center">Gambar</th>
                                         <th style="text-align:center;">Action</th>
                                     </tr>

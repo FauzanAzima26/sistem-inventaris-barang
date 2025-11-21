@@ -15,19 +15,19 @@ $(document).ready(function () {
                 className: "text-center",
             },
             { data: "nama", className: "text-center" },
+            { data: "kode_barang", className: "text-center" },
             {
                 data: "kategori",
                 render: (data, type, row) =>
                     row.kategori ? row.kategori.nama : "-",
                 className: "text-center",
             },
+            { data: "satuan", className: "text-center" },
             {
-                data: "harga",
+                data: "harga_beli",
                 render: $.fn.dataTable.render.number(",", ".", 0, "Rp"),
                 className: "text-center",
             },
-            { data: "jumlah_barang", className: "text-center" },
-            { data: "satuan", className: "text-center" },
             {
                 data: "image",
                 render: function (data, type, row) {
@@ -80,10 +80,9 @@ $(document).ready(function () {
             var data = res.data ? res.data[0] : res;
             $("#barangId").val(data.id);
             $("#nama").val(data.nama);
-            $("#deskripsi").val(data.deskripsi);
-            $("#kategori_id").val(data.kategori_id); // pastikan option ada
-            $("#jumlah_barang").val(data.jumlah_barang);
-            $("#harga").val(data.harga);
+            $("#kode_barang").val(data.kode_barang);
+            $("#kategori_id").val(data.kategori_id);
+            $("#harga_beli").val(data.harga_beli);
             $("#satuan").val(data.satuan);
 
             // Preview gambar

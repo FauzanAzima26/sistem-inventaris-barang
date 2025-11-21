@@ -15,7 +15,6 @@ $(document).ready(function () {
                 className: "text-center",
             },
             { data: "nama", className: "text-center" },
-            { data: "deskripsi", className: "text-center" },
             {
                 data: "uuid",
                 render: (data, type, row) => {
@@ -57,7 +56,6 @@ $(document).ready(function () {
             var data = res.data ? res.data[0] : res;
             $("#kategoriId").val(data.uuid);
             $("#nama").val(data.nama);
-            $("#deskripsi").val(data.deskripsi);
 
             $("#kategoriModal .modal-title").text("Edit kategori");
             $("#kategoriModal").modal("show");

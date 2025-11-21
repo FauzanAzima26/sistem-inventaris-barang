@@ -16,10 +16,8 @@ return new class extends Migration
             $table->uuid('uuid');
             $table->string('kode_barang');
             $table->string('nama');
-            $table->text('deskripsi');
             $table->foreignId('kategori_id')->nullable()->constrained('categories')->nullOnDelete();
-            $table->integer('jumlah_barang');
-            $table->decimal('harga', 12, 2)->default(0);
+            $table->decimal('harga_beli', 12, 2)->default(0);
             $table->string('satuan');
             $table->string('image');
             $table->softDeletes();

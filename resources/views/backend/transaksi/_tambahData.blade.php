@@ -5,19 +5,18 @@
             @csrf
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Tambah Barang</h5>
+                    <h5 class="modal-title">Tambah Transaksi</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="id" id="barangId">
-                    <div>
-                        <label>Kode Barang</label>
-                        <input type="text" name="kode_barang" id="kode_barang" value="{{ old('kode_barang') }}"
-                            placeholder="Bisa dikosongkan untuk auto">
-                    </div>
                     <div class="mb-3">
                         <label>Nama</label>
                         <input type="text" name="nama" id="nama" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Deskripsi</label>
+                        <textarea name="deskripsi" id="deskripsi" class="form-control" required></textarea>
                     </div>
                     <div class="mb-3">
                         <label>Kategori</label>
@@ -29,15 +28,19 @@
                         </select>
                     </div>
                     <div class="mb-3">
+                        <label>Jumlah</label>
+                        <input type="number" name="jumlah_barang" id="jumlah_barang" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Harga</label>
+                        <input type="number" name="harga" id="harga" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
                         <label>Satuan</label>
                         <input type="text" name="satuan" id="satuan" class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label>Harga beli</label>
-                        <input type="number" name="harga_beli" id="harga_beli" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label>Gambar</label>
+                        <label>Satuan</label>
                         <input type="file" name="image" id="image" class="form-control">
                     </div>
                 </div>

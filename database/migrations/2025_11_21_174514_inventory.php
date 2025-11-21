@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('inventory', function (Blueprint $table) {
             $table->id();
-            $table->uuid('uuid');
-            $table->string('nama');
+            $table->uuid('uuid')->unique(); // optional, bisa dipakai untuk API
+            $table->foreignId('barang_id')->constrained('barangs')->cascadeOnDelete();
+            $table->integer('stok')->default(0); // stok awal default 0
             $table->timestamps();
             $table->softDeletes();
         });
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        //
     }
 };

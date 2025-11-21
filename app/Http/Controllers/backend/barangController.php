@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\backend;
 
-use Illuminate\Support\Facades\Storage;
 use App\Models\Barang;
 use App\Models\Categories;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class barangController extends Controller
 {
@@ -41,10 +42,9 @@ class barangController extends Controller
     {
         $validated = $request->validate([
             'nama'         => 'required|string|max:255',
-            'deskripsi'    => 'required|string',
+            'kode_barang' => 'nullable|unique:barangs,kode_barang',
             'kategori_id'  => 'required|exists:categories,id',
-            'jumlah_barang' => 'required|integer|min:0',
-            'harga'        => 'required|numeric|min:0',
+            'harga_beli'        => 'required|numeric|min:0',
             'satuan'       => 'required|string|max:20',
             'image'        => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -58,11 +58,10 @@ class barangController extends Controller
 
         $barang = Barang::create([
             'uuid'         => Str::uuid(),
+            'kode_barang'  => $validated['kode_barang'],
             'nama'         => $validated['nama'],
-            'deskripsi'    => $validated['deskripsi'],
             'kategori_id'  => $validated['kategori_id'],
-            'jumlah_barang' => $validated['jumlah_barang'],
-            'harga'        => $validated['harga'],
+            'harga_beli'   => $validated['harga_beli'],
             'satuan'       => $validated['satuan'],
             'image'        => $filename,
         ]);
@@ -97,12 +96,19 @@ class barangController extends Controller
     {
         $barang = Barang::findOrFail($id);
 
+        if ($request->kode_barang === "" || $request->kode_barang === null) {
+    $request->merge(['kode_barang' => null]);
+}
+
         $request->validate([
             'nama' => 'required|string|max:255',
-            'deskripsi' => 'nullable|string',
+            'kode_barang' => [
+            'nullable',
+            'string',
+            Rule::unique('barangs', 'kode_barang')->ignore($id),
+        ],
             'kategori_id' => 'required|exists:categories,id',
-            'jumlah_barang' => 'required|integer',
-            'harga' => 'required|numeric',
+            'harga_beli' => 'required|numeric',
             'satuan' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',  // Opsional: nullable berarti boleh kosong/tidak dikirim
         ]);

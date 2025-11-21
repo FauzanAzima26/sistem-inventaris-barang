@@ -8,6 +8,7 @@
     <title>Modernize Free</title>
     <link rel="shortcut icon" type="image/png" href="../assets_frontend/images/logos/favicon.png" />
     <link rel="stylesheet" href="../assets_frontend/css/styles.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
 </head>
 
 <body>

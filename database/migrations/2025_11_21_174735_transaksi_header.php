@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('transaksi_header', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid');
-            $table->string('nama');
+            $table->string('kode_transaksi');
+            $table->enum('jenis_transaksi',['masuk', 'keluar']);
+            $table->timestamp('tgl_transaksi');
+            $table->text('keterangan');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -25,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        //
     }
 };

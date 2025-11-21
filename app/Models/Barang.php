@@ -14,10 +14,8 @@ class Barang extends Model
     protected $fillable = [
         'kode_barang',
         'nama',
-        'deskripsi',
         'kategori_id',
-        'jumlah_barang',
-        'harga',
+        'harga_beli',
         'satuan',
         'image',
     ];
@@ -27,10 +25,30 @@ class Barang extends Model
         return $this->belongsTo(Categories::class, 'kategori_id');
     }
 
-    public static function booted()
+    protected static function booted()
     {
-        static::creating(function ($user) {
-            $user->uuid = Str::uuid();
+        // AUTO GENERATE saat CREATE
+        static::creating(function ($barang) {
+            $barang->uuid = Str::uuid();
+
+            if (!$barang->kode_barang) {
+                $last = Barang::latest('id')->first();
+                $number = $last ? $last->id + 1 : 1;
+                $barang->kode_barang = 'B' . str_pad($number, 3, '0', STR_PAD_LEFT);
+            }
+        });
+
+        // AUTO GENERATE saat UPDATE JIKA DIKOSONGKAN
+        static::updating(function ($barang) {
+
+            // Jika user sengaja kosongi → generate kode baru
+            if ($barang->kode_barang === null || $barang->kode_barang === '') {
+
+                $last = Barang::latest('id')->first();
+                $number = $last ? $last->id + 1 : 1;
+
+                $barang->kode_barang = 'B' . str_pad($number, 3, '0', STR_PAD_LEFT);
+            }
         });
     }
 }

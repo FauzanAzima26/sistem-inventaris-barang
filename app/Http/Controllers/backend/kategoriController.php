@@ -38,13 +38,11 @@ class kategoriController extends Controller
     {
         $validated = $request->validate([
             'nama'         => 'required|string|max:255',
-            'deskripsi'    => 'required|string',
         ]);
 
         $kategori = Categories::create([
             'uuid'         => Str::uuid(),
             'nama'         => $validated['nama'],
-            'deskripsi'    => $validated['deskripsi'],
         ]);
 
         return response()->json(['success' => true, 'data' => $kategori]);
@@ -79,7 +77,6 @@ class kategoriController extends Controller
 
         $request->validate([
             'nama' => 'required|string|max:255',
-            'deskripsi' => 'nullable|string',
         ]);
 
         $kategori->fill($request->all());

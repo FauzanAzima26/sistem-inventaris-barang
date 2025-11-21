@@ -39,9 +39,17 @@
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('transaksi.index') }}" aria-expanded="false">
                         <span>
-                            <i class="ti ti-file-description"></i>
+                            <i class="ti ti-package-import"></i>
                         </span>
-                        <span class="hide-menu">Manajemen Transaksi</span>
+                        <span class="hide-menu">Barang masuk</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('transaksi.index') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-package-export"></i>
+                        </span>
+                        <span class="hide-menu">Barang keluar</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
