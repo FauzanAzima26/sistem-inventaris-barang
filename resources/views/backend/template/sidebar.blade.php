@@ -40,13 +40,6 @@
                     <ul id="menuMasterData"
                         class="sidebar-dropdown ps-4 {{ request()->routeIs('barang.*') || request()->routeIs('kategori.*') || request()->routeIs('inventori.*') ? 'show' : '' }}">
 
-                        <li class="sidebar-item {{ request()->routeIs('barang.*') ? 'active' : '' }}">
-                            <a class="sidebar-link d-flex align-items-center" href="{{ route('barang.index') }}">
-                                <i class="ti ti-package"></i>
-                                <span class="ms-2">Manajemen Barang</span>
-                            </a>
-                        </li>
-
                         <li class="sidebar-item {{ request()->routeIs('kategori.*') ? 'active' : '' }}">
                             <a class="sidebar-link d-flex align-items-center" href="{{ route('kategori.index') }}">
                                 <i class="ti ti-category"></i>
@@ -54,8 +47,15 @@
                             </a>
                         </li>
 
-                        <li class="sidebar-item {{ request()->routeIs('inventori.*') ? 'active' : '' }}">
-                            <a class="sidebar-link d-flex align-items-center" href="#">
+                        <li class="sidebar-item {{ request()->routeIs('barang.*') ? 'active' : '' }}">
+                            <a class="sidebar-link d-flex align-items-center" href="{{ route('barang.index') }}">
+                                <i class="ti ti-package"></i>
+                                <span class="ms-2">Manajemen Barang</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item {{ request()->routeIs('inventory.*') ? 'active' : '' }}">
+                            <a class="sidebar-link d-flex align-items-center" href="{{ route('inventory.index') }}">
                                 <i class="ti ti-database"></i>
                                 <span class="ms-2">Inventori</span>
                             </a>

@@ -7,6 +7,7 @@ use App\Http\Controllers\backend\BarangController;
 use App\Http\Controllers\backend\laporanController;
 use App\Http\Controllers\backend\kategoriController;
 use App\Http\Controllers\backend\dashboardController;
+use App\Http\Controllers\backend\InventoryController;
 use App\Http\Controllers\backend\transaksiController;
 use App\Http\Controllers\backend\pengaturanController;
 
@@ -21,6 +22,9 @@ Route::get('/api/barang', [BarangController::class, 'getData'])->name('barang.ge
 
 Route::resource('kategori', kategoriController::class)->names('kategori');
 Route::get('/api/kategori', [kategoriController::class, 'getData'])->name('kategori.getData');
+
+Route::resource('inventory', InventoryController::class)->names('inventory');
+Route::get('/api/inventory', [InventoryController::class, 'getData'])->name('inventory.getData');
 
 Route::resource('transaksi', transaksiController::class)->names('transaksi');
 
