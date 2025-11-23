@@ -27,6 +27,7 @@ Route::resource('inventory', InventoryController::class)->names('inventory');
 Route::get('/api/inventory', [InventoryController::class, 'getData'])->name('inventory.getData');
 
 Route::resource('transaksi', transaksiController::class)->names('transaksi');
+Route::get('/api/transaksi', [transaksiController::class, 'getData'])->name('transaksi.getData');
 
 Route::resource('user', userController::class)->names('user');
 

@@ -8,8 +8,11 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3">
                             <h5 class="card-title fw-semibold">Data Barang</h5>
-                            <a class="btn btn-success btn-sm" id="addBarang"><i class="ti ti-plus me-2"></i>Tambah
-                                data</a>
+                            @if (auth()->user()->role !== 'editor')
+                                <a class="btn btn-success btn-sm" id="addBarang">
+                                    <i class="ti ti-plus me-2"></i>Tambah data
+                                </a>
+                            @endif
                         </div>
                         <div class="table-responsif">
                             <table id="barangTable" class="table table-striped table-bordered" style="width:100%"
@@ -41,6 +44,10 @@
     @include('backend.barang._tambahData')
 
     @push('scripts')
+        <script>
+            const USER_ROLE = "{{ Auth::user()->role }}";
+        </script>
+
         <script src="{{ asset('assets/js/barang.js') }}"></script>
     @endpush
 @endsection

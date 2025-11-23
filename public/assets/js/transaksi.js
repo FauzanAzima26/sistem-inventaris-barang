@@ -1,6 +1,6 @@
 $(document).ready(function () {
-    var url = $("#barangTable").data("url");
-    var table = $("#barangTable").DataTable({
+    var url = $("#transaksiTable").data("url");
+    var table = $("#transaksiTable").DataTable({
         scrollX: true,
         processing: true,
         serverSide: false,
@@ -14,55 +14,37 @@ $(document).ready(function () {
                 render: (data, type, row, meta) => meta.row + 1,
                 className: "text-center",
             },
-            { data: "kode_barang", className: "text-center" },
-            { data: "nama", className: "text-center" },
+            { data: "kode_transaksi", className: "text-center" },
             {
-                data: "kategori",
-                render: (data, type, row) =>
-                    row.kategori ? row.kategori.nama : "-",
-                className: "text-center",
-            },
-            { data: "satuan", className: "text-center" },
-            {
-                data: "harga_beli",
-                render: $.fn.dataTable.render.number(",", ".", 0, "Rp"),
-                className: "text-center",
-            },
-            {
-                data: "image",
-                render: function (data, type, row) {
-                    var imgUrl = data
-                        ? "/storage/images/" + data
-                        : "/storage/images/default.jpg";
-                    return `<img src="${imgUrl}" alt="${row.nama}" width="100" height="100">`;
+                data: "tgl_transaksi",
+                render: function (data) {
+                    return data?.substring(0, 10);
                 },
-                className: "text-center",
             },
+            { data: "jenis_transaksi", className: "text-center" },
+            { data: "total_item", className: "text-center" },
+            { data: "keterangan" },
+
             {
                 data: "id",
                 render: (data, type, row) => {
-                    // Jika editor, jangan tampilkan tombol apa pun
-                    if (USER_ROLE === "editor") {
-                        return "-"; // tampil tanda strip atau kosong
-                    }
-
                     return `
-                        <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
-                            <div style="display: flex; justify-content: center; gap: 4px;">
-                                <a class="btn btn-primary btn-sm editBtn" data-id="${row.id}">
-                                    <i class="ti ti-pencil"></i>
-                                </a>
-                                <a class="btn btn-danger btn-sm deleteBtn" data-id="${row.id}">
-                                    <i class="ti ti-trash"></i>
-                                </a>
-                            </div>
-                            <div style="display: flex; justify-content: center;">
-                                <a class="btn btn-warning btn-sm viewBtn" data-id="${row.id}">
-                                    <i class="ti ti-eye"></i>
-                                </a>
-                            </div>
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                        <div style="display: flex; justify-content: center; gap: 4px;">
+                            <a class="btn btn-primary btn-sm editBtn" data-id="${row.id}">
+                                <i class="ti ti-pencil"></i>
+                            </a>
+                            <a class="btn btn-danger btn-sm deleteBtn" data-id="${row.id}">
+                                <i class="ti ti-trash"></i>
+                            </a>
                         </div>
-                    `;
+                        <div style="display: flex; justify-content: center;">
+                            <a class="btn btn-warning btn-sm viewBtn" data-id="${row.id}">
+                                <i class="ti ti-eye"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
                 },
                 className: "text-center",
             },
@@ -70,13 +52,33 @@ $(document).ready(function () {
     });
 
     // ===== CREATE / OPEN MODAL =====
-    $("#addBarang").on("click", function () {
-        $("#barangForm")[0].reset(); // reset form
-        $("#barangId").val(""); // hapus ID
-        $("#barangModal .modal-title").text("Tambah Barang");
-        $("#imagePreview").remove();
-        $("#barangModal").modal("show"); // tampilkan modal
+    $("#addTransaksi").on("click", function () {
+        $("#transaksiForm")[0].reset(); // reset form
+        $("#transaksiId").val(""); // hapus ID
+        $("#transaksiModal .modal-title").text("Tambah Barang");
+        $("#transaksiPreview").remove();
+        $("#transaksiModal").modal("show"); // tampilkan modal
     });
+
+    // Hitung subtotal otomatis
+    function hitungSubtotal(row) {
+        let jumlah = parseFloat(row.find('input[name="jumlah[]"]').val()) || 0;
+        let harga =
+            parseFloat(row.find('input[name="harga_satuan[]"]').val()) || 0;
+        let subtotal = jumlah * harga;
+
+        row.find('input[name="subtotal[]"]').val(subtotal);
+    }
+
+    // Event ketika user mengetik jumlah atau harga
+    $(document).on(
+        "input",
+        'input[name="jumlah[]"], input[name="harga_satuan[]"]',
+        function () {
+            let row = $(this).closest(".item-row");
+            hitungSubtotal(row);
+        }
+    );
 
     // ===== EDIT / OPEN MODAL =====
     $(document).on("click", ".editBtn", function () {
@@ -110,12 +112,12 @@ $(document).ready(function () {
     });
 
     // ===== STORE / UPDATE FORM =====
-    $("#barangForm").on("submit", function (e) {
+    $("#transaksiForm").on("submit", function (e) {
         e.preventDefault();
-        var id = $("#barangId").val();
-        var formData = new FormData($("#barangForm")[0]);
-        var ajaxUrl = id ? "/barang/" + id : "/barang"; // url update jika ada id
-        var ajaxType = id ? "POST" : "POST"; // Laravel bisa tetap POST, gunakan _method PATCH
+        var id = $("#transaksiId").val();
+        var formData = new FormData($("#transaksiForm")[0]);
+        var ajaxUrl = id ? "/transaksi/" + id : "/transaksi"; // url update jika ada id
+        var ajaxType = "POST"; // Laravel bisa tetap POST, gunakan _method PATCH
         if (id) formData.append("_method", "PATCH"); // pakai patch untuk update di Laravel
 
         $.ajax({
@@ -125,7 +127,7 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function (res) {
-                $("#barangModal").modal("hide");
+                $("#transaksiModal").modal("hide");
                 table.ajax.reload();
                 alert("Data berhasil disimpan!");
             },

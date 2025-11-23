@@ -35,23 +35,22 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3">
-                            <h5 class="card-title fw-semibold mb-0">Manajemen Transaksi Barang</h5>
-                            <a href="#" class="btn btn-success btn-sm">
+                            <h5 class="card-title fw-semibold mb-0">Transaksi Masuk</h5>
+                            <a href="#" class="btn btn-success btn-sm" id="addTransaksi">
                                 <i class="ti ti-plus me-2"></i>Tambah Transaksi
                             </a>
                         </div>
 
                         <table id="transaksiTable" class="table table-striped table-bordered table-sm align-middle"
-                            style="width:100%">
+                            style="width:100%" data-url="{{ route('transaksi.getData') }}">
                             <thead class="table-light">
                                 <tr>
                                     <th class="text-center" style="width:5%">No</th>
-                                    <th class="text-center" style="width:15%">Tanggal</th>
+                                    <th class="text-center" style="width:15%">No Transaksi</th>
+                                    <th class="text-center" style="width:10%">Tanggal</th>
                                     <th class="text-center" style="width:10%">Jenis</th>
-                                    <th class="text-center" style="width:10%">Barang</th>
-                                    <th class="text-center" style="width:10%">Jumlah</th>
-                                    <th class="text-center" style="width:10%">Harga satuan</th>
-                                    <th class="text-center" style="width:15%">Subtotal</th>
+                                    <th class="text-center" style="width:10%">Total Item</th>
+                                    <th class="text-center" style="width:10%">Keterangan</th>
                                     <th class="text-center" style="width:15%">Aksi</th>
                                 </tr>
                             </thead>
@@ -65,23 +64,9 @@
         </div>
     </div>
 
+    @include('backend.transaksi._tambahData')
+
     @push('scripts')
-        <script>
-            $(document).ready(function() {
-                $('#transaksiTable').DataTable({
-                    paging: true,
-                    searching: true,
-                    ordering: true,
-                    lengthChange: true,
-                    order: [
-                        [2, 'desc']
-                    ],
-                    language: {
-                        search: "_INPUT_",
-                        searchPlaceholder: "Cari transaksi..."
-                    }
-                });
-            });
-        </script>
+        <script src="{{ asset('assets/js/transaksi.js') }}"></script>
     @endpush
 @endsection

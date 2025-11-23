@@ -63,37 +63,12 @@
                     </ul>
                 </li>
 
-                <!-- TRANSAKSI -->
-                <li class="sidebar-item has-sub">
-
-                    <a class="sidebar-link d-flex align-items-center justify-content-between" href="#"
-                        data-toggle="collapse" data-target="#menuTransaksi" aria-expanded="false">
-
-                        <span class="d-flex align-items-center">
-                            <i class="ti ti-refresh"></i>
-                            <span class="hide-menu ms-2">Transaksi</span>
-                        </span>
-
-                        <i class="ti ti-chevron-down transition-fast"></i>
+                <!-- Transaksi -->
+                <li class="sidebar-item {{ request()->routeIs('transaksi.*') ? 'active' : '' }}">
+                    <a class="sidebar-link d-flex align-items-center" href="{{ route('transaksi.index') }}">
+                        <i class="ti ti-box"></i>
+                        <span class="hide-menu ms-2">Transaksi</span>
                     </a>
-
-                    <ul id="menuTransaksi" class="collapse sidebar-dropdown ps-4">
-
-                        <li class="sidebar-item">
-                            <a class="sidebar-link d-flex align-items-center" href="#">
-                                <i class="ti ti-arrow-down"></i>
-                                <span class="ms-2">Transaksi Masuk</span>
-                            </a>
-                        </li>
-
-                        <li class="sidebar-item">
-                            <a class="sidebar-link d-flex align-items-center" href="#">
-                                <i class="ti ti-arrow-up"></i>
-                                <span class="ms-2">Transaksi Keluar</span>
-                            </a>
-                        </li>
-
-                    </ul>
                 </li>
 
                 <!-- LAPORAN -->
