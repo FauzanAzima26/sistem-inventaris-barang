@@ -34,7 +34,9 @@ Route::get('/api/transaksi', [transaksiController::class, 'getData'])->name('tra
 Route::resource('user', userController::class)->names('user');
 
 Route::resource('laporan-stok', laporanStokController::class)->names('laporan-stok');
+
 Route::resource('laporan-transaksi', laporanTransaksiController::class)->names('laporan-transaksi');
+Route::get('api/laporan-transaksi', [laporanTransaksiController::class, 'getData'])->name('laporan-transaksi.getData');
 
 Route::resource('pengaturan', pengaturanController::class)->names('pengaturan');
 

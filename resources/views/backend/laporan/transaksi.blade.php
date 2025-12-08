@@ -16,10 +16,7 @@
                                     <th style="text-align:center; width:5%">No Transaksi</th>
                                     <th style="text-align:center; width:20%">tanggal</th>
                                     <th style="text-align:center; width:20%">Jenis Transaksi</th>
-                                    <th style="text-align:center; width:20%">Keterangan</th>
                                     <th style="text-align:center; width:20%">Total Item</th>
-                                    <th style="text-align:center; width:20%">Detail Barang</th>
-                                    <th style="text-align:center; width:20%">Subtotal</th>
                                     <th style="text-align:center; width:20%">Total Nilai Transaksi</th>
                                     <th style="text-align:center; width:15%">Aksi</th>
                                 </tr>
@@ -33,4 +30,10 @@
             </div>
         </div>
     </div>
+
+    @include('backend.laporan.laporanTransaksiDetail')
+
+    @push('scripts')
+        <script src="assets/js/laporan.js"></script>
+    @endpush
 @endsection
