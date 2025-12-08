@@ -80,12 +80,25 @@ $(document).ready(function () {
         }
     );
 
-    // Tambah item baru
+    // === SET HARGA OTOMATIS SAAT BARANG DIPILIH ===
+    $(document).on("change", "select[name='barang_id[]']", function () {
+        let harga = parseFloat($(this).find(":selected").data("harga")) || 0;
+
+        let row = $(this).closest(".item-row");
+
+        // set harga readonly
+        row.find(".harga").val(harga);
+
+        // hitung subtotal
+        let jumlah = parseFloat(row.find('input[name="jumlah[]"]').val()) || 0;
+        row.find('input[name="subtotal[]"]').val(jumlah * harga);
+    });
+
+    // Tambah baris item baru
     $("#addItem").click(function () {
-        // clone baris pertama item-row
         let template = $(".item-row").first().clone();
 
-        // reset isi
+        // Reset pilihan dan input
         template.find("select").val("");
         template.find("input").val("");
 
@@ -199,6 +212,23 @@ $(document).ready(function () {
                 alert("Data berhasil disimpan!");
             },
             error: function (xhr) {
+                //// >>>> TAMBAHAN CEK STOK KURANG <<<<
+                if (
+                    xhr.responseJSON &&
+                    xhr.responseJSON.status === "stok_kurang"
+                ) {
+                    console.error("❌ STOK TIDAK CUKUP:", xhr.responseJSON);
+
+                    alert(
+                        xhr.responseJSON.message +
+                            "\nStok tersedia: " +
+                            xhr.responseJSON.stok
+                    );
+
+                    return; // stop
+                }
+                //// >>>> END <<<<
+
                 if (xhr.status === 422) {
                     var errors = xhr.responseJSON.errors;
                     var errorMessages = "";

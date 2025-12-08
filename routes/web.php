@@ -25,8 +25,8 @@ Route::get('/api/barang', [BarangController::class, 'getData'])->name('barang.ge
 Route::resource('kategori', kategoriController::class)->names('kategori');
 Route::get('/api/kategori', [kategoriController::class, 'getData'])->name('kategori.getData');
 
-Route::resource('inventory', InventoryController::class)->names('inventory');
-Route::get('/api/inventory', [InventoryController::class, 'getData'])->name('inventory.getData');
+Route::get('inventory', [InventoryController::class, 'index'])->name('inventory.index');
+Route::get('inventory/data', [InventoryController::class, 'getData'])->name('inventory.getData');
 
 Route::resource('transaksi', transaksiController::class)->names('transaksi');
 Route::get('/api/transaksi', [transaksiController::class, 'getData'])->name('transaksi.getData');
@@ -34,6 +34,7 @@ Route::get('/api/transaksi', [transaksiController::class, 'getData'])->name('tra
 Route::resource('user', userController::class)->names('user');
 
 Route::resource('laporan-stok', laporanStokController::class)->names('laporan-stok');
+Route::get('api/laporan-stok', [laporanStokController::class, 'getData'])->name('laporan-stok.getData');
 
 Route::resource('laporan-transaksi', laporanTransaksiController::class)->names('laporan-transaksi');
 Route::get('api/laporan-transaksi', [laporanTransaksiController::class, 'getData'])->name('laporan-transaksi.getData');

@@ -34,6 +34,6 @@
     @include('backend.laporan.laporanTransaksiDetail')
 
     @push('scripts')
-        <script src="assets/js/laporan.js"></script>
+        <script src="assets/js/laporanTransaksi.js"></script>
     @endpush
 @endsection

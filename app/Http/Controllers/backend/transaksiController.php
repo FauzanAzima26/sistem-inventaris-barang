@@ -36,6 +36,19 @@ class transaksiController extends Controller
         //
     }
 
+    private function getStokBarang($barangId)
+    {
+        $stokMasuk = TransaksiItem::where('barang_id', $barangId)
+            ->whereHas('header', fn($q) => $q->where('jenis_transaksi', 'masuk'))
+            ->sum('jumlah');
+
+        $stokKeluar = TransaksiItem::where('barang_id', $barangId)
+            ->whereHas('header', fn($q) => $q->where('jenis_transaksi', 'keluar'))
+            ->sum('jumlah');
+
+        return $stokMasuk - $stokKeluar;
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -68,6 +81,28 @@ class transaksiController extends Controller
             // Insert items
             foreach ($request->barang_id as $i => $barangId) {
 
+                // CEK STOK SAAT INI
+                // CEK STOK SAAT INI
+                if ($request->jenis_transaksi === 'keluar') {
+
+                    // Ambil detail barang
+                    $barang       = Barang::find($barangId);
+                    $namaBarang   = $barang->nama ?? "Tidak diketahui";
+
+                    $stokSaatIni  = $this->getStokBarang($barangId);
+                    $jumlahKeluar = $request->jumlah[$i];
+
+                    if ($jumlahKeluar > $stokSaatIni) {
+                        DB::rollBack();
+                        return response()->json([
+                            'status'  => 'stok_kurang',
+                            'message' => "Stok barang $namaBarang tidak cukup!",
+                            'stok'    => $stokSaatIni
+                        ], 400);
+                    }
+                }
+
+                // JIKA VALID → SIMPAN
                 $subtotal = $request->jumlah[$i] * $request->harga_satuan[$i];
 
                 TransaksiItem::create([
@@ -146,6 +181,22 @@ class transaksiController extends Controller
 
             // --- SIMPAN ITEM BARU ---
             foreach ($request->barang_id as $i => $barangId) {
+
+                if ($request->jenis_transaksi === 'keluar') {
+
+                    $stokSaatIni = $this->getStokBarang($barangId);
+                    $jumlahKeluar = $request->jumlah[$i];
+
+                    if ($jumlahKeluar > $stokSaatIni) {
+                        DB::rollBack();
+                        return response()->json([
+                            'status'  => 'stok_kurang',
+                            'message' => "Stok barang tidak cukup untuk barang ID $barangId",
+                            'stok'    => $stokSaatIni
+                        ], 400);
+                    }
+                }
+
                 TransaksiItem::create([
                     'uuid'         => Str::uuid(),
                     'transaksi_id' => $transaksi->id,

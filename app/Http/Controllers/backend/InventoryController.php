@@ -3,114 +3,47 @@
 namespace App\Http\Controllers\backend;
 
 use App\Models\Barang;
-use Illuminate\Support\Str;
+use App\Models\TransaksiItem;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\Inventory;
-use Illuminate\Support\Facades\Storage;
 
 class InventoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $barang = Barang::all();
-        return view('backend.inventori.index', compact('barang'));
+        return view('backend.inventori.index');
     }
 
     public function getData()
     {
-        $inventory = Inventory::with('barang')->get();
-        return response()->json(['data' => $inventory]);
-    }
+        $data = Barang::withTrashed(false) // pastikan barang softdelete tidak muncul
+            ->select('id', 'nama', 'satuan')
+            ->get()
+            ->map(function ($barang) {
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+                // hitung masuk
+                $masuk = TransaksiItem::where('barang_id', $barang->id)
+                    ->whereHas('header', function ($q) {
+                        $q->where('jenis_transaksi', 'masuk');
+                    })
+                    ->sum('jumlah');
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'barang_id' => 'required|exists:barangs,id',
-            'stok'      => 'required|integer|min:0',
-        ]);
+                // hitung keluar
+                $keluar = TransaksiItem::where('barang_id', $barang->id)
+                    ->whereHas('header', function ($q) {
+                        $q->where('jenis_transaksi', 'keluar');
+                    })
+                    ->sum('jumlah');
 
-        $inventory = Inventory::create([
-            'uuid'         => Str::uuid(),
-            'barang_id'  => $validated['barang_id'],
-            'stok'         => $validated['stok'],
-        ]);
+                return [
+                    'id'        => $barang->id,
+                    'nama'      => $barang->nama,
+                    'stok'      => max(0, $masuk - $keluar),
+                    'satuan'    => $barang->satuan,
+                ];
+            });
 
-        return response()->json(['success' => true, 'data' => $inventory]);
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        $inventory = Inventory::find($id);
-        if (!$inventory) {
-            return response()->json(['error' => 'inventory tidak ditemukan'], 404);
-        }
-        return response()->json(['data' => [$inventory]]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        $inventory = Inventory::findOrFail($id);
-
-        $validated = $request->validate([
-            'barang_id' => 'required|exists:barangs,id',
-            'stok'      => 'required|integer|min:0',
-        ]);
-
-        // Update field langsung
-        $inventory->barang_id = $validated['barang_id'];
-        $inventory->stok      = $validated['stok'];
-        $inventory->save();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Inventory berhasil diupdate',
-            'data' => $inventory
-        ]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        $inventory = Inventory::find($id);
-        if (!$inventory) {
-            return response()->json(['error' => 'Inventory tidak ditemukan'], 404);
-        }
-
-        // Soft delete
-        $inventory->delete();
-
-        return response()->json(['success' => true, 'message' => 'Inventory berhasil dihapus']);
+        return response()->json(['data' => $data]);
     }
 }

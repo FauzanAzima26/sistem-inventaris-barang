@@ -8,8 +8,6 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3">
                             <h5 class="card-title fw-semibold">Inventori</h5>
-                            <a class="btn btn-success btn-sm" id="addInventory"><i class="ti ti-plus me-2"></i>Tambah
-                                data</a>
                         </div>
                         <div class="table-responsif">
                             <table id="inventoryTable" class="table table-striped table-bordered" style="width:100%"
@@ -20,7 +18,6 @@
                                         <th style="text-align:center">Produk</th>
                                         <th style="text-align:center">Stok</th>
                                         <th style="text-align:center">Satuan</th>
-                                        <th style="text-align:center;">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -34,8 +31,6 @@
             </div>
         </div>
     </div>
-
-    @include('backend.inventori._tambahData')
 
     @push('scripts')
         <script src="{{ asset('assets/js/inventory.js') }}"></script>

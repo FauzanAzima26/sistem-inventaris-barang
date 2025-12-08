@@ -33,4 +33,8 @@
             </div>
         </div>
     </div>
+
+    @push('scripts')
+        <script src="assets/js/laporanStok.js"></script>
+    @endpush
 @endsection

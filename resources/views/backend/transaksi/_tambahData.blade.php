@@ -52,10 +52,12 @@
                                 <!-- Barang -->
                                 <div class="col-md-4">
                                     <label class="form-label">Barang</label>
-                                    <select name="barang_id[]" class="form-control" required>
+                                    <select name="barang_id[]" class="form-control barang-select" required>
                                         <option value="">-- Pilih Barang --</option>
                                         @foreach ($barangs as $b)
-                                            <option value="{{ $b->id }}">{{ $b->nama }}</option>
+                                            <option value="{{ $b->id }}" data-harga="{{ $b->harga_beli }}">
+                                                {{ $b->nama }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -69,7 +71,7 @@
                                 <!-- Harga -->
                                 <div class="col-md-3">
                                     <label class="form-label">Harga Satuan</label>
-                                    <input type="number" name="harga_satuan[]" class="form-control harga" required>
+                                    <input type="number" name="harga_satuan[]" class="form-control harga" readonly>
                                 </div>
 
                                 <!-- Tombol Hapus Baris -->
