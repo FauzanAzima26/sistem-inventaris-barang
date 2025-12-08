@@ -66,7 +66,12 @@
 
     @include('backend.transaksi._tambahData')
 
+    @include('backend.transaksi._itemDetail')
+
     @push('scripts')
+        <script>
+            window.allBarangs = @json($barangs);
+        </script>
         <script src="{{ asset('assets/js/transaksi.js') }}"></script>
     @endpush
 @endsection

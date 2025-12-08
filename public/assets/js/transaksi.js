@@ -101,32 +101,80 @@ $(document).ready(function () {
 
     // ===== EDIT / OPEN MODAL =====
     $(document).on("click", ".editBtn", function () {
-        var id = $(this).data("id");
-        $.get("/barang/" + id, function (res) {
-            var data = res.data ? res.data[0] : res;
-            $("#transaksiId").val(data.uuid);
+        let id = $(this).data("id");
+
+        $.get("/transaksi/" + id, function (res) {
+            console.log("RAW:", res);
+
+            // Jika API mengembalikan {data: {...}}
+            let data = res.data ?? res;
+
+            // Pastikan items tidak undefined
+            let items = data.items ?? [];
+
+            // ==== Isi header ====
+            $("#transaksiId").val(data.id);
             $("#jenis_transaksi").val(data.jenis_transaksi);
-            $("#kode_transaksi").val(data.kode_transaksi);
-            $("#tgl_transaksi").val(data.tgl_transaksi);
-            $("#total_item").val(data.harga_beli);
-            $("#satuan").val(data.satuan);
+            $("#tgl_transaksi").val(data.tgl_transaksi?.substring(0, 10));
+            $("#keterangan").val(data.keterangan);
 
-            // Preview gambar
-            if (data.image) {
-                if ($("#imagePreview").length === 0) {
-                    $("#image").after(
-                        `<img id="imagePreview" src="/storage/images/${data.image}" class="img-thumbnail mt-2" width="100">`
-                    );
-                } else {
-                    $("#imagePreview").attr(
-                        "src",
-                        "/storage/images/" + data.image
-                    );
-                }
-            }
+            // ==== Bersihkan item lama ====
+            $("#itemWrapper").empty();
 
-            $("#barangModal .modal-title").text("Edit Barang");
-            $("#barangModal").modal("show");
+            // ==== Generate item ====
+            items.forEach((item) => {
+                $("#itemWrapper").append(`
+                <div class="item-row mb-3 p-3 border rounded">
+                    <div class="row g-2">
+
+                        <div class="col-md-4">
+                            <label>Barang</label>
+                            <select name="barang_id[]" class="form-control" required>
+                                <option value="">-- Pilih Barang --</option>
+                                ${window.allBarangs
+                                    .map(
+                                        (b) =>
+                                            `<option value="${b.id}" ${
+                                                b.id == item.barang_id
+                                                    ? "selected"
+                                                    : ""
+                                            }>${b.nama}</option>`
+                                    )
+                                    .join("")}
+                            </select>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label>Jumlah</label>
+                            <input type="number" name="jumlah[]" value="${
+                                item.jumlah
+                            }" class="form-control" required>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label>Harga Satuan</label>
+                            <input type="number" name="harga_satuan[]" value="${
+                                item.harga_satuan
+                            }" class="form-control" required>
+                        </div>
+
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button type="button" class="btn btn-danger btn-sm removeItem">
+                                <i class="ti ti-input-x"></i>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            `);
+            });
+
+            // ==== Tampilkan modal ====
+            $("#transaksiModal .modal-title").text("Edit Transaksi");
+            $("#transaksiModal").modal("show"); // Bootstrap 4
+
+            // Jika Bootstrap 5:
+            // new bootstrap.Modal(document.getElementById('transaksiModal')).show();
         });
     });
 
@@ -162,6 +210,57 @@ $(document).ready(function () {
                     alert("Terjadi kesalahan: " + xhr.responseText);
                 }
             },
+        });
+    });
+
+    // ===== VIEW DETAIL =====
+    $(document).on("click", ".viewBtn", function () {
+        let id = $(this).data("id");
+
+        $.get("/transaksi/" + id, function (res) {
+            let data = res.data;
+
+            // Isi informasi header
+            $("#detail_kode").text(data.kode_transaksi);
+            $("#detail_jenis").text(data.jenis_transaksi);
+            $("#detail_tanggal").text(data.tgl_transaksi.substring(0, 10));
+            $("#detail_keterangan").text(data.keterangan);
+
+            // Bersihkan item sebelumnya
+            $("#detailItemWrapper").empty();
+
+            // Loop items
+            data.items.forEach((item) => {
+                $("#detailItemWrapper").append(`
+                <div class="item-row mb-3 p-3 border rounded">
+                    <div class="row g-2">
+                        <div class="col-md-4">
+                            <label>Barang</label>
+                            <div>${item.barang?.nama ?? "-"}</div>
+                        </div>
+                        <div class="col-md-2">
+                            <label>Jumlah</label>
+                            <div>${item.jumlah}</div>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Harga Satuan</label>
+                            <div>Rp ${new Intl.NumberFormat("id-ID").format(
+                                item.harga_satuan
+                            )}</div>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Subtotal</label>
+                            <div>Rp ${new Intl.NumberFormat("id-ID").format(
+                                item.subtotal
+                            )}</div>
+                        </div>
+                    </div>
+                </div>
+            `);
+            });
+
+            // Tampilkan modal
+            $("#detailModal").modal("show");
         });
     });
 

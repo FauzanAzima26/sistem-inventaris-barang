@@ -92,9 +92,15 @@ class transaksiController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $transaksi = TransaksiHeader::with('items.barang')->find($id);
+
+        if (!$transaksi) {
+            return response()->json(['error' => 'Data tidak ditemukan'], 404);
+        }
+
+        return response()->json(['data' => $transaksi]);
     }
 
     /**
@@ -108,9 +114,58 @@ class transaksiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        // Validasi
+        $request->validate([
+            'jenis_transaksi' => 'required',
+            'tgl_transaksi' => 'required|date',
+            'keterangan' => 'required',
+            'barang_id' => 'required|array',
+            'jumlah' => 'required|array',
+            'harga_satuan' => 'required|array'
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+
+            // 🔥 AMBIL TRANSAKSI HEADER (yang benar)
+            $transaksi = TransaksiHeader::findOrFail($id);
+
+            // --- UPDATE DATA HEADER ---
+            $transaksi->update([
+                'jenis_transaksi' => $request->jenis_transaksi,
+                'tgl_transaksi' => $request->tgl_transaksi,
+                'keterangan' => $request->keterangan,
+                'total_item' => array_sum($request->jumlah),
+            ]);
+
+            // --- HAPUS ITEM LAMA ---
+            $transaksi->items()->delete();
+
+            // --- SIMPAN ITEM BARU ---
+            foreach ($request->barang_id as $i => $barangId) {
+                TransaksiItem::create([
+                    'uuid'         => Str::uuid(),
+                    'transaksi_id' => $transaksi->id,
+                    'barang_id'    => $barangId,
+                    'jumlah'       => $request->jumlah[$i],
+                    'harga_satuan' => $request->harga_satuan[$i],
+                    'subtotal'     => $request->jumlah[$i] * $request->harga_satuan[$i],
+                ]);
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Transaksi berhasil diupdate'
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     /**

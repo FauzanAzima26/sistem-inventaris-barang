@@ -28,11 +28,6 @@ $(document).ready(function () {
                                     <i class="ti ti-trash"></i>
                                 </a>
                             </div>
-                            <div style="display: flex; justify-content: center;">
-                                <a class="btn btn-warning btn-sm viewBtn" data-id="${row.uuid}">
-                                    <i class="ti ti-eye"></i>
-                                </a>
-                            </div>
                         </div>
                     `;
                 },
