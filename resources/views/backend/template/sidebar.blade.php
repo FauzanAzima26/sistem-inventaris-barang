@@ -88,14 +88,14 @@
                     <ul id="menuLaporan" class="collapse sidebar-dropdown ps-4">
 
                         <li class="sidebar-item">
-                            <a class="sidebar-link d-flex align-items-center" href="#">
+                            <a class="sidebar-link d-flex align-items-center" href="{{ route('laporan-transaksi.index') }}">
                                 <i class="ti ti-file-text"></i>
                                 <span class="ms-2">Laporan Transaksi</span>
                             </a>
                         </li>
 
-                        <li class="sidebar-item">
-                            <a class="sidebar-link d-flex align-items-center" href="#">
+                        <li class="sidebar-item {{ request()->routeIs('laporan-stok.*') ? 'active' : '' }}">
+                            <a class="sidebar-link d-flex align-items-center" href="{{ route('laporan-stok.index') }}">
                                 <i class="ti ti-stack"></i>
                                 <span class="ms-2">Laporan Stok</span>
                             </a>

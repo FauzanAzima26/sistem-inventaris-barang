@@ -10,6 +10,8 @@ use App\Http\Controllers\backend\dashboardController;
 use App\Http\Controllers\backend\InventoryController;
 use App\Http\Controllers\backend\transaksiController;
 use App\Http\Controllers\backend\pengaturanController;
+use App\Http\Controllers\backend\laporanStokController;
+use App\Http\Controllers\backend\laporanTransaksiController;
 
 Route::get('/', function () {
     return view('frontend/index');
@@ -31,7 +33,8 @@ Route::get('/api/transaksi', [transaksiController::class, 'getData'])->name('tra
 
 Route::resource('user', userController::class)->names('user');
 
-Route::resource('laporan', laporanController::class)->names('laporan');
+Route::resource('laporan-stok', laporanStokController::class)->names('laporan-stok');
+Route::resource('laporan-transaksi', laporanTransaksiController::class)->names('laporan-transaksi');
 
 Route::resource('pengaturan', pengaturanController::class)->names('pengaturan');
 

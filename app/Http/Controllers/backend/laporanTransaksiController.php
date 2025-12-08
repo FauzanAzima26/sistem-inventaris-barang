@@ -5,14 +5,14 @@ namespace App\Http\Controllers\backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class laporanController extends Controller
+class laporanTransaksiController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('backend.laporan.index');
+        return view('backend.laporan.transaksi');
     }
 
     /**
