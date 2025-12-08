@@ -28,11 +28,7 @@
                     <!-- Tanggal -->
                     <div class="mb-3">
                         <label class="form-label">Tanggal Transaksi</label>
-                        <input type="date"
-                               name="tgl_transaksi"
-                               id="tgl_transaksi"
-                               class="form-control"
-                               required>
+                        <input type="date" name="tgl_transaksi" id="tgl_transaksi" class="form-control" required>
                     </div>
 
                     <!-- Keterangan -->
@@ -48,7 +44,7 @@
 
                     <div id="itemWrapper">
 
-                        <!-- Template Item -->
+                        <!-- TEMPLATE ITEM -->
                         <div class="item-row mb-3 p-3 border rounded">
 
                             <div class="row g-2">
@@ -58,7 +54,7 @@
                                     <label class="form-label">Barang</label>
                                     <select name="barang_id[]" class="form-control" required>
                                         <option value="">-- Pilih Barang --</option>
-                                        @foreach($barangs as $b)
+                                        @foreach ($barangs as $b)
                                             <option value="{{ $b->id }}">{{ $b->nama }}</option>
                                         @endforeach
                                     </select>
@@ -76,9 +72,17 @@
                                     <input type="number" name="harga_satuan[]" class="form-control harga" required>
                                 </div>
 
+                                <!-- Tombol Hapus Baris -->
+                                <div class="col-md-3 d-flex align-items-end">
+                                    <a class="btn btn-danger btn-sm removeItem">
+                                        <i class="ti ti-input-x"></i>
+                                    </a>
+                                </div>
+
                             </div>
 
                         </div>
+                        <!-- END TEMPLATE ITEM -->
 
                     </div>
 

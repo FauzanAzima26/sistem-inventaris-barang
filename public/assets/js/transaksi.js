@@ -80,16 +80,35 @@ $(document).ready(function () {
         }
     );
 
+    // Tambah item baru
+    $("#addItem").click(function () {
+        // clone baris pertama item-row
+        let template = $(".item-row").first().clone();
+
+        // reset isi
+        template.find("select").val("");
+        template.find("input").val("");
+
+        $("#itemWrapper").append(template);
+    });
+
+    // Hapus baris item
+    $(document).on("click", ".removeItem", function () {
+        if ($(".item-row").length > 1) {
+            $(this).closest(".item-row").remove();
+        }
+    });
+
     // ===== EDIT / OPEN MODAL =====
     $(document).on("click", ".editBtn", function () {
         var id = $(this).data("id");
         $.get("/barang/" + id, function (res) {
             var data = res.data ? res.data[0] : res;
-            $("#barangId").val(data.id);
-            $("#nama").val(data.nama);
-            $("#kode_barang").val(data.kode_barang);
-            $("#kategori_id").val(data.kategori_id);
-            $("#harga_beli").val(data.harga_beli);
+            $("#transaksiId").val(data.uuid);
+            $("#jenis_transaksi").val(data.jenis_transaksi);
+            $("#kode_transaksi").val(data.kode_transaksi);
+            $("#tgl_transaksi").val(data.tgl_transaksi);
+            $("#total_item").val(data.harga_beli);
             $("#satuan").val(data.satuan);
 
             // Preview gambar
@@ -152,7 +171,7 @@ $(document).ready(function () {
 
         if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
             $.ajax({
-                url: "/barang/" + id,
+                url: "/transaksi/" + id,
                 type: "POST",
                 data: {
                     _method: "DELETE",

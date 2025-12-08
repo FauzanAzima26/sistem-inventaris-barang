@@ -116,8 +116,31 @@ class transaksiController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        // Cari header transaksi
+        $transaksi = TransaksiHeader::with('items')->find($id);
+
+        if (!$transaksi) {
+            return response()->json(['error' => 'Transaksi tidak ditemukan'], 404);
+        }
+
+        DB::beginTransaction();
+
+        try {
+            // Hapus semua item terlebih dahulu
+            foreach ($transaksi->items as $item) {
+                $item->delete();
+            }
+
+            // Hapus header
+            $transaksi->delete();
+
+            DB::commit();
+            return response()->json(['success' => true, 'message' => 'Transaksi berhasil dihapus']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 }
