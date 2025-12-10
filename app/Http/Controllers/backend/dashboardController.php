@@ -18,9 +18,9 @@ class DashboardController extends Controller
         $transaksiMasukCount = TransaksiHeader::where('jenis_transaksi', 'masuk')->count();
         $transaksiKeluarCount = TransaksiHeader::where('jenis_transaksi', 'keluar')->count();
 
-        // Barang dengan stok ≤ 5 (dari tabel inventory)
         $stokMenipis = Inventory::with(['barang.kategori'])
             ->where('stok', '<=', 5)
+            ->whereHas('barang')
             ->orderBy('stok', 'asc')
             ->get();
 
