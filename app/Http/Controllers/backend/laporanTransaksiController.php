@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\backend;
 
+use Mpdf\Mpdf;
 use Illuminate\Http\Request;
 use App\Models\TransaksiHeader;
 use App\Http\Controllers\Controller;
@@ -141,5 +142,27 @@ class laporanTransaksiController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function exportPdf($uuid)
+    {
+        // Ambil data lengkap transaksi
+        $transaksi = TransaksiHeader::with(['items.barang'])
+            ->where('uuid', $uuid)
+            ->firstOrFail();
+
+        $html = view('backend.laporan.transaksi_pdf', compact('transaksi'))->render();
+
+        $mpdf = new Mpdf([
+            'mode' => 'utf-8',
+            'format' => 'A4',
+            'default_font' => 'dejavusans',
+            'default_font_size' => 10
+        ]);
+
+        $mpdf->WriteHTML($html);
+
+        return response($mpdf->Output("transaksi_$uuid.pdf", 'I'), 200)
+            ->header('Content-Type', 'application/pdf');
     }
 }

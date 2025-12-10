@@ -30,7 +30,12 @@ $(document).ready(function () {
             <button class="btn btn-warning btn-sm viewBtn" data-id="${row.uuid}">
                 <i class="ti ti-eye"></i>
             </button>
-        `;
+
+            <button class="btn btn-danger btn-sm"
+                onclick="window.open('/laporan-transaksi/${row.uuid}/pdf', '_blank')">
+                <i class="ti ti-download"></i>
+            </button>
+            `;
                 },
             },
         ],

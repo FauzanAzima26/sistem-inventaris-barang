@@ -40,6 +40,8 @@ Route::get('/laporan-stok/data', [laporanStokController::class, 'getData'])->nam
 
 Route::resource('laporan-transaksi', laporanTransaksiController::class)->names('laporan-transaksi');
 Route::get('api/laporan-transaksi', [laporanTransaksiController::class, 'getData'])->name('laporan-transaksi.getData');
+Route::get('/laporan-transaksi/{uuid}/pdf', [laporanTransaksiController::class, 'exportPdf'])->name('laporan.transaksi.pdf');
+
 
 Route::resource('pengaturan', pengaturanController::class)->names('pengaturan');
 
