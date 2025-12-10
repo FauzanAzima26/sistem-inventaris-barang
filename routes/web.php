@@ -33,8 +33,10 @@ Route::get('/api/transaksi', [transaksiController::class, 'getData'])->name('tra
 
 Route::resource('user', userController::class)->names('user');
 
-Route::resource('laporan-stok', laporanStokController::class)->names('laporan-stok');
-Route::get('api/laporan-stok', [laporanStokController::class, 'getData'])->name('laporan-stok.getData');
+Route::get('/laporan-stok', [laporanStokController::class, 'index'])->name('laporan.stok');
+Route::get('/laporan-stok/pdf', [laporanStokController::class, 'exportPdf'])->name('laporan.stok.pdf');
+Route::get('/laporan-stok/data', [laporanStokController::class, 'getData'])->name('laporan.stok.data');
+
 
 Route::resource('laporan-transaksi', laporanTransaksiController::class)->names('laporan-transaksi');
 Route::get('api/laporan-transaksi', [laporanTransaksiController::class, 'getData'])->name('laporan-transaksi.getData');

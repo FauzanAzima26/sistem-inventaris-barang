@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\backend;
 
+use Mpdf\Mpdf;
 use App\Models\Barang;
 use Illuminate\Http\Request;
 use App\Models\TransaksiItem;
@@ -9,100 +10,84 @@ use App\Http\Controllers\Controller;
 
 class laporanStokController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         return view('backend.laporan.stok');
     }
 
-    public function getData()
+    /**
+     * FUNCTION: Generate Data Stok (DIPAKAI GETDATA & PDF)
+     */
+    private function getStokArray()
     {
-        // Ambil barang + kategori (meski kategori sudah dihapus tetap aman)
-        $barang = Barang::with(['kategori' => fn($q) => $q->withTrashed()])
-    ->get();
-
+        $barang = Barang::with('kategori')->get();
         $result = [];
 
         foreach ($barang as $b) {
-
-            // Hitung stok masuk
             $stokMasuk = TransaksiItem::where('barang_id', $b->id)
-                ->whereHas('header', function ($q) {
-                    $q->where('jenis_transaksi', 'masuk');
-                })
+                ->whereHas(
+                    'header',
+                    fn($q) =>
+                    $q->where('jenis_transaksi', 'masuk')
+                )
                 ->sum('jumlah');
 
-            // Hitung stok keluar
             $stokKeluar = TransaksiItem::where('barang_id', $b->id)
-                ->whereHas('header', function ($q) {
-                    $q->where('jenis_transaksi', 'keluar');
-                })
+                ->whereHas(
+                    'header',
+                    fn($q) =>
+                    $q->where('jenis_transaksi', 'keluar')
+                )
                 ->sum('jumlah');
-
-            $stokAkhir = max(0, $stokMasuk - $stokKeluar);
 
             $result[] = [
-                'kode_barang'   => $b->kode_barang,
-                'nama_barang'   => $b->nama,
-                'kategori'      => $b->kategori->nama ?? '-',
-                'harga_satuan'  => $b->harga_beli,
-                'stok_masuk'    => $stokMasuk,
-                'stok_keluar'   => $stokKeluar,
-                'stok_akhir'    => $stokAkhir,
-                'satuan'        => $b->satuan ?? '-',
+                'kode_barang'  => $b->kode_barang,
+                'nama_barang'  => $b->nama,
+                'kategori'     => $b->kategori->nama ?? '-',
+                'harga_satuan' => $b->harga_beli ?? 0,
+                'stok_masuk'   => $stokMasuk,
+                'stok_keluar'  => $stokKeluar,
+                'stok_akhir'   => max(0, $stokMasuk - $stokKeluar),
+                'satuan'       => $b->satuan ?? '-',
             ];
         }
 
-        return response()->json(['data' => $result]);
+        return $result;
     }
 
     /**
-     * Show the form for creating a new resource.
+     * API JSON untuk DataTable
      */
-    public function create()
+    public function getData()
     {
-        //
+        return response()->json([
+            'data' => $this->getStokArray()
+        ]);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * EXPORT PDF menggunakan mPDF
      */
-    public function store(Request $request)
+    public function exportPdf()
     {
-        //
-    }
+        $data = $this->getStokArray();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        if (empty($data)) {
+            return back()->with('error', 'Data stok kosong!');
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        $html = view('backend.laporan.stok_pdf', compact('data'))->render();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+        $mpdf = new Mpdf([
+            'mode' => 'utf-8',
+            'format' => 'A4-L',
+            'default_font' => 'dejavusans',
+            'margin_top' => 10,
+            'margin_bottom' => 10,
+        ]);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $mpdf->WriteHTML($html);
+
+        return $mpdf->Output('laporan_stok.pdf', 'I');
     }
 }

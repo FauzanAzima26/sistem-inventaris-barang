@@ -9,6 +9,11 @@
                         <div class="d-flex justify-content-between mb-3">
                             <h5 class="card-title fw-semibold">Laporan Stok</h5>
                         </div>
+                        <div class="mb-3">
+                            <a href="{{ route('laporan.stok.pdf') }}" class="btn btn-primary">
+                                <i class="bi bi-file-earmark-pdf"></i> Ekspor PDF
+                            </a>
+                        </div>
 
                         <table id="kategoriTable" class="table table-striped table-bordered" style="width:100%">
                             <thead class="table-light">

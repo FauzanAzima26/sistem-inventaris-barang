@@ -94,8 +94,8 @@
                             </a>
                         </li>
 
-                        <li class="sidebar-item {{ request()->routeIs('laporan-stok.*') ? 'active' : '' }}">
-                            <a class="sidebar-link d-flex align-items-center" href="{{ route('laporan-stok.index') }}">
+                        <li class="sidebar-item {{ request()->routeIs('laporan.stok.*') ? 'active' : '' }}">
+                            <a class="sidebar-link d-flex align-items-center" href="{{ route('laporan.stok') }}">
                                 <i class="ti ti-stack"></i>
                                 <span class="ms-2">Laporan Stok</span>
                             </a>

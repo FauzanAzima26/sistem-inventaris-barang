@@ -3,7 +3,7 @@ $(document).ready(function () {
         processing: true,
         serverSide: false, // karena datanya dari array, bukan paginate DB
         ajax: {
-            url: "/api/laporan-stok",
+            url: "/laporan-stok/data",
             type: "GET",
             dataSrc: "data"
         },
