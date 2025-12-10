@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\backend;
 
+use App\Models\Barang;
+use App\Models\Inventory;
 use App\Models\Transaksi;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -9,7 +11,6 @@ use App\Models\TransaksiItem;
 use App\Models\TransaksiHeader;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\Barang;
 
 class transaksiController extends Controller
 {
@@ -66,7 +67,6 @@ class transaksiController extends Controller
         DB::beginTransaction();
 
         try {
-
             // Hitung total item
             $total_item = array_sum($request->jumlah);
 
@@ -78,49 +78,57 @@ class transaksiController extends Controller
                 'total_item'      => $total_item,
             ]);
 
-            // Insert items
+            // Insert items dan update stok inventory
             foreach ($request->barang_id as $i => $barangId) {
 
-                // CEK STOK SAAT INI
-                // CEK STOK SAAT INI
+                $jumlah = $request->jumlah[$i];
+                $harga_satuan = $request->harga_satuan[$i];
+
+                // Validasi stok jika keluar
                 if ($request->jenis_transaksi === 'keluar') {
-
-                    // Ambil detail barang
-                    $barang       = Barang::find($barangId);
-                    $namaBarang   = $barang->nama ?? "Tidak diketahui";
-
-                    $stokSaatIni  = $this->getStokBarang($barangId);
-                    $jumlahKeluar = $request->jumlah[$i];
-
-                    if ($jumlahKeluar > $stokSaatIni) {
+                    $stokSaatIni = $this->getStokBarang($barangId);
+                    if ($jumlah > $stokSaatIni) {
                         DB::rollBack();
+                        $barang = Barang::find($barangId);
                         return response()->json([
                             'status'  => 'stok_kurang',
-                            'message' => "Stok barang $namaBarang tidak cukup!",
+                            'message' => "Stok barang {$barang->nama} tidak cukup!",
                             'stok'    => $stokSaatIni
                         ], 400);
                     }
                 }
 
-                // JIKA VALID → SIMPAN
-                $subtotal = $request->jumlah[$i] * $request->harga_satuan[$i];
-
+                // Simpan TransaksiItem
                 TransaksiItem::create([
                     'uuid'         => Str::uuid(),
                     'transaksi_id' => $header->id,
                     'barang_id'    => $barangId,
-                    'jumlah'       => $request->jumlah[$i],
-                    'harga_satuan' => $request->harga_satuan[$i],
-                    'subtotal'     => $subtotal,
+                    'jumlah'       => $jumlah,
+                    'harga_satuan' => $harga_satuan,
+                    'subtotal'     => $jumlah * $harga_satuan,
                 ]);
+
+                // --- UPDATE INVENTORY ---
+                $inventory = Inventory::firstOrCreate(
+                    ['barang_id' => $barangId],
+                    ['stok' => 0]
+                );
+
+                if ($request->jenis_transaksi === 'masuk') {
+                    $inventory->stok += $jumlah;
+                } else {
+                    $inventory->stok -= $jumlah;
+                    if ($inventory->stok < 0) $inventory->stok = 0;
+                }
+
+                $inventory->save();
             }
 
             DB::commit();
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
-
             DB::rollBack();
-            return response()->json(['error' => $e->getMessage()]);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
@@ -151,66 +159,96 @@ class transaksiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Validasi
         $request->validate([
-            'jenis_transaksi' => 'required',
-            'tgl_transaksi' => 'required|date',
-            'keterangan' => 'required',
-            'barang_id' => 'required|array',
-            'jumlah' => 'required|array',
-            'harga_satuan' => 'required|array'
+            'jenis_transaksi' => 'required|in:masuk,keluar',
+            'tgl_transaksi'   => 'required|date',
+            'keterangan'      => 'required|string',
+            'barang_id'       => 'required|array',
+            'jumlah'          => 'required|array',
+            'harga_satuan'    => 'required|array',
         ]);
 
         DB::beginTransaction();
 
         try {
-
-            // 🔥 AMBIL TRANSAKSI HEADER (yang benar)
             $transaksi = TransaksiHeader::findOrFail($id);
 
-            // --- UPDATE DATA HEADER ---
+            // Kembalikan stok lama ke inventory sebelum update
+            foreach ($transaksi->items as $item) {
+                $inventory = Inventory::firstOrCreate(
+                    ['barang_id' => $item->barang_id],
+                    ['stok' => 0]
+                );
+
+                if ($transaksi->jenis_transaksi === 'masuk') {
+                    $inventory->stok -= $item->jumlah;
+                } else {
+                    $inventory->stok += $item->jumlah;
+                }
+
+                if ($inventory->stok < 0) $inventory->stok = 0;
+                $inventory->save();
+            }
+
+            // Update header
             $transaksi->update([
                 'jenis_transaksi' => $request->jenis_transaksi,
-                'tgl_transaksi' => $request->tgl_transaksi,
-                'keterangan' => $request->keterangan,
-                'total_item' => array_sum($request->jumlah),
+                'tgl_transaksi'   => $request->tgl_transaksi,
+                'keterangan'      => $request->keterangan,
+                'total_item'      => array_sum($request->jumlah),
             ]);
 
-            // --- HAPUS ITEM LAMA ---
+            // Hapus item lama
             $transaksi->items()->delete();
 
-            // --- SIMPAN ITEM BARU ---
+            // Simpan item baru dan update stok inventory
             foreach ($request->barang_id as $i => $barangId) {
+                $jumlah = $request->jumlah[$i];
+                $harga_satuan = $request->harga_satuan[$i];
 
+                // Validasi stok jika keluar
                 if ($request->jenis_transaksi === 'keluar') {
-
                     $stokSaatIni = $this->getStokBarang($barangId);
-                    $jumlahKeluar = $request->jumlah[$i];
-
-                    if ($jumlahKeluar > $stokSaatIni) {
+                    if ($jumlah > $stokSaatIni) {
                         DB::rollBack();
+                        $barang = Barang::find($barangId);
                         return response()->json([
                             'status'  => 'stok_kurang',
-                            'message' => "Stok barang tidak cukup untuk barang ID $barangId",
+                            'message' => "Stok barang {$barang->nama} tidak cukup!",
                             'stok'    => $stokSaatIni
                         ], 400);
                     }
                 }
 
+                // Simpan item baru
                 TransaksiItem::create([
                     'uuid'         => Str::uuid(),
                     'transaksi_id' => $transaksi->id,
                     'barang_id'    => $barangId,
-                    'jumlah'       => $request->jumlah[$i],
-                    'harga_satuan' => $request->harga_satuan[$i],
-                    'subtotal'     => $request->jumlah[$i] * $request->harga_satuan[$i],
+                    'jumlah'       => $jumlah,
+                    'harga_satuan' => $harga_satuan,
+                    'subtotal'     => $jumlah * $harga_satuan,
                 ]);
+
+                // Update stok inventory
+                $inventory = Inventory::firstOrCreate(
+                    ['barang_id' => $barangId],
+                    ['stok' => 0]
+                );
+
+                if ($request->jenis_transaksi === 'masuk') {
+                    $inventory->stok += $jumlah;
+                } else {
+                    $inventory->stok -= $jumlah;
+                    if ($inventory->stok < 0) $inventory->stok = 0;
+                }
+
+                $inventory->save();
             }
 
             DB::commit();
-
             return response()->json([
-                'status' => true,
+                'status'  => true,
                 'message' => 'Transaksi berhasil diupdate'
             ]);
         } catch (\Exception $e) {
