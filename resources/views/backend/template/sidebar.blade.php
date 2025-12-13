@@ -30,7 +30,7 @@
                         aria-expanded="{{ request()->routeIs('barang.*') || request()->routeIs('kategori.*') || request()->routeIs('inventori.*') ? 'true' : 'false' }}">
 
                         <span class="d-flex align-items-center">
-                            <i class="ti ti-box"></i>
+                            <i class="ti ti-database"></i>
                             <span class="hide-menu ms-2">Master Data</span>
                         </span>
 
@@ -42,21 +42,21 @@
 
                         <li class="sidebar-item {{ request()->routeIs('kategori.*') ? 'active' : '' }}">
                             <a class="sidebar-link d-flex align-items-center" href="{{ route('kategori.index') }}">
-                                <i class="ti ti-category"></i>
+                                <i class="ti ti-tags"></i>
                                 <span class="ms-2">Manajemen Kategori</span>
                             </a>
                         </li>
 
                         <li class="sidebar-item {{ request()->routeIs('barang.*') ? 'active' : '' }}">
                             <a class="sidebar-link d-flex align-items-center" href="{{ route('barang.index') }}">
-                                <i class="ti ti-package"></i>
+                                <i class="ti ti-box"></i>
                                 <span class="ms-2">Manajemen Barang</span>
                             </a>
                         </li>
 
                         <li class="sidebar-item {{ request()->routeIs('inventory.*') ? 'active' : '' }}">
                             <a class="sidebar-link d-flex align-items-center" href="{{ route('inventory.index') }}">
-                                <i class="ti ti-database"></i>
+                                <i class="ti ti-package"></i>
                                 <span class="ms-2">Inventori</span>
                             </a>
                         </li>
@@ -66,7 +66,7 @@
                 <!-- Transaksi -->
                 <li class="sidebar-item {{ request()->routeIs('transaksi.*') ? 'active' : '' }}">
                     <a class="sidebar-link d-flex align-items-center" href="{{ route('transaksi.index') }}">
-                        <i class="ti ti-box"></i>
+                        <i class="ti ti-currency-dollar"></i>
                         <span class="hide-menu ms-2">Transaksi</span>
                     </a>
                 </li>
@@ -78,7 +78,7 @@
                         data-toggle="collapse" data-target="#menuLaporan" aria-expanded="false">
 
                         <span class="d-flex align-items-center">
-                            <i class="ti ti-report"></i>
+                            <i class="ti ti-file-text"></i>
                             <span class="hide-menu ms-2">Laporan</span>
                         </span>
 
@@ -88,21 +88,33 @@
                     <ul id="menuLaporan" class="collapse sidebar-dropdown ps-4">
 
                         <li class="sidebar-item">
-                            <a class="sidebar-link d-flex align-items-center" href="{{ route('laporan-transaksi.index') }}">
-                                <i class="ti ti-file-text"></i>
+                            <a class="sidebar-link d-flex align-items-center"
+                                href="{{ route('laporan-transaksi.index') }}">
+                                <i class="ti ti-receipt"></i>
                                 <span class="ms-2">Laporan Transaksi</span>
                             </a>
                         </li>
 
                         <li class="sidebar-item {{ request()->routeIs('laporan.stok.*') ? 'active' : '' }}">
                             <a class="sidebar-link d-flex align-items-center" href="{{ route('laporan.stok') }}">
-                                <i class="ti ti-stack"></i>
+                                <i class="ti ti-package"></i>
                                 <span class="ms-2">Laporan Stok</span>
                             </a>
                         </li>
 
                     </ul>
                 </li>
+
+                @if (auth()->user()->role == 'admin')
+                    <!-- Managemen user -->
+                    <li class="sidebar-item {{ request()->routeIs('managemen-user.*') ? 'active' : '' }}">
+                        <a class="sidebar-link d-flex align-items-center" href="{{ route('managemen-user.index') }}">
+                            <i class="ti ti-users"></i>
+                            <span class="hide-menu ms-2">Management Pengguna</span>
+                        </a>
+                    </li>
+                @endif
+
             </ul>
         </nav>
         <!-- End Sidebar navigation -->
