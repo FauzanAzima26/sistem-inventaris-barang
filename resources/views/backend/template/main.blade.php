@@ -29,8 +29,15 @@
         </div>
 
     </div>
-    <script src="../assets_frontend/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets_frontend/libs/jquery/dist/jquery.min.js"></script>
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
+    <script src="../assets_frontend/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets_frontend/js/sidebarmenu.js"></script>
     <script src="../assets_frontend/js/app.min.js"></script>
     <script src="../assets_frontend/libs/apexcharts/dist/apexcharts.min.js"></script>

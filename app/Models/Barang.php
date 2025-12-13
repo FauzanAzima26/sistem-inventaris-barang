@@ -25,6 +25,16 @@ class Barang extends Model
         return $this->belongsTo(Categories::class, 'kategori_id');
     }
 
+    public function deletedBy()
+    {
+        return $this->belongsTo(User::class, 'deleted_by');
+    }
+
+    public function transaksiItems()
+    {
+        return $this->hasMany(TransaksiItem::class, 'barang_id');
+    }
+
     protected static function booted()
     {
         // AUTO GENERATE saat CREATE

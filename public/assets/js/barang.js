@@ -139,6 +139,7 @@ $(document).ready(function () {
         });
     });
 
+    // ===== DELETE =====
     $(document).on("click", ".deleteBtn", function (e) {
         e.preventDefault();
         var id = $(this).data("id");
@@ -160,5 +161,115 @@ $(document).ready(function () {
                 },
             });
         }
+    });
+
+    // ===== Baru saja dihapus =====
+
+    // Saat tombol "Baru Saja Dihapus" diklik, buka modal & ambil data
+    $("#btnSampahBarang").on("click", function () {
+        $("#modalSampahBarang").modal("show");
+        fetchSampahBarang();
+    });
+
+    function fetchSampahBarang() {
+        $.ajax({
+            url: "/barang/sampah",
+            type: "GET",
+            success: function (res) {
+                let tbody = "";
+
+                if (res.data && res.data.length > 0) {
+                    res.data.forEach(function (item) {
+                        let tanggalHapus = item.deleted_at
+                            ? new Date(item.deleted_at).toLocaleString("id-ID")
+                            : "-";
+
+                        let userHapus = item.deleted_by
+                            ? item.deleted_by.name
+                            : "-";
+
+                        tbody += `
+                        <tr>
+                            <td>${item.nama}</td>
+                            <td>${tanggalHapus}</td>
+                            <td>${userHapus}</td>
+                            <td class="text-center">
+                                <button class="btn btn-success btn-sm restore-btn" data-id="${item.id}">
+                                    Restore
+                                </button>
+                                <button class="btn btn-danger btn-sm delete-btn" data-id="${item.id}">
+                                    Hapus Permanen
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                    });
+                } else {
+                    tbody = `
+                    <tr>
+                        <td colspan="4" class="text-center">
+                            Tidak ada barang sampah
+                        </td>
+                    </tr>
+                `;
+                }
+
+                $("#tableSampahBarang tbody").html(tbody);
+            },
+        });
+    }
+
+    // Restore
+    $(document).on("click", ".restore-btn", function () {
+        let id = $(this).data("id");
+
+        $.ajax({
+            url: `/barang/${id}/restore`,
+            type: "POST",
+            success: function (res) {
+                alert(res.message);
+
+                // refresh tabel sampah
+                fetchSampahBarang();
+
+                // 🔥 refresh tabel barang utama
+                table.ajax.reload(null, false);
+
+                // optional: tutup modal
+                $("#modalSampahBarang").modal("hide");
+            },
+        });
+    });
+
+    // Force Delete
+    $(document).on("click", ".delete-btn", function () {
+        if (!confirm("Apakah yakin ingin menghapus permanen?")) return;
+
+        let id = $(this).data("id");
+
+        $.ajax({
+            url: `/barang/${id}/force-delete`,
+            type: "POST",
+            data: {
+                _method: "DELETE",
+                _token: $('meta[name="csrf-token"]').attr("content"),
+            },
+            success: function (res) {
+                if (res.success === false) {
+                    alert(res.message);
+                    return;
+                }
+
+                alert(res.message);
+                fetchSampahBarang();
+            },
+            error: function (xhr) {
+                if (xhr.status === 422) {
+                    alert(xhr.responseJSON.message);
+                } else {
+                    alert("Terjadi kesalahan");
+                }
+            },
+        });
     });
 });

@@ -9,9 +9,15 @@
                         <div class="d-flex justify-content-between mb-3">
                             <h5 class="card-title fw-semibold">Data Barang</h5>
                             @if (auth()->user()->role !== 'editor')
-                                <a class="btn btn-success btn-sm" id="addBarang">
-                                    <i class="ti ti-plus me-2"></i>Tambah data
-                                </a>
+                                <div class="d-flex gap-2">
+                                    <a class="btn btn-success btn-sm" id="addBarang">
+                                        <i class="ti ti-plus me-1"></i> Tambah Data
+                                    </a>
+
+                                    <a class="btn btn-danger btn-sm" id="btnSampahBarang">
+                                        <i class="ti ti-trash me-1"></i> Baru Saja Dihapus
+                                    </a>
+                                </div>
                             @endif
                         </div>
                         <div class="table-responsif">
@@ -42,6 +48,8 @@
     </div>
 
     @include('backend.barang._tambahData')
+
+    @include('backend.barang.BaruDihapus')
 
     @push('scripts')
         <script>

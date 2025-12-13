@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class barangController extends Controller
@@ -144,9 +145,71 @@ class barangController extends Controller
             return response()->json(['error' => 'Barang tidak ditemukan'], 404);
         }
 
-        // Soft delete
+        // simpan user penghapus
+        if (Auth::check()) {
+            $barang->update([
+                'deleted_by' => Auth::id()
+            ]);
+        }
+
+        // soft delete
         $barang->delete();
 
-        return response()->json(['success' => true, 'message' => 'Barang berhasil dihapus']);
+        return response()->json([
+            'success' => true,
+            'message' => 'Barang berhasil dihapus'
+        ]);
+    }
+
+    // Ambil semua data yang dihapus (Sampah)
+    public function sampah()
+    {
+        $sampah = Barang::onlyTrashed()
+            ->with('deletedBy:id,name')
+            ->get();
+
+        return response()->json([
+            'message' => 'Berhasil mengambil data sampah',
+            'data' => $sampah
+        ]);
+    }
+
+    // Restore data dari sampah
+    public function restore($id)
+    {
+        $barang = Barang::withTrashed()->findOrFail($id);
+
+        $barang->update([
+            'deleted_by' => null
+        ]);
+
+        $barang->restore();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Barang berhasil dipulihkan'
+        ]);
+    }
+
+    // Hapus permanen
+    public function forceDelete($id)
+    {
+        $barang = Barang::withTrashed()->findOrFail($id);
+
+        // 🔥 CEK relasi transaksi
+        if ($barang->transaksiItems()->exists()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Barang tidak bisa dihapus permanen karena sudah digunakan dalam transaksi'
+            ], 422);
+        }
+
+        // aman karena tidak dipakai transaksi
+        $barang->forceDelete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Barang berhasil dihapus permanen'
+        ]);
     }
 }

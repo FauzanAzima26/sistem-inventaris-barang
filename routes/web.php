@@ -22,8 +22,11 @@ Route::get('/', function () {
 Route::middleware(['auth', RoleMiddleware::class])->group(function () {
     Route::resource('dashboard', dashboardController::class)->names('dashboard');
 
-    Route::resource('barang', BarangController::class)->names('barang');
     Route::get('/api/barang', [BarangController::class, 'getData'])->name('barang.getData');
+    Route::get('barang/sampah', [BarangController::class, 'sampah'])->name('barang.sampah');
+    Route::post('barang/{id}/restore', [BarangController::class, 'restore'])->name('barang.restore');
+    Route::delete('barang/{id}/force-delete', [BarangController::class, 'forceDelete'])->name('barang.forceDelete');
+    Route::resource('barang', BarangController::class)->names('barang');
 
     Route::resource('kategori', kategoriController::class)->names('kategori');
     Route::get('/api/kategori', [kategoriController::class, 'getData'])->name('kategori.getData');
