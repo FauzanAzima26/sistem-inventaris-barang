@@ -62,27 +62,19 @@
                             </tr>
                         </thead>
                         <tbody class="text-center">
-                            <tr>
-                                <td>1</td>
-                                <td>BRG-001</td>
-                                <td>Laptop Lenovo Thinkpad</td>
-                                <td>Elektronik</td>
-                                <td>12</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>BRG-002</td>
-                                <td>Kursi Kantor</td>
-                                <td>Furnitur</td>
-                                <td>25</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>BRG-003</td>
-                                <td>Printer Canon</td>
-                                <td>Elektronik</td>
-                                <td>8</td>
-                            </tr>
+                            @forelse ($barangs as $i => $barang)
+                                <tr>
+                                    <td>{{ $i + 1 }}</td>
+                                    <td>{{ $barang->kode_barang }}</td>
+                                    <td>{{ $barang->nama }}</td>
+                                    <td>{{ $barang->kategori->nama ?? '-' }}</td>
+                                    <td>{{ optional($barang->inventory)->stok ?? 0 }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5">Data barang belum tersedia</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
@@ -96,36 +88,15 @@
                     <h3>Kategori Barang</h3>
                     <p>Pengelompokan barang berdasarkan jenis atau fungsi.</p>
                 </div>
-
-                <div class="row gy-4">
-                    <div class="col-lg-3 col-md-6 text-center">
-                        <div class="card shadow-sm p-3 border-0">
-                            <h5 class="fw-bold">Elektronik</h5>
-                            <p>Perangkat elektronik seperti laptop, printer, dan proyektor.</p>
+                @foreach ($categories as $k)
+                    <div class="row gy-4">
+                        <div class="col-lg-3 col-md-6 text-center">
+                            <div class="card shadow-sm p-3 border-0">
+                                <p>{{ $k->nama }}</p>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="col-lg-3 col-md-6 text-center">
-                        <div class="card shadow-sm p-3 border-0">
-                            <h5 class="fw-bold">Furnitur</h5>
-                            <p>Perabot kantor seperti meja, kursi, dan lemari.</p>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6 text-center">
-                        <div class="card shadow-sm p-3 border-0">
-                            <h5 class="fw-bold">ATK</h5>
-                            <p>Alat tulis dan keperluan administrasi kantor.</p>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6 text-center">
-                        <div class="card shadow-sm p-3 border-0">
-                            <h5 class="fw-bold">Lainnya</h5>
-                            <p>Barang umum yang tidak termasuk kategori utama.</p>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div><!-- End Kategori -->
 
             <!-- =======================
@@ -147,83 +118,177 @@
                                 <th>Jenis Transaksi</th>
                                 <th>Nama Barang</th>
                                 <th>Jumlah</th>
-                                <th>Petugas</th>
                             </tr>
                         </thead>
                         <tbody class="text-center">
-                            <tr>
-                                <td>1</td>
-                                <td>TRX-20251108-001</td>
-                                <td>08-11-2025</td>
-                                <td><span class="badge bg-success">Masuk</span></td>
-                                <td>Laptop Lenovo Thinkpad</td>
-                                <td>5</td>
-                                <td>Admin Gudang</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>TRX-20251108-002</td>
-                                <td>08-11-2025</td>
-                                <td><span class="badge bg-danger">Keluar</span></td>
-                                <td>Kursi Kantor</td>
-                                <td>3</td>
-                                <td>Staff Gudang</td>
-                            </tr>
+                            @forelse ($transaksi as $i => $t)
+                                @forelse ($t->items as $item)
+                                    <tr>
+                                        <td>{{ $loop->parent->iteration }}</td>
+                                        <td>{{ $t->kode_transaksi }}</td>
+                                        <td>{{ $t->tgl_transaksi }}</td>
+
+                                        <td>
+                                            <span
+                                                class="badge bg-{{ $t->jenis_transaksi == 'masuk' ? 'success' : 'danger' }}">
+                                                {{ ucfirst($t->jenis_transaksi) }}
+                                            </span>
+                                        </td>
+
+                                        <td>{{ $item->barang->nama ?? '-' }}</td>
+                                        <td>{{ $item->jumlah }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="7">Tidak ada item pada transaksi ini</td>
+                                    </tr>
+                                @endforelse
+                            @empty
+                                <tr>
+                                    <td colspan="7">Data transaksi belum tersedia</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
             </div><!-- End Barang Masuk & Keluar -->
 
             <!-- =======================
-          LAPORAN
-      ======================= -->
+              LAPORAN
+          ======================= -->
             <div class="tab-pane fade" id="menu-laporan">
                 <div class="tab-header text-center">
                     <h3>Laporan</h3>
-                    <p>Tampilan ringkas data stok dan transaksi yang dapat diunduh atau dicetak.</p>
+                    <p>Tampilan ringkas laporan stok barang dan transaksi.</p>
                 </div>
 
-                <div class="text-center mt-4">
-                    <button class="btn btn-primary me-2">
-                        <i class="bi bi-file-earmark-pdf"></i> Unduh PDF
+                <div class="d-flex justify-content-center mt-4 gap-2">
+                    <button class="btn btn-outline-primary active" id="btn-stok">
+                        <i class="bi bi-box-seam"></i> Laporan Stok
                     </button>
-                    <button class="btn btn-success">
-                        <i class="bi bi-file-earmark-excel"></i> Unduh Excel
+                    <button class="btn btn-outline-success" id="btn-transaksi">
+                        <i class="bi bi-arrow-left-right"></i> Laporan Transaksi
                     </button>
                 </div>
 
-                <div class="table-responsive mt-4">
-                    <table class="table table-striped table-bordered align-middle">
-                        <thead class="table-light text-center">
-                            <tr>
-                                <th>No</th>
-                                <th>Kode Barang</th>
-                                <th>Nama Barang</th>
-                                <th>Kategori</th>
-                                <th>Stok Akhir</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-center">
-                            <tr>
-                                <td>1</td>
-                                <td>BRG-001</td>
-                                <td>Laptop Lenovo Thinkpad</td>
-                                <td>Elektronik</td>
-                                <td>12</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>BRG-002</td>
-                                <td>Kursi Kantor</td>
-                                <td>Furnitur</td>
-                                <td>22</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div id="laporan-stok" class="mt-4">
+
+                    <div class="text-center mb-3">
+                        <a href="{{ route('laporan.stok.pdf') }}"
+                            class="btn btn-danger {{ $barangs->isEmpty() ? 'disabled' : '' }}">
+                            <i class="bi bi-file-earmark-pdf"></i> Ekspor PDF
+                        </a>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered align-middle">
+                            <thead class="table-light text-center">
+                                <tr>
+                                    <th>No</th>
+                                    <th>Kode Barang</th>
+                                    <th>Nama Barang</th>
+                                    <th>Kategori</th>
+                                    <th>Stok Akhir</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                @forelse ($barangs as $index => $barang)
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $barang->kode_barang }}</td>
+                                        <td>{{ $barang->nama }}</td>
+                                        <td>{{ $barang->kategori->nama ?? '-' }}</td>
+                                        <td>{{ $barang->inventory->stok ?? 0 }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5" class="text-muted py-4">
+                                            <i class="bi bi-inbox fs-4 d-block mb-2"></i>
+                                            Data stok barang belum tersedia
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
+
+                <div id="laporan-transaksi" class="mt-4 d-none">
+
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered align-middle">
+                            <thead class="table-light text-center">
+                                <tr>
+                                    <th>No</th>
+                                    <th>Tanggal</th>
+                                    <th>Kode Transaksi</th>
+                                    <th>Jenis</th>
+                                    <th>Total Item</th>
+                                    <th>Download</th>
+                                </tr>
+                            </thead>
+
+                            <tbody class="text-center">
+                                @forelse ($transaksi as $index => $trx)
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $trx->created_at->format('d-m-Y') }}</td>
+                                        <td>{{ $trx->kode_transaksi }}</td>
+                                        <td>
+                                            <span
+                                                class="badge bg-{{ $trx->jenis_transaksi === 'masuk' ? 'success' : 'danger' }}">
+                                                {{ ucfirst($trx->jenis_transaksi) }}
+                                            </span>
+                                        </td>
+                                        <td>{{ $trx->items->count() }}</td>
+                                        <td>
+                                            <a href="{{ route('laporan.transaksi.pdf', $trx->uuid) }}"
+                                                class="btn btn-sm btn-danger">
+                                                <i class="bi bi-file-earmark-pdf"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6" class="text-muted py-4">
+                                            <i class="bi bi-receipt fs-4 d-block mb-2"></i>
+                                            Data transaksi belum tersedia
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+
             </div><!-- End Laporan -->
 
         </div>
 
     </div>
+
+    <script>
+        const btnStok = document.getElementById('btn-stok');
+        const btnTransaksi = document.getElementById('btn-transaksi');
+        const laporanStok = document.getElementById('laporan-stok');
+        const laporanTransaksi = document.getElementById('laporan-transaksi');
+
+        btnStok.addEventListener('click', () => {
+            laporanStok.classList.remove('d-none');
+            laporanTransaksi.classList.add('d-none');
+            btnStok.classList.add('active');
+            btnTransaksi.classList.remove('active');
+        });
+
+        btnTransaksi.addEventListener('click', () => {
+            laporanTransaksi.classList.remove('d-none');
+            laporanStok.classList.add('d-none');
+            btnTransaksi.classList.add('active');
+            btnStok.classList.remove('active');
+        });
+    </script>
+
 </section><!-- /Data Inventaris Section -->

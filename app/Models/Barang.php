@@ -35,6 +35,11 @@ class Barang extends Model
         return $this->hasMany(TransaksiItem::class, 'barang_id');
     }
 
+    public function inventory()
+    {
+        return $this->hasOne(Inventory::class, 'barang_id');
+    }
+
     protected static function booted()
     {
         // AUTO GENERATE saat CREATE

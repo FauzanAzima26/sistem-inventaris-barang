@@ -5,10 +5,29 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Modernize Free</title>
-    <link rel="shortcut icon" type="image/png" href="../assets_frontend/images/logos/favicon.png" />
+    <title>Inventaris</title>
     <link rel="stylesheet" href="../assets_frontend/css/styles.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
+    <style>
+        .brand-title {
+            font-size: 1.4rem;
+            /* ukuran teks */
+            font-weight: 700;
+            color: #4f7cff;
+            /* biru seperti di gambar */
+            text-decoration: none;
+        }
+
+        .brand-title i {
+            font-size: 1.6rem;
+            /* ukuran ikon */
+        }
+
+        .brand-logo {
+            padding: 1rem 1.25rem;
+            /* jarak atas bawah */
+        }
+    </style>
 </head>
 
 <body>

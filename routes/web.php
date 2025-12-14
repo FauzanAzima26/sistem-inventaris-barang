@@ -2,9 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\backend\userController;
 use App\Http\Controllers\backend\BarangController;
-use App\Http\Controllers\backend\laporanController;
 use App\Http\Controllers\backend\kategoriController;
 use App\Http\Controllers\backend\dashboardController;
 use App\Http\Controllers\backend\InventoryController;
@@ -13,11 +11,16 @@ use App\Http\Controllers\backend\pengaturanController;
 use App\Http\Controllers\backend\laporanStokController;
 use App\Http\Controllers\backend\laporanTransaksiController;
 use App\Http\Controllers\backend\ManagementUserController;
+use App\Http\Controllers\Frontend;
 use App\Http\Middleware\RoleMiddleware;
 
-Route::get('/', function () {
-    return view('frontend/index');
-});
+Route::get('/', [Frontend::class, 'index'])->name('index');
+
+Route::get(
+    '/laporan-transaksi/{uuid}/pdf',
+    [laporanTransaksiController::class, 'exportPdf']
+)->name('laporan.transaksi.pdf');
+
 
 Route::middleware(['auth', RoleMiddleware::class])->group(function () {
     Route::resource('dashboard', dashboardController::class)->names('dashboard');

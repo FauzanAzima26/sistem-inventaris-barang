@@ -2,13 +2,16 @@
     <!-- Sidebar scroll-->
     <div>
         <div class="brand-logo d-flex align-items-center justify-content-between">
-            <a href="./index.html" class="text-nowrap logo-img">
-                <img src="../assets_frontend/images/logos/dark-logo.svg" width="180" alt="" />
+            <a href="./index.html" class="brand-title d-flex align-items-center gap-2">
+                <i class="ti ti-box"></i>
+                <span>Inventaris</span>
             </a>
-            <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
+
+            <button class="btn p-0 d-xl-none sidebartoggler" id="sidebarCollapse" type="button">
                 <i class="ti ti-x fs-8"></i>
-            </div>
+            </button>
         </div>
+
         <!-- Sidebar navigation-->
         <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
             <ul id="sidebarnav">
