@@ -287,4 +287,65 @@ class transaksiController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
+    // Ambil semua data yang dihapus (Sampah)
+    public function sampah()
+    {
+        $sampah = TransaksiHeader::onlyTrashed()
+            ->get();
+
+        return response()->json([
+            'message' => 'Berhasil mengambil data sampah',
+            'data' => $sampah
+        ]);
+    }
+
+    // Restore data dari sampah
+    public function restore($id)
+    {
+        $transaksi = TransaksiHeader::withTrashed()->find($id);
+
+        // ❌ Data tidak ditemukan sama sekali
+        if (!$transaksi) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data transaksi tidak ditemukan',
+            ], 404);
+        }
+
+        // ⚠️ Data belum dihapus
+        if (!$transaksi->trashed()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Transaksi ini tidak berada di sampah',
+            ], 422);
+        }
+
+        // ✅ Restore header
+        $transaksi->restore();
+
+        // ✅ Restore item-item
+        \App\Models\TransaksiItem::withTrashed()
+            ->where('transaksi_id', $transaksi->id)
+            ->restore();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Transaksi berhasil direstore',
+        ]);
+    }
+
+    // Hapus permanen
+    public function forceDelete($id)
+    {
+        $barang = TransaksiHeader::withTrashed()->findOrFail($id);
+
+        // aman karena tidak dipakai transaksi
+        $barang->forceDelete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Barang berhasil dihapus permanen'
+        ]);
+    }
 }

@@ -43,15 +43,11 @@
                     <h6 class="mb-3">Item Barang</h6>
 
                     <div id="itemWrapper">
-
-                        <!-- TEMPLATE ITEM -->
                         <div class="item-row mb-3 p-3 border rounded">
-
                             <div class="row g-2">
 
-                                <!-- Barang -->
                                 <div class="col-md-4">
-                                    <label class="form-label">Barang</label>
+                                    <label>Barang</label>
                                     <select name="barang_id[]" class="form-control barang-select" required>
                                         <option value="">-- Pilih Barang --</option>
                                         @foreach ($barangs as $b)
@@ -62,30 +58,61 @@
                                     </select>
                                 </div>
 
-                                <!-- Jumlah -->
                                 <div class="col-md-2">
-                                    <label class="form-label">Jumlah</label>
+                                    <label>Jumlah</label>
                                     <input type="number" name="jumlah[]" class="form-control jumlah" required>
                                 </div>
 
-                                <!-- Harga -->
                                 <div class="col-md-3">
-                                    <label class="form-label">Harga Satuan</label>
+                                    <label>Harga</label>
                                     <input type="number" name="harga_satuan[]" class="form-control harga" readonly>
                                 </div>
 
-                                <!-- Tombol Hapus Baris -->
                                 <div class="col-md-3 d-flex align-items-end">
-                                    <a class="btn btn-danger btn-sm removeItem">
+                                    <button type="button" class="btn btn-danger btn-sm removeItem">
                                         <i class="ti ti-input-x"></i>
-                                    </a>
+                                    </button>
                                 </div>
 
                             </div>
-
                         </div>
-                        <!-- END TEMPLATE ITEM -->
+                    </div>
 
+                    <!-- TEMPLATE KHUSUS (DISIMPAN, JANGAN DIHAPUS) -->
+                    <div id="itemTemplate" class="d-none">
+                        <div class="item-row mb-3 p-3 border rounded">
+                            <div class="row g-2">
+
+                                <div class="col-md-4">
+                                    <label>Barang</label>
+                                    <select class="form-control barang-select">
+                                        <option value="">-- Pilih Barang --</option>
+                                        @foreach ($barangs as $b)
+                                            <option value="{{ $b->id }}" data-harga="{{ $b->harga_beli }}">
+                                                {{ $b->nama }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label>Jumlah</label>
+                                    <input type="number" class="form-control jumlah">
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label>Harga</label>
+                                    <input type="number" class="form-control harga" readonly>
+                                </div>
+
+                                <div class="col-md-3 d-flex align-items-end">
+                                    <button type="button" class="btn btn-danger btn-sm removeItem">
+                                        <i class="ti ti-input-x"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Tombol tambah item -->

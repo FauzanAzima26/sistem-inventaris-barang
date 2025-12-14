@@ -53,11 +53,29 @@ $(document).ready(function () {
 
     // ===== CREATE / OPEN MODAL =====
     $("#addTransaksi").on("click", function () {
-        $("#transaksiForm")[0].reset(); // reset form
-        $("#transaksiId").val(""); // hapus ID
-        $("#transaksiModal .modal-title").text("Tambah Barang");
-        $("#transaksiPreview").remove();
-        $("#transaksiModal").modal("show"); // tampilkan modal
+        $("#transaksiForm")[0].reset();
+        $("#transaksiId").val("");
+        $("#itemWrapper").empty();
+
+        // tambahkan 1 item awal (WAJIB set name)
+        let template = $("#itemTemplate .item-row").clone();
+
+        template
+            .find(".barang-select")
+            .attr("name", "barang_id[]")
+            .attr("required", true);
+
+        template
+            .find(".jumlah")
+            .attr("name", "jumlah[]")
+            .attr("required", true);
+
+        template.find(".harga").attr("name", "harga_satuan[]");
+
+        $("#itemWrapper").append(template);
+
+        $("#transaksiModal .modal-title").text("Tambah Transaksi");
+        $("#transaksiModal").modal("show");
     });
 
     // Hitung subtotal otomatis
@@ -95,12 +113,21 @@ $(document).ready(function () {
     });
 
     // Tambah baris item baru
-    $("#addItem").click(function () {
-        let template = $(".item-row").first().clone();
+    $("#addItem").on("click", function () {
+        // tambahkan 1 item awal (WAJIB set name)
+        let template = $("#itemTemplate .item-row").clone();
 
-        // Reset pilihan dan input
-        template.find("select").val("");
-        template.find("input").val("");
+        template
+            .find(".barang-select")
+            .attr("name", "barang_id[]")
+            .attr("required", true);
+
+        template
+            .find(".jumlah")
+            .attr("name", "jumlah[]")
+            .attr("required", true);
+
+        template.find(".harga").attr("name", "harga_satuan[]");
 
         $("#itemWrapper").append(template);
     });
@@ -109,6 +136,8 @@ $(document).ready(function () {
     $(document).on("click", ".removeItem", function () {
         if ($(".item-row").length > 1) {
             $(this).closest(".item-row").remove();
+        } else {
+            alert("Minimal harus ada 1 item");
         }
     });
 
@@ -315,5 +344,122 @@ $(document).ready(function () {
                 },
             });
         }
+    });
+
+    // Saat tombol "Baru Saja Dihapus" diklik, buka modal & ambil data
+    $("#btnSampahTransaksi").on("click", function () {
+        $("#modalSampahTransaksi").modal("show");
+        fetchSampahTransaksi();
+    });
+
+    function fetchSampahTransaksi() {
+        $.ajax({
+            url: "/transaksi/sampah",
+            type: "GET",
+            success: function (res) {
+                console.log(res.data); // DEBUG
+
+                let tbody = "";
+
+                if (res.data && res.data.length > 0) {
+                    res.data.forEach(function (item) {
+                        tbody += `
+                    <tr>
+                        <td>${item.kode_transaksi ?? "-"}</td>
+                        <td>${item.tgl_transaksi ?? "-"}</td>
+                        <td>${item.jenis_transaksi ?? "-"}</td>
+                        <td class="text-center">
+                            <button class="btn btn-success btn-sm restore-btn" data-id="${
+                                item.id
+                            }">
+                                Restore
+                            </button>
+                            <button class="btn btn-danger btn-sm delete-btn" data-id="${
+                                item.id
+                            }">
+                                Hapus Permanen
+                            </button>
+                        </td>
+                    </tr>`;
+                    });
+                } else {
+                    tbody = `
+                <tr>
+                    <td colspan="4" class="text-center">
+                        Tidak ada transaksi sampah
+                    </td>
+                </tr>`;
+                }
+
+                $("#tableSampahTransaksi tbody").html(tbody);
+            },
+            error: function (xhr) {
+                console.error(xhr.responseText);
+                alert("Gagal mengambil data sampah");
+            },
+        });
+    }
+
+    // Restore
+    $(document).on("click", ".restore-btn", function () {
+        let id = $(this).data("id");
+
+        $.ajax({
+            url: `/transaksi/${id}/restore`,
+            type: "POST",
+            data: {
+                _token: $('meta[name="csrf-token"]').attr("content"),
+            },
+            success: function (res) {
+                if (res.success === false) {
+                    alert(res.message);
+                    return;
+                }
+
+                alert(res.message);
+                fetchSampahTransaksi();
+                table.ajax.reload(null, false);
+                $("#modalSampahTransaksi").modal("hide");
+            },
+            error: function (xhr) {
+                if (xhr.status === 404) {
+                    alert("Data tidak ditemukan");
+                } else {
+                    alert("Gagal restore transaksi");
+                }
+            },
+        });
+    });
+
+    // Force Delete
+    $(document).on("click", ".delete-btn", function () {
+        if (!confirm("Apakah yakin ingin menghapus permanen?")) return;
+
+        let id = $(this).data("id");
+
+        $.ajax({
+            url: `/transaksi/${id}/force-delete`,
+            type: "POST",
+            data: {
+                _method: "DELETE",
+                _token: $('meta[name="csrf-token"]').attr("content"),
+            },
+            success: function (res) {
+                if (res.success === false) {
+                    alert(res.message);
+                    return;
+                }
+
+                alert(res.message);
+                fetchSampahTransaksi();
+            },
+            error: function (xhr) {
+                if (xhr.status === 422) {
+                    alert(xhr.responseJSON.message);
+                } else {
+                    alert("Terjadi kesalahan");
+                }
+            },
+        });
     });
 });

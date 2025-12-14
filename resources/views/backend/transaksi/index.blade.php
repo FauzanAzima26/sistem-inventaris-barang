@@ -36,9 +36,14 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3">
                             <h5 class="card-title fw-semibold mb-0">Transaksi Masuk</h5>
-                            <a href="#" class="btn btn-success btn-sm" id="addTransaksi">
-                                <i class="ti ti-plus me-2"></i>Tambah Transaksi
-                            </a>
+                            <div class="d-flex gap-2">
+                                <a href="#" class="btn btn-success btn-sm" id="addTransaksi">
+                                    <i class="ti ti-plus me-2"></i>Tambah Transaksi
+                                </a>
+                                <a class="btn btn-danger btn-sm" id="btnSampahTransaksi">
+                                    <i class="ti ti-trash me-1"></i> Baru Saja Dihapus
+                                </a>
+                            </div>
                         </div>
 
                         <table id="transaksiTable" class="table table-striped table-bordered table-sm align-middle"
@@ -67,6 +72,8 @@
     @include('backend.transaksi._tambahData')
 
     @include('backend.transaksi._itemDetail')
+
+    @include('backend.transaksi.BaruDihapus')
 
     @push('scripts')
         <script>

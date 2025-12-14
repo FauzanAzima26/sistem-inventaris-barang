@@ -37,8 +37,11 @@ Route::middleware(['auth', RoleMiddleware::class])->group(function () {
     Route::get('inventory', [InventoryController::class, 'index'])->name('inventory.index');
     Route::get('inventory/data', [InventoryController::class, 'getData'])->name('inventory.getData');
 
-    Route::resource('transaksi', transaksiController::class)->names('transaksi');
     Route::get('/api/transaksi', [transaksiController::class, 'getData'])->name('transaksi.getData');
+    Route::get('transaksi/sampah', [transaksiController::class, 'sampah'])->name('transaksi.sampah');
+    Route::post('transaksi/{id}/restore', [transaksiController::class, 'restore'])->name('transaksi.restore');
+    Route::delete('transaksi/{id}/force-delete', [transaksiController::class, 'forceDelete'])->name('transaksi.forceDelete');
+    Route::resource('transaksi', transaksiController::class)->names('transaksi');
 
     Route::resource('user', userController::class)->names('user');
 
