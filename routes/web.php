@@ -43,8 +43,6 @@ Route::middleware(['auth', RoleMiddleware::class])->group(function () {
     Route::delete('transaksi/{id}/force-delete', [transaksiController::class, 'forceDelete'])->name('transaksi.forceDelete');
     Route::resource('transaksi', transaksiController::class)->names('transaksi');
 
-    Route::resource('user', userController::class)->names('user');
-
     Route::get('/laporan-stok', [laporanStokController::class, 'index'])->name('laporan.stok');
     Route::get('/laporan-stok/pdf', [laporanStokController::class, 'exportPdf'])->name('laporan.stok.pdf');
     Route::get('/laporan-stok/data', [laporanStokController::class, 'getData'])->name('laporan.stok.data');
@@ -53,6 +51,7 @@ Route::middleware(['auth', RoleMiddleware::class])->group(function () {
     Route::get('api/laporan-transaksi', [laporanTransaksiController::class, 'getData'])->name('laporan-transaksi.getData');
     Route::get('/laporan-transaksi/{uuid}/pdf', [laporanTransaksiController::class, 'exportPdf'])->name('laporan.transaksi.pdf');
 
+    Route::get('api/managemen-user', [ManagementUserController::class, 'getData'])->name('managemen-user.getdata');
     Route::resource('managemen-user', ManagementUserController::class)->names('managemen-user');
 });
 
