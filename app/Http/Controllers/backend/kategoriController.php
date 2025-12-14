@@ -100,4 +100,43 @@ class kategoriController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Kategori berhasil dihapus']);
     }
+
+    // Ambil semua data yang dihapus (Sampah)
+    public function sampah()
+    {
+        $sampah = Categories::onlyTrashed()
+            ->get();
+
+        return response()->json([
+            'message' => 'Berhasil mengambil data sampah',
+            'data' => $sampah
+        ]);
+    }
+
+    // Restore data dari sampah
+    public function restore($id)
+    {
+        $barang = Categories::withTrashed()->findOrFail($id);
+
+        $barang->restore();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Barang berhasil dipulihkan'
+        ]);
+    }
+
+    // Hapus permanen
+    public function forceDelete($id)
+    {
+        $barang = Categories::withTrashed()->findOrFail($id);
+
+        // aman karena tidak dipakai transaksi
+        $barang->forceDelete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Barang berhasil dihapus permanen'
+        ]);
+    }
 }

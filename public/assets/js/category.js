@@ -114,4 +114,108 @@ $(document).ready(function () {
             });
         }
     });
+
+    // ===== Baru saja dihapus =====
+
+    // Saat tombol "Baru Saja Dihapus" diklik, buka modal & ambil data
+    $("#btnSampahKategori").on("click", function () {
+        $("#modalSampahKategori").modal("show");
+        fetchSampahKategori();
+    });
+
+    function fetchSampahKategori() {
+        $.ajax({
+            url: "/kategori/sampah",
+            type: "GET",
+            success: function (res) {
+                let tbody = "";
+
+                if (res.data && res.data.length > 0) {
+                    res.data.forEach(function (item) {
+                        tbody += `
+                        <tr>
+                            <td>${item.nama}</td>
+                            <td class="text-center">
+                                <button class="btn btn-success btn-sm restore-btn" data-id="${item.id}">
+                                    Restore
+                                </button>
+                                <button class="btn btn-danger btn-sm delete-btn" data-id="${item.id}">
+                                    Hapus Permanen
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                    });
+                } else {
+                    tbody = `
+                    <tr>
+                        <td colspan="2" class="text-center">
+                            Tidak ada kategori sampah
+                        </td>
+                    </tr>
+                `;
+                }
+
+                // ✅ ID TABEL HARUS SESUAI
+                $("#tableSampahKategori tbody").html(tbody);
+            },
+            error: function () {
+                alert("Gagal mengambil data sampah");
+            },
+        });
+    }
+
+    // Restore
+    $(document).on("click", ".restore-btn", function () {
+        let id = $(this).data("id");
+
+        $.ajax({
+            url: `/kategori/${id}/restore`,
+            type: "POST",
+            success: function (res) {
+                alert(res.message);
+
+                // refresh tabel sampah
+                fetchSampahKategori();
+
+                // 🔥 refresh tabel barang utama
+                table.ajax.reload(null, false);
+
+                // optional: tutup modal
+                $("#modalSampahKategori").modal("hide");
+            },
+        });
+    });
+
+    // Force Delete
+    $(document).on("click", ".delete-btn", function () {
+        if (!confirm("Apakah yakin ingin menghapus permanen?")) return;
+
+        let id = $(this).data("id");
+
+        $.ajax({
+            url: `/kategori/${id}/force-delete`,
+            type: "POST",
+            data: {
+                _method: "DELETE",
+                _token: $('meta[name="csrf-token"]').attr("content"),
+            },
+            success: function (res) {
+                if (res.success === false) {
+                    alert(res.message);
+                    return;
+                }
+
+                alert(res.message);
+                fetchSampahKategori();
+            },
+            error: function (xhr) {
+                if (xhr.status === 422) {
+                    alert(xhr.responseJSON.message);
+                } else {
+                    alert("Terjadi kesalahan");
+                }
+            },
+        });
+    });
 });

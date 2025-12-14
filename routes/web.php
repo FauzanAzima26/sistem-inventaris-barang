@@ -28,8 +28,11 @@ Route::middleware(['auth', RoleMiddleware::class])->group(function () {
     Route::delete('barang/{id}/force-delete', [BarangController::class, 'forceDelete'])->name('barang.forceDelete');
     Route::resource('barang', BarangController::class)->names('barang');
 
-    Route::resource('kategori', kategoriController::class)->names('kategori');
     Route::get('/api/kategori', [kategoriController::class, 'getData'])->name('kategori.getData');
+    Route::get('kategori/sampah', [kategoriController::class, 'sampah'])->name('kategori.sampah');
+    Route::post('kategori/{id}/restore', [kategoriController::class, 'restore'])->name('kategori.restore');
+    Route::delete('kategori/{id}/force-delete', [kategoriController::class, 'forceDelete'])->name('kategori.forceDelete');
+    Route::resource('kategori', kategoriController::class)->names('kategori');
 
     Route::get('inventory', [InventoryController::class, 'index'])->name('inventory.index');
     Route::get('inventory/data', [InventoryController::class, 'getData'])->name('inventory.getData');
