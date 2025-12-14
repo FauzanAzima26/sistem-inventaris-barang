@@ -48,6 +48,8 @@
 
     @include('backend.management-user.addUser')
 
+    @include('backend.management-user.BaruDihapus')
+
     @push('scripts')
         <script src="{{ asset('assets/js/managementUser.js') }}"></script>
     @endpush

@@ -142,4 +142,43 @@ class ManagementUserController extends Controller
             'message' => 'User berhasil dihapus'
         ]);
     }
+
+    // Ambil semua data yang dihapus (Sampah)
+    public function sampah()
+    {
+        $sampah = User::onlyTrashed()
+            ->get();
+
+        return response()->json([
+            'message' => 'Berhasil mengambil data sampah',
+            'data' => $sampah
+        ]);
+    }
+
+    // Restore data dari sampah
+    public function restore($id)
+    {
+        $barang = User::withTrashed()->findOrFail($id);
+
+        $barang->restore();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'User berhasil dipulihkan'
+        ]);
+    }
+
+    // Hapus permanen
+    public function forceDelete($id)
+    {
+        $barang = User::withTrashed()->findOrFail($id);
+
+        // aman karena tidak dipakai transaksi
+        $barang->forceDelete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Barang berhasil dihapus permanen'
+        ]);
+    }
 }

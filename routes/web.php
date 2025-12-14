@@ -52,6 +52,9 @@ Route::middleware(['auth', RoleMiddleware::class])->group(function () {
     Route::get('/laporan-transaksi/{uuid}/pdf', [laporanTransaksiController::class, 'exportPdf'])->name('laporan.transaksi.pdf');
 
     Route::get('api/managemen-user', [ManagementUserController::class, 'getData'])->name('managemen-user.getdata');
+    Route::get('managemen-user/sampah', [ManagementUserController::class, 'sampah'])->name('managemen-user.sampah');
+    Route::post('managemen-user/{id}/restore', [ManagementUserController::class, 'restore'])->name('managemen-user.restore');
+    Route::delete('managemen-user/{id}/force-delete', [ManagementUserController::class, 'forceDelete'])->name('managemen.forceDelete');
     Route::resource('managemen-user', ManagementUserController::class)->names('managemen-user');
 });
 
