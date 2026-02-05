@@ -16,18 +16,12 @@ COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
 
-# REQUIRED Laravel paths
 RUN mkdir -p \
     storage/framework/views \
     storage/framework/cache \
     storage/framework/sessions \
-    bootstrap/cache
-
-RUN chmod -R 775 storage bootstrap/cache
-
-RUN php artisan config:clear || true \
- && php artisan view:clear || true \
- && php artisan route:clear || true
+    bootstrap/cache \
+ && chmod -R 775 storage bootstrap/cache
 
 EXPOSE 8080
 
