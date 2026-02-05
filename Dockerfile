@@ -15,7 +15,19 @@ WORKDIR /app
 COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
-RUN chown -R www-data:www-data storage bootstrap/cache
+
+# REQUIRED Laravel paths
+RUN mkdir -p \
+    storage/framework/views \
+    storage/framework/cache \
+    storage/framework/sessions \
+    bootstrap/cache
+
+RUN chmod -R 775 storage bootstrap/cache
+
+RUN php artisan config:clear || true \
+ && php artisan view:clear || true \
+ && php artisan route:clear || true
 
 EXPOSE 8080
 
