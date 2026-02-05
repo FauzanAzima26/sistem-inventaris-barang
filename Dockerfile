@@ -1,6 +1,6 @@
-FROM php:8.2-fpm
+FROM php:8.2-cli
 
-# Install system dependencies
+# Install system dependencies + GD
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
@@ -11,23 +11,21 @@ RUN apt-get update && apt-get install -y \
     curl \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd pdo pdo_mysql \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/*
 
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-WORKDIR /var/www/html
+WORKDIR /app
 
 # Copy project
 COPY . .
 
-# Install PHP dependencies
+# Install dependencies
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-EXPOSE 9000
+# Laravel permission
+RUN chown -R www-data:www-data storage bootstrap/cache || true
 
-CMD ["php-fpm"]
-
-RUN chown -R www-data:www-data storage bootstrap/cache
-
-CMD ["php", "-S", "0.0.0.0:8080", "-t", "public"]
+# Railway-compatible start command
+CMD php -S 0.0.0.0:${PORT:-8080} -t public
