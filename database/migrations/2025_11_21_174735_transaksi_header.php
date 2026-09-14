@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('kode_transaksi');
             $table->enum('jenis_transaksi',['masuk', 'keluar']);
             $table->timestamp('tgl_transaksi');
-            $table->int('total_item');
+            $table->integer('total_item');
             $table->text('keterangan');
             $table->timestamps();
             $table->softDeletes();

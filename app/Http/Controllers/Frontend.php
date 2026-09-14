@@ -17,7 +17,7 @@ class Frontend extends Controller
             'items.barang'
         ])->latest()->limit(10)->get();
 
-        return view('frontend.index', [
+        return view('frontend.layouts.main', [
             'barangs' => $barangs,
             'categories' => $kategori,
             'transaksi' => $transaksis
