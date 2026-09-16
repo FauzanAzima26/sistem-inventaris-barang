@@ -1,4 +1,4 @@
-<section id="landingFeatures" class="section-py landing-features">
+<section id="landingAlurKerja" class="section-py landing-features" style="scroll-margin-top: 80px;">
     <div class="container">
         <div class="text-center mb-4">
             <span class="badge bg-label-primary">Alur & Keamanan Kerja</span>

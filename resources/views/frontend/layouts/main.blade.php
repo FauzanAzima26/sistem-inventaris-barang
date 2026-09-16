@@ -100,6 +100,9 @@
 
     <!-- Page JS -->
     <script src="../../assets/js/front-page-landing.js"></script>
+
+    <!-- iconify icon -->
+     <script src="https://cdn.jsdelivr.net/npm/iconify-icon@3.0.2/dist/iconify-icon.min.js"></script>
 </body>
 
 </html>
