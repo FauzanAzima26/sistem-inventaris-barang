@@ -1,4 +1,4 @@
-<section id="landingHero" style="scroll-margin-top: 80px;">
+<section id="landingHero" style="scroll-margin-top: 90px;">
     <div id="landingHero" class="section-py landing-hero position-relative">
         <img
             src="../../assets/img/front-pages/backgrounds/hero-bg.png"
@@ -9,12 +9,12 @@
             <div class="hero-text-box text-center position-relative" style="top: -30px">
                 <!-- Label Badge Sistem Internal -->
                 <div class="mb-3">
-                    <span class="badge bg-label-primary px-3 py-2 rounded-pill uppercase fw-bold">Internal Enterprise System</span>
+                    <span class="badge bg-label-primary px-3 py-2 rounded-pill uppercase fw-bold">Internal Inventory System</span>
                 </div>
 
                 <!-- Nama Aplikasi -->
                 <h1 class="text-primary hero-title display-5 fw-extrabold mb-3">
-                    SI-BARANG <span class="text-dark fw-light">v2.0</span>
+                    INV-SYS <span class="text-dark fw-light">v2.0</span>
                 </h1>
 
                 <!-- Slogan Operasional -->

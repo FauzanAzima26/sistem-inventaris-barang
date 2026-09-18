@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="862" height="641" viewBox="178 314 862 641">
+  <title>Inventory System Logo</title>
+  <desc>Minimal modern inventory box logo in #7367F0 with transparent negative space.</desc>
+  <g fill="#7367F0" fill-rule="evenodd" clip-rule="evenodd">
+    <path d="M 178 620 L 178 649 L 198 663 L 567 665 L 577 684 L 563 700 L 334 700 L 311 714 L 308 739 L 330 758 L 491 760 L 500 773 L 492 789 L 453 793 L 437 805 L 434 825 L 441 837 L 692 954 L 708 955 L 718 947 L 721 661 L 709 643 L 448 511 L 283 511 L 269 516 L 257 533 L 261 556 L 282 569 L 447 570 L 458 583 L 448 604 L 198 606 Z"/> <path d="M 1035 504 L 1019 503 L 929 552 L 929 646 L 923 655 L 888 675 L 876 678 L 870 673 L 869 586 L 758 645 L 749 660 L 749 940 L 757 952 L 769 954 L 1010 809 L 1033 787 L 1040 765 L 1040 513 Z"/> <path d="M 456 459 L 458 471 L 731 620 L 745 619 L 875 548 L 871 542 L 588 387 L 581 387 L 468 446 Z"/> <path d="M 632 360 L 637 365 L 915 521 L 924 521 L 1008 475 L 1014 469 L 1013 461 L 1001 452 L 739 315 L 720 314 L 712 316 Z"/>
+  </g>
+</svg>
