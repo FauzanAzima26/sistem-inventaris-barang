@@ -53,7 +53,7 @@
             <ul class="navbar-nav flex-row align-items-center ms-xl-8">
                 <!-- navbar button: Start -->
                 <li>
-                    <a href="{{ route('login') }}" class="btn btn-primary" target="_blank"><span class="tf-icons ti ti-login scaleX-n1-rtl me-md-1"></span><span class="d-none d-md-block">Login/Register</span></a>
+                    <a href="{{ route('login') }}" class="btn btn-primary" target="_blank"><span class="tf-icons ti ti-login scaleX-n1-rtl me-md-1"></span><span class="d-none d-md-block">Login</span></a>
                 </li>
                 <!-- navbar button: End -->
             </ul>
