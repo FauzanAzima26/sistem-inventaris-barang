@@ -21,7 +21,7 @@
         <li class="menu-item active">
             <a href="{{ route('dashboard.index') }}" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-smart-home"></i>
-                <div data-i18n="Page 1">Dashboard</div>
+                <div data-i18n="Dashboard">Dashboard</div>
             </a>
         </li>
         <li class="menu-item {{ request()->routeIs('barang.*') || request()->routeIs('kategori.*') || request()->routeIs('inventori.*') ? 'active' : '' }}">
@@ -32,17 +32,17 @@
             <ul class="menu-sub {{ request()->routeIs('barang.*') || request()->routeIs('kategori.*') || request()->routeIs('inventori.*') ? 'show' : '' }}">
                 <li class="menu-item {{ request()->routeIs('kategori.*') ? 'active' : '' }}">
                     <a href="{{ route('kategori.index') }}" class="menu-link">
-                        <div data-i18n="Sub Menu 1">Manajemen Kategori</div>
+                        <div data-i18n="Manajemen Kategori">Manajemen Kategori</div>
                     </a>
                 </li>
                 <li class="menu-item {{ request()->routeIs('barang.*') ? 'active' : '' }}">
                     <a href="{{ route('barang.index') }}" class="menu-link">
-                        <div data-i18n="Sub Menu 2">Manajemen Barang</div>
+                        <div data-i18n="Manajemen Barang">Manajemen Barang</div>
                     </a>
                 </li>
                 <li class="menu-item {{ request()->routeIs('inventory.*') ? 'active' : '' }}">
                     <a href="{{ route('inventory.index') }}" class="menu-link">
-                        <div data-i18n="Sub Menu 2">Inventori</div>
+                        <div data-i18n="Manajemen Inventori">Manajemen Inventori</div>
                     </a>
                 </li>
             </ul>
@@ -50,23 +50,23 @@
         <li class="menu-item {{ request()->routeIs('transaksi.*') ? 'active' : '' }}">
             <a href="{{ route('transaksi.index') }}" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-app-window"></i>
-                <div data-i18n="Page 2">Transaksi</div>
+                <div data-i18n="Transaksi">Transaksi</div>
             </a>
         </li>
         <li class="menu-item {{ request()->routeIs('laporan.*') ? 'active' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons ti ti-app-window"></i>
-                <div data-i18n="Master Data">Laporan</div>
+                <div data-i18n="Laporan">Laporan</div>
             </a>
             <ul class="menu-sub {{ request()->routeIs('laporan.*') ? 'show' : '' }}">
                 <li class="menu-item {{ request()->routeIs('laporan-transaksi.*') ? 'active' : '' }}">
                     <a href="{{ route('laporan-transaksi.index') }}" class="menu-link">
-                        <div data-i18n="Sub Menu 1">Laporan Transaksi</div>
+                        <div data-i18n="Laporan Transaksi">Laporan Transaksi</div>
                     </a>
                 </li>
                 <li class="menu-item {{ request()->routeIs('laporan.stok') ? 'active' : '' }}">
                     <a href="{{ route('laporan.stok') }}" class="menu-link">
-                        <div data-i18n="Sub Menu 2">Laporan Inventori</div>
+                        <div data-i18n="Laporan Inventori">Laporan Inventori</div>
                     </a>
                 </li>
             </ul>
@@ -74,7 +74,7 @@
         <li class="menu-item {{ request()->routeIs('managemen-user.*') ? 'active' : '' }}">
             <a href="{{ route('managemen-user.index') }}" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-app-window"></i>
-                <div data-i18n="Page 2">Management Pengguna</div>
+                <div data-i18n="Management Pengguna">Management Pengguna</div>
             </a>
         </li>
     </ul>
