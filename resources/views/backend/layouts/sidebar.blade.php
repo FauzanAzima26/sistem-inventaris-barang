@@ -18,13 +18,14 @@
 
     <ul class="menu-inner py-1">
         <!-- Page -->
-        <li class="menu-item active">
+        <li class="menu-item {{ request()->routeIs('dashboard.index') ? 'active' : '' }}">
             <a href="{{ route('dashboard.index') }}" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-smart-home"></i>
                 <div data-i18n="Dashboard">Dashboard</div>
             </a>
         </li>
-        <li class="menu-item {{ request()->routeIs('barang.*') || request()->routeIs('kategori.*') || request()->routeIs('inventori.*') ? 'active' : '' }}">
+
+        <li class="menu-item {{ request()->routeIs('barang.*') || request()->routeIs('kategori.*') || request()->routeIs('inventori.*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons ti ti-app-window"></i>
                 <div data-i18n="Master Data">Master Data</div>
@@ -47,12 +48,14 @@
                 </li>
             </ul>
         </li>
+
         <li class="menu-item {{ request()->routeIs('transaksi.*') ? 'active' : '' }}">
             <a href="{{ route('transaksi.index') }}" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-app-window"></i>
                 <div data-i18n="Transaksi">Transaksi</div>
             </a>
         </li>
+
         <li class="menu-item {{ request()->routeIs('laporan.*') ? 'active' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons ti ti-app-window"></i>

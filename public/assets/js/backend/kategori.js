@@ -2,82 +2,142 @@
 
 let fv, offCanvasEl;
 
+document.addEventListener("DOMContentLoaded", function (e) {
+    (function () {
+        const formAddNewRecord = document.getElementById("form-add-new-record");
+
+        setTimeout(() => {
+            const newRecord = document.querySelector(".create-new"),
+                offCanvasElement = document.querySelector("#add-new-record");
+
+            // To open offCanvas, to add new record
+            if (newRecord) {
+                newRecord.addEventListener("click", function () {
+                    offCanvasEl = new bootstrap.Offcanvas(offCanvasElement);
+                    // Empty fields on offCanvas open
+                    ((offCanvasElement.querySelector(".dt-full-name").value =
+                        ""),
+                        (offCanvasElement.querySelector(".dt-post").value = ""),
+                        (offCanvasElement.querySelector(".dt-email").value =
+                            ""),
+                        (offCanvasElement.querySelector(".dt-date").value = ""),
+                        (offCanvasElement.querySelector(".dt-salary").value =
+                            ""));
+                    // Open offCanvas with form
+                    offCanvasEl.show();
+                });
+            }
+        }, 200);
+
+        // Form validation for Add new record
+        fv = FormValidation.formValidation(formAddNewRecord, {
+            fields: {
+                basicFullname: {
+                    validators: {
+                        notEmpty: {
+                            message: "The name is required",
+                        },
+                    },
+                },
+                basicPost: {
+                    validators: {
+                        notEmpty: {
+                            message: "Post field is required",
+                        },
+                    },
+                },
+                basicEmail: {
+                    validators: {
+                        notEmpty: {
+                            message: "The Email is required",
+                        },
+                        emailAddress: {
+                            message: "The value is not a valid email address",
+                        },
+                    },
+                },
+                basicDate: {
+                    validators: {
+                        notEmpty: {
+                            message: "Joining Date is required",
+                        },
+                        date: {
+                            format: "MM/DD/YYYY",
+                            message: "The value is not a valid date",
+                        },
+                    },
+                },
+                basicSalary: {
+                    validators: {
+                        notEmpty: {
+                            message: "Basic Salary is required",
+                        },
+                    },
+                },
+            },
+            plugins: {
+                trigger: new FormValidation.plugins.Trigger(),
+                bootstrap5: new FormValidation.plugins.Bootstrap5({
+                    // Use this for enabling/changing valid/invalid class
+                    // eleInvalidClass: '',
+                    eleValidClass: "",
+                    rowSelector: ".col-sm-12",
+                }),
+                submitButton: new FormValidation.plugins.SubmitButton(),
+                // defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+                autoFocus: new FormValidation.plugins.AutoFocus(),
+            },
+            init: (instance) => {
+                instance.on("plugins.message.placed", function (e) {
+                    if (
+                        e.element.parentElement.classList.contains(
+                            "input-group",
+                        )
+                    ) {
+                        e.element.parentElement.insertAdjacentElement(
+                            "afterend",
+                            e.messageElement,
+                        );
+                    }
+                });
+            },
+        });
+
+        // FlatPickr Initialization & Validation
+        const flatpickrDate = document.querySelector('[name="basicDate"]');
+
+        if (flatpickrDate) {
+            flatpickrDate.flatpickr({
+                enableTime: false,
+                // See https://flatpickr.js.org/formatting/
+                dateFormat: "m/d/Y",
+                // After selecting a date, we need to revalidate the field
+                onChange: function () {
+                    fv.revalidateField("basicDate");
+                },
+            });
+        }
+    })();
+});
+
 // datatable (jquery)
 $(function () {
-    var dt_basic_table = $("#stokMenipisTable"),
+    var dt_basic_table = $("#kategoriTable"),
         dt_basic;
 
     if (dt_basic_table.length) {
         var dataDummy = [
             {
-                kode_barang: "BRG-001",
-                nama: "Kertas HVS A4 80gr Sinar Dunia",
-                stok: 3,
-                kategori: { nama: "Alat Tulis Kantor" },
-                status: "Stok Menipis",
+                id: 1,
+                nama: "Elektronik",
             },
             {
-                kode_barang: "BRG-002",
-                nama: "Tinta Printer Epson Black T6641",
-                stok: 0,
-                kategori: { nama: "Tinta & Toner" },
-                status: "Habis",
+                id: 2,
+                nama: "Alat Tulis",
             },
             {
-                kode_barang: "BRG-005",
-                nama: "Mouse Wireless Logitech M170",
-                stok: 2,
-                kategori: { nama: "Elektronik Kantor" },
-                status: "Stok Menipis",
-            },
-            {
-                kode_barang: "BRG-012",
-                nama: "Baterai ABC Alkaline AA (Isi 4)",
-                stok: 5,
-                kategori: { nama: "Perkakas & Baterai" },
-                status: "Stok Menipis",
-            },
-            {
-                kode_barang: "BRG-019",
-                nama: "Map Folder Snelhechter Plastik Biru",
-                stok: 1,
-                kategori: { nama: "Alat Tulis Kantor" },
-                status: "Stok Menipis",
-            },
-            {
-                kode_barang: "BRG-024",
-                nama: "Kabel HDMI To VGA Adapter v1.4",
-                stok: 2,
-                kategori: { nama: "Elektronik Kantor" },
-                status: "Stok Menipis",
-            },
-            {
-                kode_barang: "BRG-031",
-                nama: "Solasi Bening Benz Tape 2 Inch",
-                stok: 4,
-                kategori: { nama: "Alat Tulis Kantor" },
-                status: "Stok Menipis",
-            },
-            {
-                kode_barang: "BRG-035",
-                nama: "Lampu LED Philips 12 Watt Cool Daylight",
-                stok: 0,
-                kategori: { nama: "Perkakas & Baterai" },
-                status: "Habis",
-            },
-            {
-                kode_barang: "BRG-042",
-                nama: "Flashdisk Sandisk Cruzer Blade 32GB",
-                stok: 1,
-                kategori: { nama: "Elektronik Kantor" },
-                status: "Stok Menipis",
-            },
-            {
-                kode_barang: "BRG-050",
-                nama: "Isi Staples Max No. 10 (Kecil)",
-                stok: 3,
-                kategori: { nama: "Alat Tulis Kantor" },
-                status: "Stok Menipis",
+                id: 3,
+                nama: "Peralatan Kantor",
             },
         ];
 
@@ -99,33 +159,32 @@ $(function () {
                     className: "text-center",
                 },
                 {
-                    data: "kode_barang",
-                    className: "text-center fw-medium",
-                },
-                {
                     data: "nama",
-                    className: "text-center fw-medium",
-                },
-                {
-                    data: "stok",
-                    className: "text-center fw-bold",
-                    render: (data) => data + " Pcs",
-                },
-                {
-                    data: "kategori",
-                    render: (data, type, row) =>
-                        row.kategori ? row.kategori.nama : "-",
                     className: "text-center",
                 },
                 {
-                    data: "status",
+                    data: null,
                     className: "text-center",
-                    render: function (data) {
-                        return (
-                            '<span class="badge bg-label-danger">' +
-                            (data ? data : "Stok Menipis") +
-                            "</span>"
-                        );
+                    orderable: false,
+                    searchable: false,
+                    render: function (data, type, row) {
+                        return `
+                <div class="d-inline-flex gap-1">
+                    <button type="button"
+                        class="btn btn-sm btn-icon btn-text-secondary waves-effect"
+                        title="Edit"
+                        data-id="${row.id}">
+                        <i class="ti ti-edit"></i>
+                    </button>
+
+                    <button type="button"
+                        class="btn btn-sm btn-icon btn-text-danger waves-effect"
+                        title="Hapus"
+                        data-id="${row.id}">
+                        <i class="ti ti-trash"></i>
+                    </button>
+                </div>
+            `;
                     },
                 },
             ],
@@ -170,7 +229,7 @@ $(function () {
                     next: '<i class="ti ti-chevron-right ti-sm"></i>',
                     previous: '<i class="ti ti-chevron-left ti-sm"></i>',
                 },
-                zeroRecords: "Tidak ada data stok menipis ✨",
+                zeroRecords: "Tidak ada data kategori ✨",
             },
             buttons: [
                 {
@@ -385,6 +444,11 @@ $(function () {
                         },
                     ],
                 },
+                {
+                    text: '<i class="ti ti-plus me-sm-1"></i> <span class="d-none d-sm-inline-block">Add New Record</span>',
+                    className:
+                        "create-new btn btn-primary waves-effect waves-light",
+                },
             ],
             responsive: {
                 details: {
@@ -428,6 +492,36 @@ $(function () {
             '<h5 class="card-title mb-0">DataTable with Buttons</h5>',
         );
     }
+
+    // Add New record
+    // ? Remove/Update this code as per your requirements
+    var count = 101;
+    // On form submit, if form is valid
+    fv.on("core.form.valid", function () {
+        var $new_name = $(".add-new-record .dt-full-name").val(),
+            $new_post = $(".add-new-record .dt-post").val(),
+            $new_email = $(".add-new-record .dt-email").val(),
+            $new_date = $(".add-new-record .dt-date").val(),
+            $new_salary = $(".add-new-record .dt-salary").val();
+
+        if ($new_name != "") {
+            dt_basic.row
+                .add({
+                    id: count,
+                    full_name: $new_name,
+                    post: $new_post,
+                    email: $new_email,
+                    start_date: $new_date,
+                    salary: "$" + $new_salary,
+                    status: 5,
+                })
+                .draw();
+            count++;
+
+            // Hide offcanvas using javascript method
+            offCanvasEl.hide();
+        }
+    });
 
     // Filter form control to default size
     // ? setTimeout used for multilingual table initialization
