@@ -122,28 +122,56 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
 // datatable (jquery)
 $(function () {
-    var dt_basic_table = $("#kategoriTable"),
+    var dt_basic_table = $("#barangTable"),
         dt_basic;
 
     if (dt_basic_table.length) {
-        var dataDummy = [
+        var dataDummyTransaksi = [
             {
                 id: 1,
-                nama: "Elektronik",
+                no_transaksi: "TRX-20260901-001",
+                tanggal: "2026-09-01",
+                jenis: "Barang Masuk",
+                total_item: 15,
+                total_nilai_transaksi: 127500000, // Contoh: 15 unit x Rp 8.500.000
             },
             {
                 id: 2,
-                nama: "Alat Tulis",
+                no_transaksi: "TRX-20260903-002",
+                tanggal: "2026-09-03",
+                jenis: "Barang Keluar",
+                total_item: 50,
+                total_nilai_transaksi: 1750000, // Contoh: 50 pack x Rp 35.000
             },
             {
                 id: 3,
-                nama: "Peralatan Kantor",
+                no_transaksi: "TRX-20260905-003",
+                tanggal: "2026-09-05",
+                jenis: "Barang Masuk",
+                total_item: 5,
+                total_nilai_transaksi: 12000000, // Contoh: 5 unit x Rp 2.400.000
+            },
+            {
+                id: 4,
+                no_transaksi: "TRX-20260910-004",
+                tanggal: "2026-09-10",
+                jenis: "Barang Keluar",
+                total_item: 5,
+                total_nilai_transaksi: 750000, // Contoh: 5 pcs x Rp 150.000
+            },
+            {
+                id: 5,
+                no_transaksi: "TRX-20260912-005",
+                tanggal: "2026-09-12",
+                jenis: "Barang Masuk",
+                total_item: 20,
+                total_nilai_transaksi: 1100000, // Contoh: 20 rim x Rp 55.000
             },
         ];
 
         dt_basic = dt_basic_table.DataTable({
             // ajax: assetsPath + "json/table-datatable.json",
-            data: dataDummy,
+            data: dataDummyTransaksi,
             columns: [
                 {
                     data: null,
@@ -159,7 +187,23 @@ $(function () {
                     className: "text-center",
                 },
                 {
-                    data: "nama",
+                    data: "no_transaksi",
+                    className: "text-center",
+                },
+                {
+                    data: "tanggal",
+                    className: "text-center",
+                },
+                {
+                    data: "jenis",
+                    className: "text-center",
+                },
+                {
+                    data: "total_item",
+                    className: "text-center",
+                },
+                {
+                    data: "total_nilai_transaksi",
                     className: "text-center",
                 },
                 { data: "" },
@@ -196,32 +240,33 @@ $(function () {
                     },
                 },
                 {
-                    targets: 4,
+                    targets: -1,
                     data: null,
                     className: "text-center",
                     orderable: false,
                     searchable: false,
                     render: function (data, type, row) {
                         return `
-                            <div class="d-inline-flex gap-1">
-                                <button type="button"
-                                    class="btn btn-sm btn-icon btn-text-secondary waves-effect"
-                                    title="Edit"
-                                    data-id="${row.id}">
-                                    <i class="ti ti-edit"></i>
-                                </button>
+                <div class="d-inline-flex gap-1">
+                    <button type="button"
+                        class="btn btn-sm btn-icon btn-text-secondary waves-effect"
+                        title="Edit"
+                        data-id="${row.id}">
+                        <i class="ti ti-edit"></i>
+                    </button>
 
-                                <button type="button"
-                                    class="btn btn-sm btn-icon btn-text-danger waves-effect"
-                                    title="Hapus"
-                                    data-id="${row.id}">
-                                    <i class="ti ti-trash"></i>
-                                </button>
-                            </div>
-                        `;
+                    <button type="button"
+                        class="btn btn-sm btn-icon btn-text-danger waves-effect"
+                        title="Hapus"
+                        data-id="${row.id}">
+                        <i class="ti ti-trash"></i>
+                    </button>
+                </div>
+            `;
                     },
                 },
             ],
+
             order: [[2, "asc"]],
             dom: '<"card-header flex-column flex-md-row"<"head-label text-center"><"dt-action-buttons text-end pt-6 pt-md-0"B>><"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end mt-n6 mt-md-0"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
             displayLength: 5,
@@ -233,6 +278,7 @@ $(function () {
                 },
                 zeroRecords: "Tidak ada data kategori ✨",
             },
+
             buttons: [
                 {
                     extend: "collection",
@@ -446,12 +492,8 @@ $(function () {
                         },
                     ],
                 },
-                {
-                    text: '<i class="ti ti-plus me-sm-1"></i> <span class="d-none d-sm-inline-block">Add New Record</span>',
-                    className:
-                        "create-new btn btn-primary waves-effect waves-light",
-                },
             ],
+            
             responsive: {
                 details: {
                     display: $.fn.dataTable.Responsive.display.modal({

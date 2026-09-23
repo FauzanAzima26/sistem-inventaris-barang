@@ -25,12 +25,12 @@
             </a>
         </li>
 
-        <li class="menu-item {{ request()->routeIs('barang.*') || request()->routeIs('kategori.*') || request()->routeIs('inventori.*') ? 'active open' : '' }}">
+        <li class="menu-item {{ request()->routeIs('barang.*') || request()->routeIs('kategori.*') || request()->routeIs('inventory.*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons ti ti-app-window"></i>
                 <div data-i18n="Master Data">Master Data</div>
             </a>
-            <ul class="menu-sub {{ request()->routeIs('barang.*') || request()->routeIs('kategori.*') || request()->routeIs('inventori.*') ? 'show' : '' }}">
+            <ul class="menu-sub {{ request()->routeIs('barang.*') || request()->routeIs('kategori.*') || request()->routeIs('inventory.*') ? 'show' : '' }}">
                 <li class="menu-item {{ request()->routeIs('kategori.*') ? 'active' : '' }}">
                     <a href="{{ route('kategori.index') }}" class="menu-link">
                         <div data-i18n="Manajemen Kategori">Manajemen Kategori</div>
@@ -56,7 +56,7 @@
             </a>
         </li>
 
-        <li class="menu-item {{ request()->routeIs('laporan.*') ? 'active' : '' }}">
+        <li class="menu-item {{ request()->routeIs('laporan-transaksi.*') || request()->routeIs('laporan.stok') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons ti ti-app-window"></i>
                 <div data-i18n="Laporan">Laporan</div>

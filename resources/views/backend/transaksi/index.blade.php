@@ -1,84 +1,49 @@
 @extends('backend.layouts.main')
 
 @section('content')
-    <style>
-        /* Ukuran font seragam dan lebih kecil */
-        #transaksiTable {
-            font-size: 0.875rem;
-            /* ~14px */
-        }
+<div class="container-fluid">
+    <!-- Stok Menipis -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <!-- Pindahkan judul ke Card Header agar tata letak konsisten -->
+                <div class="card-header">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-label-primary p-2 rounded">
+                            <i class="ti ti-clipboard-list ti-sm"></i>
+                        </span>
 
-        #transaksiTable thead th {
-            font-weight: 600;
-            vertical-align: middle;
-        }
-
-        #transaksiTable tbody td {
-            vertical-align: middle;
-        }
-
-        /* Perkecil tombol aksi */
-        .btn-sm i {
-            font-size: 0.85rem;
-        }
-
-        /* Supaya badge tetap proporsional */
-        .badge {
-            font-size: 0.75rem;
-            padding: 0.4em 0.6em;
-        }
-    </style>
-
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between mb-3">
-                            <h5 class="card-title fw-semibold mb-0">Transaksi Masuk</h5>
-                            <div class="d-flex gap-2">
-                                <a href="#" class="btn btn-success btn-sm" id="addTransaksi">
-                                    <i class="ti ti-plus me-2"></i>Tambah Transaksi
-                                </a>
-                                <a class="btn btn-danger btn-sm" id="btnSampahTransaksi">
-                                    <i class="ti ti-trash me-1"></i> Baru Saja Dihapus
-                                </a>
-                            </div>
-                        </div>
-
-                        <table id="transaksiTable" class="table table-striped table-bordered table-sm align-middle"
-                            style="width:100%" data-url="{{ route('transaksi.getData') }}">
-                            <thead class="table-light">
-                                <tr>
-                                    <th class="text-center" style="width:5%">No</th>
-                                    <th class="text-center" style="width:15%">No Transaksi</th>
-                                    <th class="text-center" style="width:10%">Tanggal</th>
-                                    <th class="text-center" style="width:10%">Jenis</th>
-                                    <th class="text-center" style="width:10%">Total Item</th>
-                                    <th class="text-center" style="width:10%">Keterangan</th>
-                                    <th class="text-center" style="width:15%">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
+                        <h5 class="card-title mb-0 fw-semibold">
+                            Inventori Barang
+                        </h5>
                     </div>
+                </div>
+                <div class="card-datatable table-responsive pt-0">
+                    <table class="table border-top" id="barangTable">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th class="text-center" width="8%">No</th>
+                                <th class="text-center" style="width:15%">No Transaksi</th>
+                                <th class="text-center" style="width:10%">Tanggal</th>
+                                <th class="text-center" style="width:10%">Jenis</th>
+                                <th class="text-center" style="width:10%">Total Item</th>
+                                <th class="text-center" style="width:10%">Keterangan</th>
+                                <th style="text-align:center;">Aksi</th>
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    @include('backend.transaksi._tambahData')
+@include('backend.transaksi._tambahData')
 
-    @include('backend.transaksi._itemDetail')
+@push('scripts')
+<script src="{{ asset('assets/js/backend/transaksi.js') }}"></script>
+@endpush
 
-    @include('backend.transaksi.BaruDihapus')
-
-    @push('scripts')
-        <script>
-            window.allBarangs = @json($barangs);
-        </script>
-        <script src="{{ asset('assets/js/transaksi.js') }}"></script>
-    @endpush
 @endsection

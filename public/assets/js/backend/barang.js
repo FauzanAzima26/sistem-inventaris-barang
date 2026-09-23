@@ -122,28 +122,61 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
 // datatable (jquery)
 $(function () {
-    var dt_basic_table = $("#kategoriTable"),
+    var dt_basic_table = $("#barangTable"),
         dt_basic;
 
     if (dt_basic_table.length) {
-        var dataDummy = [
+        var dataDummyBarang = [
             {
                 id: 1,
-                nama: "Elektronik",
+                kode_barang: "BRG-001",
+                nama: "Laptop ASUS VivoBook",
+                kategori_id: "Elektronik",
+                satuan: "Unit",
+                harga_beli: 8500000,
+                image: "laptop-asus.jpg",
             },
             {
                 id: 2,
-                nama: "Alat Tulis",
+                kode_barang: "BRG-002",
+                nama: "Buku Tulis Sinar Dunia 38 Lembar",
+                kategori_id: "Alat Tulis",
+                satuan: "Pack",
+                harga_beli: 35000,
+                image: "buku-tulis.jpg",
             },
             {
                 id: 3,
-                nama: "Peralatan Kantor",
+                kode_barang: "BRG-003",
+                nama: "Printer Epson L3210",
+                kategori_id: "Peralatan Kantor",
+                satuan: "Unit",
+                harga_beli: 2400000,
+                image: "printer-epson.jpg",
+            },
+            {
+                id: 4,
+                kode_barang: "BRG-004",
+                nama: "Mouse Wireless Logitech",
+                kategori_id: "Elektronik",
+                satuan: "Pcs",
+                harga_beli: 150000,
+                image: "mouse-logitech.jpg",
+            },
+            {
+                id: 5,
+                kode_barang: "BRG-005",
+                nama: "Kertas HVS A4 80gr PaperOne",
+                kategori_id: "Peralatan Kantor",
+                satuan: "Rim",
+                harga_beli: 55000,
+                image: "hvs-a4.jpg",
             },
         ];
 
         dt_basic = dt_basic_table.DataTable({
             // ajax: assetsPath + "json/table-datatable.json",
-            data: dataDummy,
+            data: dataDummyBarang,
             columns: [
                 {
                     data: null,
@@ -159,7 +192,27 @@ $(function () {
                     className: "text-center",
                 },
                 {
+                    data: "kode_barang",
+                    className: "text-center",
+                },
+                {
                     data: "nama",
+                    className: "text-center",
+                },
+                {
+                    data: "kategori_id",
+                    className: "text-center",
+                },
+                {
+                    data: "satuan",
+                    className: "text-center",
+                },
+                {
+                    data: "harga_beli",
+                    className: "text-center",
+                },
+                {
+                    data: "image",
                     className: "text-center",
                 },
                 { data: "" },
@@ -196,29 +249,29 @@ $(function () {
                     },
                 },
                 {
-                    targets: 4,
+                    targets: -1,
                     data: null,
                     className: "text-center",
                     orderable: false,
                     searchable: false,
                     render: function (data, type, row) {
                         return `
-                            <div class="d-inline-flex gap-1">
-                                <button type="button"
-                                    class="btn btn-sm btn-icon btn-text-secondary waves-effect"
-                                    title="Edit"
-                                    data-id="${row.id}">
-                                    <i class="ti ti-edit"></i>
-                                </button>
+                <div class="d-inline-flex gap-1">
+                    <button type="button"
+                        class="btn btn-sm btn-icon btn-text-secondary waves-effect"
+                        title="Edit"
+                        data-id="${row.id}">
+                        <i class="ti ti-edit"></i>
+                    </button>
 
-                                <button type="button"
-                                    class="btn btn-sm btn-icon btn-text-danger waves-effect"
-                                    title="Hapus"
-                                    data-id="${row.id}">
-                                    <i class="ti ti-trash"></i>
-                                </button>
-                            </div>
-                        `;
+                    <button type="button"
+                        class="btn btn-sm btn-icon btn-text-danger waves-effect"
+                        title="Hapus"
+                        data-id="${row.id}">
+                        <i class="ti ti-trash"></i>
+                    </button>
+                </div>
+            `;
                     },
                 },
             ],

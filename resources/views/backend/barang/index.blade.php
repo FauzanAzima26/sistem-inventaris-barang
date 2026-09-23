@@ -1,59 +1,49 @@
-@extends('backend.template.main')
+@extends('backend.layouts.main')
 
 @section('content')
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between mb-3">
-                            <h5 class="card-title fw-semibold">Data Barang</h5>
-                                <div class="d-flex gap-2">
-                                    <a class="btn btn-success btn-sm" id="addBarang">
-                                        <i class="ti ti-plus me-1"></i> Tambah Data
-                                    </a>
+<div class="container-fluid">
+    <!-- Stok Menipis -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <!-- Pindahkan judul ke Card Header agar tata letak konsisten -->
+                <div class="card-header">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-label-primary p-2 rounded">
+                            <i class="ti ti-packages ti-md"></i>
+                        </span>
 
-                                    <a class="btn btn-danger btn-sm" id="btnSampahBarang">
-                                        <i class="ti ti-trash me-1"></i> Baru Saja Dihapus
-                                    </a>
-                                </div>
-                        </div>
-                        <div class="table-responsif">
-                            <table id="barangTable" class="table table-striped table-bordered" style="width:100%"
-                                data-url="{{ route('barang.getData') }}">
-                                <thead>
-                                    <tr>
-                                        <th style="text-align:center">No</th>
-                                        <th style="text-align:center">Kode barang</th>
-                                        <th style="text-align:center">Produk</th>
-                                        <th style="text-align:center">Kategori</th>
-                                        <th style="text-align:center">Satuan</th>
-                                        <th style="text-align:center">Harga beli</th>
-                                        <th style="text-align:center">Gambar</th>
-                                        <th style="text-align:center;">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {{-- ajax --}}
-                                </tbody>
-                            </table>
-                        </div>
-
+                        <h5 class="card-title mb-0 fw-semibold">
+                            Barang
+                        </h5>
                     </div>
                 </div>
+                <div class="card-datatable table-responsive pt-0">
+                    <table class="table border-top" id="barangTable">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th class="text-center" width="8%">No</th>
+                                <th style="text-align:center">Kode barang</th>
+                                <th style="text-align:center">Produk</th>
+                                <th style="text-align:center">Kategori</th>
+                                <th style="text-align:center">Satuan</th>
+                                <th style="text-align:center">Harga beli</th>
+                                <th style="text-align:center">Gambar</th>
+                                <th style="text-align:center;">Aksi</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
             </div>
+            @include('backend.barang._tambahData')
         </div>
     </div>
+</div>
 
-    @include('backend.barang._tambahData')
+@push('scripts')
+<script src="{{ asset('assets/js/backend/barang.js') }}"></script>
+@endpush
 
-    @include('backend.barang.BaruDihapus')
-
-    @push('scripts')
-        <script>
-            const USER_ROLE = "{{ Auth::user()->role }}";
-        </script>
-
-        <script src="{{ asset('assets/js/barang.js') }}"></script>
-    @endpush
 @endsection

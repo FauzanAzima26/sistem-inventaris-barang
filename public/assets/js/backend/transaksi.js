@@ -122,28 +122,56 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
 // datatable (jquery)
 $(function () {
-    var dt_basic_table = $("#kategoriTable"),
+    var dt_basic_table = $("#barangTable"),
         dt_basic;
 
     if (dt_basic_table.length) {
-        var dataDummy = [
+        var dataDummyTransaksi = [
             {
                 id: 1,
-                nama: "Elektronik",
+                no_transaksi: "TRX-20260901-001",
+                tanggal: "2026-09-01",
+                jenis: "Barang Masuk", // Jenis transaksi logistik
+                total_item: 15, // Total jumlah item/barang
+                keterangan: "Restock laptop dari Supplier ASUS",
             },
             {
                 id: 2,
-                nama: "Alat Tulis",
+                no_transaksi: "TRX-20260903-002",
+                tanggal: "2026-09-03",
+                jenis: "Barang Keluar",
+                total_item: 50,
+                keterangan: "Pengadaan Alat Tulis Kantor Divisi HRD",
             },
             {
                 id: 3,
-                nama: "Peralatan Kantor",
+                no_transaksi: "TRX-20260905-003",
+                tanggal: "2026-09-05",
+                jenis: "Barang Masuk",
+                total_item: 5,
+                keterangan: "Pembelian unit printer baru",
+            },
+            {
+                id: 4,
+                no_transaksi: "TRX-20260910-004",
+                tanggal: "2026-09-10",
+                jenis: "Barang Keluar",
+                total_item: 5,
+                keterangan: "Mouse rusak diganti baru",
+            },
+            {
+                id: 5,
+                no_transaksi: "TRX-20260912-005",
+                tanggal: "2026-09-12",
+                jenis: "Barang Masuk",
+                total_item: 20,
+                keterangan: "Stok opname berkala kertas HVS",
             },
         ];
 
         dt_basic = dt_basic_table.DataTable({
             // ajax: assetsPath + "json/table-datatable.json",
-            data: dataDummy,
+            data: dataDummyTransaksi,
             columns: [
                 {
                     data: null,
@@ -159,7 +187,23 @@ $(function () {
                     className: "text-center",
                 },
                 {
-                    data: "nama",
+                    data: "no_transaksi",
+                    className: "text-center",
+                },
+                {
+                    data: "tanggal",
+                    className: "text-center",
+                },
+                {
+                    data: "jenis",
+                    className: "text-center",
+                },
+                {
+                    data: "total_item",
+                    className: "text-center",
+                },
+                {
+                    data: "keterangan",
                     className: "text-center",
                 },
                 { data: "" },
@@ -196,29 +240,29 @@ $(function () {
                     },
                 },
                 {
-                    targets: 4,
+                    targets: -1,
                     data: null,
                     className: "text-center",
                     orderable: false,
                     searchable: false,
                     render: function (data, type, row) {
                         return `
-                            <div class="d-inline-flex gap-1">
-                                <button type="button"
-                                    class="btn btn-sm btn-icon btn-text-secondary waves-effect"
-                                    title="Edit"
-                                    data-id="${row.id}">
-                                    <i class="ti ti-edit"></i>
-                                </button>
+                <div class="d-inline-flex gap-1">
+                    <button type="button"
+                        class="btn btn-sm btn-icon btn-text-secondary waves-effect"
+                        title="Edit"
+                        data-id="${row.id}">
+                        <i class="ti ti-edit"></i>
+                    </button>
 
-                                <button type="button"
-                                    class="btn btn-sm btn-icon btn-text-danger waves-effect"
-                                    title="Hapus"
-                                    data-id="${row.id}">
-                                    <i class="ti ti-trash"></i>
-                                </button>
-                            </div>
-                        `;
+                    <button type="button"
+                        class="btn btn-sm btn-icon btn-text-danger waves-effect"
+                        title="Hapus"
+                        data-id="${row.id}">
+                        <i class="ti ti-trash"></i>
+                    </button>
+                </div>
+            `;
                     },
                 },
             ],

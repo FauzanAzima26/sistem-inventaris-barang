@@ -1,38 +1,46 @@
 @extends('backend.layouts.main')
 
 @section('content')
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between mb-3">
-                            <h5 class="card-title fw-semibold">Inventori</h5>
-                        </div>
-                        <div class="table-responsif">
-                            <table id="inventoryTable" class="table table-striped table-bordered" style="width:100%"
-                                data-url="{{ route('inventory.getData') }}">
-                                <thead>
-                                    <tr>
-                                        <th style="text-align:center">No</th>
-                                        <th style="text-align:center">Produk</th>
-                                        <th style="text-align:center">Stok</th>
-                                        <th style="text-align:center">Satuan</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {{-- ajax --}}
-                                </tbody>
-                            </table>
-                        </div>
+<div class="container-fluid">
+    <!-- Stok Menipis -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <!-- Pindahkan judul ke Card Header agar tata letak konsisten -->
+                <div class="card-header">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-label-primary p-2 rounded">
+                            <i class="ti ti-clipboard-list ti-md"></i>
+                        </span>
 
+                        <h5 class="card-title mb-0 fw-semibold">
+                            Inventori Barang
+                        </h5>
                     </div>
                 </div>
+                <div class="card-datatable table-responsive pt-0">
+                    <table class="table border-top" id="barangTable">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th class="text-center" width="8%">No</th>
+                                <th style="text-align:center">Produk</th>
+                                <th style="text-align:center">Stok</th>
+                                <th style="text-align:center">Satuan</th>
+                                <th style="text-align:center;">Aksi</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
             </div>
+           @include('backend.inventori._tambahData')
         </div>
     </div>
+</div>
 
-    @push('scripts')
-        <script src="{{ asset('assets/js/inventory.js') }}"></script>
-    @endpush
+@push('scripts')
+<script src="{{ asset('assets/js/backend/inventori.js') }}"></script>
+@endpush
+
 @endsection

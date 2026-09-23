@@ -122,28 +122,46 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
 // datatable (jquery)
 $(function () {
-    var dt_basic_table = $("#kategoriTable"),
+    var dt_basic_table = $("#barangTable"),
         dt_basic;
 
     if (dt_basic_table.length) {
-        var dataDummy = [
+        var dataDummyBarang = [
             {
                 id: 1,
-                nama: "Elektronik",
+                nama: "Laptop ASUS VivoBook",
+                stok: 15,
+                satuan: "Unit",
             },
             {
                 id: 2,
-                nama: "Alat Tulis",
+                nama: "Buku Tulis Sinar Dunia 38 Lembar",
+                stok: 120,
+                satuan: "Pack",
             },
             {
                 id: 3,
-                nama: "Peralatan Kantor",
+                nama: "Printer Epson L3210", // <-- Ditambahkan nama produk agar tidak kosong
+                stok: 5,
+                satuan: "Unit",
+            },
+            {
+                id: 4,
+                nama: "Mouse Wireless Logitech", // <-- Ditambahkan nama produk agar tidak kosong
+                stok: 45,
+                satuan: "Pcs",
+            },
+            {
+                id: 5,
+                nama: "Kertas HVS A4 80gr PaperOne",
+                stok: 0,
+                satuan: "Rim",
             },
         ];
 
         dt_basic = dt_basic_table.DataTable({
             // ajax: assetsPath + "json/table-datatable.json",
-            data: dataDummy,
+            data: dataDummyBarang,
             columns: [
                 {
                     data: null,
@@ -160,6 +178,14 @@ $(function () {
                 },
                 {
                     data: "nama",
+                    className: "text-center",
+                },
+                {
+                    data: "stok",
+                    className: "text-center",
+                },
+                {
+                    data: "satuan",
                     className: "text-center",
                 },
                 { data: "" },
@@ -196,29 +222,29 @@ $(function () {
                     },
                 },
                 {
-                    targets: 4,
+                    targets: -1,
                     data: null,
                     className: "text-center",
                     orderable: false,
                     searchable: false,
                     render: function (data, type, row) {
                         return `
-                            <div class="d-inline-flex gap-1">
-                                <button type="button"
-                                    class="btn btn-sm btn-icon btn-text-secondary waves-effect"
-                                    title="Edit"
-                                    data-id="${row.id}">
-                                    <i class="ti ti-edit"></i>
-                                </button>
+                <div class="d-inline-flex gap-1">
+                    <button type="button"
+                        class="btn btn-sm btn-icon btn-text-secondary waves-effect"
+                        title="Edit"
+                        data-id="${row.id}">
+                        <i class="ti ti-edit"></i>
+                    </button>
 
-                                <button type="button"
-                                    class="btn btn-sm btn-icon btn-text-danger waves-effect"
-                                    title="Hapus"
-                                    data-id="${row.id}">
-                                    <i class="ti ti-trash"></i>
-                                </button>
-                            </div>
-                        `;
+                    <button type="button"
+                        class="btn btn-sm btn-icon btn-text-danger waves-effect"
+                        title="Hapus"
+                        data-id="${row.id}">
+                        <i class="ti ti-trash"></i>
+                    </button>
+                </div>
+            `;
                     },
                 },
             ],
