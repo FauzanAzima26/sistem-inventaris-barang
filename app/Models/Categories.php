@@ -13,7 +13,6 @@ class Categories extends Model
 
     protected $fillable = [
         'nama',
-        'deskripsi',
     ];
 
     public static function booted()

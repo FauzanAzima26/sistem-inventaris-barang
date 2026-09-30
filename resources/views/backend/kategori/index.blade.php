@@ -19,7 +19,7 @@
                     </div>
                 </div>
                 <div class="card-datatable table-responsive pt-0">
-                    <table class="table border-top" id="kategoriTable">
+                    <table class="table border-top" id="kategoriTable" data-kategori="{{ route('kategori.getData') }}">
                         <thead>
                             <tr>
                                 <th></th>

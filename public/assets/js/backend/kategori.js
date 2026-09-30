@@ -12,17 +12,12 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
             // To open offCanvas, to add new record
             if (newRecord) {
+                offCanvasEl = new bootstrap.Offcanvas(offCanvasElement);
+
                 newRecord.addEventListener("click", function () {
-                    offCanvasEl = new bootstrap.Offcanvas(offCanvasElement);
+                    $("#kategoriId").val("");
                     // Empty fields on offCanvas open
-                    ((offCanvasElement.querySelector(".dt-full-name").value =
-                        ""),
-                        (offCanvasElement.querySelector(".dt-post").value = ""),
-                        (offCanvasElement.querySelector(".dt-email").value =
-                            ""),
-                        (offCanvasElement.querySelector(".dt-date").value = ""),
-                        (offCanvasElement.querySelector(".dt-salary").value =
-                            ""));
+                    offCanvasElement.querySelector(".nama").value = "";
                     // Open offCanvas with form
                     offCanvasEl.show();
                 });
@@ -36,41 +31,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
                     validators: {
                         notEmpty: {
                             message: "The name is required",
-                        },
-                    },
-                },
-                basicPost: {
-                    validators: {
-                        notEmpty: {
-                            message: "Post field is required",
-                        },
-                    },
-                },
-                basicEmail: {
-                    validators: {
-                        notEmpty: {
-                            message: "The Email is required",
-                        },
-                        emailAddress: {
-                            message: "The value is not a valid email address",
-                        },
-                    },
-                },
-                basicDate: {
-                    validators: {
-                        notEmpty: {
-                            message: "Joining Date is required",
-                        },
-                        date: {
-                            format: "MM/DD/YYYY",
-                            message: "The value is not a valid date",
-                        },
-                    },
-                },
-                basicSalary: {
-                    validators: {
-                        notEmpty: {
-                            message: "Basic Salary is required",
                         },
                     },
                 },
@@ -124,26 +84,27 @@ document.addEventListener("DOMContentLoaded", function (e) {
 $(function () {
     var dt_basic_table = $("#kategoriTable"),
         dt_basic;
+    let url = $("#kategoriTable").data("kategori");
 
     if (dt_basic_table.length) {
-        var dataDummy = [
-            {
-                id: 1,
-                nama: "Elektronik",
-            },
-            {
-                id: 2,
-                nama: "Alat Tulis",
-            },
-            {
-                id: 3,
-                nama: "Peralatan Kantor",
-            },
-        ];
+        // var dataDummy = [
+        //     {
+        //         id: 1,
+        //         nama: "Elektronik",
+        //     },
+        //     {
+        //         id: 2,
+        //         nama: "Alat Tulis",
+        //     },
+        //     {
+        //         id: 3,
+        //         nama: "Peralatan Kantor",
+        //     },
+        // ];
 
         dt_basic = dt_basic_table.DataTable({
-            // ajax: assetsPath + "json/table-datatable.json",
-            data: dataDummy,
+            ajax: url,
+            // data: dataDummy,
             columns: [
                 {
                     data: null,
@@ -205,16 +166,18 @@ $(function () {
                         return `
                             <div class="d-inline-flex gap-1">
                                 <button type="button"
-                                    class="btn btn-sm btn-icon btn-text-secondary waves-effect"
+                                    class="btn btn-sm btn-icon btn-text-secondary waves-effect btn-edit"
                                     title="Edit"
-                                    data-id="${row.id}">
+                                    data-id="${row.uuid}"
+                                    data-bs-toggle="offcanvas"
+                                    data-bs-target="#add-new-record">
                                     <i class="ti ti-edit"></i>
                                 </button>
 
                                 <button type="button"
-                                    class="btn btn-sm btn-icon btn-text-danger waves-effect"
+                                    class="btn btn-sm btn-icon btn-text-danger waves-effect btn-delete"
                                     title="Hapus"
-                                    data-id="${row.id}">
+                                    data-id="${row.uuid}">
                                     <i class="ti ti-trash"></i>
                                 </button>
                             </div>
@@ -495,34 +458,89 @@ $(function () {
         );
     }
 
-    // Add New record
-    // ? Remove/Update this code as per your requirements
-    var count = 101;
-    // On form submit, if form is valid
+    $(document).on("click", ".btn-edit", function () {
+        let id = $(this).data("id");
+        let row = dt_basic.row($(this).closest("tr")).data();
+
+        $("#kategoriId").val(id);
+        $(".add-new-record .nama").val(row.nama);
+    });
+
     fv.on("core.form.valid", function () {
-        var $new_name = $(".add-new-record .dt-full-name").val(),
-            $new_post = $(".add-new-record .dt-post").val(),
-            $new_email = $(".add-new-record .dt-email").val(),
-            $new_date = $(".add-new-record .dt-date").val(),
-            $new_salary = $(".add-new-record .dt-salary").val();
+        let id = $("#kategoriId").val();
+        let nama = $(".add-new-record .nama").val();
 
-        if ($new_name != "") {
-            dt_basic.row
-                .add({
-                    id: count,
-                    full_name: $new_name,
-                    post: $new_post,
-                    email: $new_email,
-                    start_date: $new_date,
-                    salary: "$" + $new_salary,
-                    status: 5,
-                })
-                .draw();
-            count++;
+        let ajaxUrl = id ? `/kategori/${id}` : "/kategori";
 
-            // Hide offcanvas using javascript method
-            offCanvasEl.hide();
+        let data = {
+            nama: nama,
+            _token: $('meta[name="csrf-token"]').attr("content"),
+        };
+
+        if (id) {
+            data._method = "PUT";
         }
+
+        $.ajax({
+            url: ajaxUrl,
+            type: "POST",
+            data: data,
+            success: function (response) {
+                dt_basic.ajax.reload(null, false);
+
+                offCanvasEl.hide();
+
+                $("#kategoriId").val("");
+                $(".add-new-record .nama").val("");
+            },
+            error: function (xhr) {
+                console.log(xhr.responseJSON);
+            },
+        });
+    });
+
+    $(document).on("click", ".btn-delete", function () {
+        let id = $(this).data("id");
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, delete it!",
+            customClass: {
+                confirmButton: "btn btn-primary me-3 waves-effect waves-light",
+                cancelButton:
+                    "btn btn-label-secondary waves-effect waves-light",
+            },
+            buttonsStyling: false,
+        }).then(function (result) {
+            if (result.value) {
+                $.ajax({
+                    url: `/kategori/${id}`,
+                    type: "DELETE",
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr("content"),
+                    },
+                    success: function (response) {
+                        dt_basic.ajax.reload(null, false);
+
+                        Swal.fire({
+                            icon: "success",
+                            title: "Deleted!",
+                            text: response.message,
+                            customClass: {
+                                confirmButton:
+                                    "btn btn-success waves-effect waves-light",
+                            },
+                        });
+                    },
+                    error: function (xhr) {
+                        console.log(xhr.responseJSON);
+                    },
+                });
+            }
+        });
     });
 
     // Filter form control to default size

@@ -41,7 +41,6 @@ class kategoriController extends Controller
         ]);
 
         $kategori = Categories::create([
-            'uuid'         => Str::uuid(),
             'nama'         => $validated['nama'],
         ]);
 
