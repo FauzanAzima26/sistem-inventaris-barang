@@ -12,18 +12,16 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
             // To open offCanvas, to add new record
             if (newRecord) {
+                offCanvasEl = new bootstrap.Offcanvas(offCanvasElement);
                 newRecord.addEventListener("click", function () {
-                    offCanvasEl = new bootstrap.Offcanvas(offCanvasElement);
-                    // Empty fields on offCanvas open
-                    ((offCanvasElement.querySelector(".dt-full-name").value =
-                        ""),
-                        (offCanvasElement.querySelector(".dt-post").value = ""),
-                        (offCanvasElement.querySelector(".dt-email").value =
-                            ""),
-                        (offCanvasElement.querySelector(".dt-date").value = ""),
-                        (offCanvasElement.querySelector(".dt-salary").value =
-                            ""));
-                    // Open offCanvas with form
+                    $("#barangId").val("");
+                    offCanvasElement.querySelector(".kode_barang").value = "";
+                    offCanvasElement.querySelector(".produk").value = "";
+                    offCanvasElement.querySelector(".kategori_id").value = "";
+                    offCanvasElement.querySelector(".satuan").value = "";
+                    offCanvasElement.querySelector(".harga_beli").value = "";
+                    offCanvasElement.querySelector(".image").value = "";
+
                     offCanvasEl.show();
                 });
             }
@@ -124,59 +122,60 @@ document.addEventListener("DOMContentLoaded", function (e) {
 $(function () {
     var dt_basic_table = $("#barangTable"),
         dt_basic;
+    var url = $("#barangTable").data("barang");
 
     if (dt_basic_table.length) {
-        var dataDummyBarang = [
-            {
-                id: 1,
-                kode_barang: "BRG-001",
-                nama: "Laptop ASUS VivoBook",
-                kategori_id: "Elektronik",
-                satuan: "Unit",
-                harga_beli: 8500000,
-                image: "laptop-asus.jpg",
-            },
-            {
-                id: 2,
-                kode_barang: "BRG-002",
-                nama: "Buku Tulis Sinar Dunia 38 Lembar",
-                kategori_id: "Alat Tulis",
-                satuan: "Pack",
-                harga_beli: 35000,
-                image: "buku-tulis.jpg",
-            },
-            {
-                id: 3,
-                kode_barang: "BRG-003",
-                nama: "Printer Epson L3210",
-                kategori_id: "Peralatan Kantor",
-                satuan: "Unit",
-                harga_beli: 2400000,
-                image: "printer-epson.jpg",
-            },
-            {
-                id: 4,
-                kode_barang: "BRG-004",
-                nama: "Mouse Wireless Logitech",
-                kategori_id: "Elektronik",
-                satuan: "Pcs",
-                harga_beli: 150000,
-                image: "mouse-logitech.jpg",
-            },
-            {
-                id: 5,
-                kode_barang: "BRG-005",
-                nama: "Kertas HVS A4 80gr PaperOne",
-                kategori_id: "Peralatan Kantor",
-                satuan: "Rim",
-                harga_beli: 55000,
-                image: "hvs-a4.jpg",
-            },
-        ];
+        // var dataDummyBarang = [
+        //     {
+        //         id: 1,
+        //         kode_barang: "BRG-001",
+        //         nama: "Laptop ASUS VivoBook",
+        //         kategori_id: "Elektronik",
+        //         satuan: "Unit",
+        //         harga_beli: 8500000,
+        //         image: "laptop-asus.jpg",
+        //     },
+        //     {
+        //         id: 2,
+        //         kode_barang: "BRG-002",
+        //         nama: "Buku Tulis Sinar Dunia 38 Lembar",
+        //         kategori_id: "Alat Tulis",
+        //         satuan: "Pack",
+        //         harga_beli: 35000,
+        //         image: "buku-tulis.jpg",
+        //     },
+        //     {
+        //         id: 3,
+        //         kode_barang: "BRG-003",
+        //         nama: "Printer Epson L3210",
+        //         kategori_id: "Peralatan Kantor",
+        //         satuan: "Unit",
+        //         harga_beli: 2400000,
+        //         image: "printer-epson.jpg",
+        //     },
+        //     {
+        //         id: 4,
+        //         kode_barang: "BRG-004",
+        //         nama: "Mouse Wireless Logitech",
+        //         kategori_id: "Elektronik",
+        //         satuan: "Pcs",
+        //         harga_beli: 150000,
+        //         image: "mouse-logitech.jpg",
+        //     },
+        //     {
+        //         id: 5,
+        //         kode_barang: "BRG-005",
+        //         nama: "Kertas HVS A4 80gr PaperOne",
+        //         kategori_id: "Peralatan Kantor",
+        //         satuan: "Rim",
+        //         harga_beli: 55000,
+        //         image: "hvs-a4.jpg",
+        //     },
+        // ];
 
         dt_basic = dt_basic_table.DataTable({
-            // ajax: assetsPath + "json/table-datatable.json",
-            data: dataDummyBarang,
+            ajax: url,
+            // data: dataDummyBarang,
             columns: [
                 {
                     data: null,

@@ -19,7 +19,7 @@
                     </div>
                 </div>
                 <div class="card-datatable table-responsive pt-0">
-                    <table class="table border-top" id="barangTable">
+                    <table class="table border-top" id="barangTable" data-barang="{{ route('barang.getData') }}">
                         <thead>
                             <tr>
                                 <th></th>
