@@ -47,7 +47,7 @@ class barangController extends Controller
             'kategori_id'  => 'required|exists:categories,id',
             'harga_beli'        => 'required|numeric|min:0',
             'satuan'       => 'required|string|max:20',
-            'image'        => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image'        => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $filename = 'default.jpg';  // Default jika tidak ada file

@@ -9,6 +9,7 @@
     </div>
     <div class="offcanvas-body flex-grow-1">
         <form class="add-new-record pt-0 row g-2" id="form-add-new-record" onsubmit="return false">
+            @csrf
             <input id="barangId" type="hidden" />
             <div class="col-sm-12">
                 <label class="form-label" for="basicFullname">Kode Barang</label>
@@ -18,7 +19,7 @@
                         type="text"
                         id="basicFullname"
                         class="form-control kode_barang"
-                        name="basicFullname"
+                        name="kode_barang"
                         placeholder="John Doe"
                         aria-label="John Doe"
                         aria-describedby="basicFullname2" />
@@ -31,8 +32,8 @@
                     <input
                         type="text"
                         id="basicFullname"
-                        class="form-control produk"
-                        name="basicFullname"
+                        class="form-control nama"
+                        name="nama"
                         placeholder="John Doe"
                         aria-label="John Doe"
                         aria-describedby="basicFullname2" />
@@ -42,14 +43,16 @@
                 <label class="form-label" for="basicFullname">Kategori</label>
                 <div class="input-group input-group-merge">
                     <span id="basicFullname2" class="input-group-text"><i class="ti ti-user"></i></span>
-                    <input
-                        type="text"
-                        id="basicFullname"
-                        class="form-control kategori_id"
-                        name="basicFullname"
-                        placeholder="John Doe"
-                        aria-label="John Doe"
-                        aria-describedby="basicFullname2" />
+                    <select
+                        id="kategoriSelect"
+                        name="kategori_id"
+                        class="form-select kategori_id"
+                        aria-describedby="kategoriSelect2">
+                        <option value="" selected disabled>Pilih Kategori</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}">{{ $category->nama }}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
             <div class="col-sm-12">
@@ -59,7 +62,7 @@
                     <input
                         type="number"
                         id="basicSalary"
-                        name="basicSalary"
+                        name="satuan"
                         class="form-control satuan"
                         placeholder="12000"
                         aria-label="12000"
@@ -73,7 +76,7 @@
                     <input
                         type="number"
                         id="basicSalary"
-                        name="basicSalary"
+                        name="harga_beli"
                         class="form-control harga_beli"
                         placeholder="12000"
                         aria-label="12000"
@@ -85,12 +88,11 @@
                 <div class="input-group input-group-merge">
                     <span id="basicSalary2" class="input-group-text"><i class="ti ti-currency-dollar"></i></span>
                     <input
-                        type="number"
+                        type="file"
                         id="basicSalary"
-                        name="basicSalary"
+                        name="image"
                         class="form-control image"
-                        placeholder="12000"
-                        aria-label="12000"
+                        accept="image/*"
                         aria-describedby="basicSalary2" />
                 </div>
             </div>

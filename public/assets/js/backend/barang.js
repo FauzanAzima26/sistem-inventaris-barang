@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
                 newRecord.addEventListener("click", function () {
                     $("#barangId").val("");
                     offCanvasElement.querySelector(".kode_barang").value = "";
-                    offCanvasElement.querySelector(".produk").value = "";
+                    offCanvasElement.querySelector(".nama").value = "";
                     offCanvasElement.querySelector(".kategori_id").value = "";
                     offCanvasElement.querySelector(".satuan").value = "";
                     offCanvasElement.querySelector(".harga_beli").value = "";
@@ -30,45 +30,31 @@ document.addEventListener("DOMContentLoaded", function (e) {
         // Form validation for Add new record
         fv = FormValidation.formValidation(formAddNewRecord, {
             fields: {
-                basicFullname: {
+                nama: {
                     validators: {
                         notEmpty: {
-                            message: "The name is required",
+                            message: "Nama Produk Wajib Diisi",
                         },
                     },
                 },
-                basicPost: {
+                kategori_id: {
                     validators: {
                         notEmpty: {
-                            message: "Post field is required",
+                            message: "Kategori Produk Wajib Diisi",
                         },
                     },
                 },
-                basicEmail: {
+                satuan: {
                     validators: {
                         notEmpty: {
-                            message: "The Email is required",
-                        },
-                        emailAddress: {
-                            message: "The value is not a valid email address",
+                            message: "Satuan Wajib Diisi",
                         },
                     },
                 },
-                basicDate: {
+                harga_beli: {
                     validators: {
                         notEmpty: {
-                            message: "Joining Date is required",
-                        },
-                        date: {
-                            format: "MM/DD/YYYY",
-                            message: "The value is not a valid date",
-                        },
-                    },
-                },
-                basicSalary: {
-                    validators: {
-                        notEmpty: {
-                            message: "Basic Salary is required",
+                            message: "Harga Beli Wajib Diisi",
                         },
                     },
                 },
@@ -212,7 +198,14 @@ $(function () {
                 },
                 {
                     data: "image",
-                    className: "text-center",
+                    render: function (data) {
+                        if (!data) return "-";
+
+                        return `<img src="/storage/images/${data}"
+                                    width="50"
+                                    height="50"
+                                    style="object-fit: cover;">`;
+                    },
                 },
                 { data: "" },
             ],
@@ -555,28 +548,26 @@ $(function () {
         $(".add-new-record .nama").val(row.nama);
     });
 
-
     fv.on("core.form.valid", function () {
         let id = $("#barangId").val();
-        let formData = new FormData(this);
-
+        let formElement = document.getElementById("form-add-new-record");
+        let formData = new FormData(formElement);
         let ajaxUrl = id ? `/barang/${id}` : "/barang";
 
         if (id) {
-            formData.append('_method', 'PUT');
+            formData.append("_method", "PUT");
         }
 
         $.ajax({
             url: ajaxUrl,
             type: "POST",
             data: formData,
+            processData: false,
+            contentType: false,
             success: function (response) {
                 dt_basic.ajax.reload(null, false);
-
                 offCanvasEl.hide();
-
-                $("#kategoriId").val("");
-                $(".add-new-record .nama").val("");
+                $("#form-add-new-record").trigger("reset");
             },
             error: function (xhr) {
                 console.log(xhr.responseJSON);

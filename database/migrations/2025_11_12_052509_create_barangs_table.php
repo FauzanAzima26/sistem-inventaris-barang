@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('kategori_id')->nullable()->constrained('categories')->nullOnDelete();
             $table->decimal('harga_beli', 12, 2)->default(0);
             $table->string('satuan');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
